@@ -1,6 +1,6 @@
 server:
   address: localhost
-  port: 8080
+  port: 80
   servlet:
     context-path: /
     encoding:
@@ -12,30 +12,27 @@ spring:
   devtools:
     livereload:
       enabled: true
-
-  h2:
-    console:
-      enabled: true
+      
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
 
   datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:mysql://localhost:3306/ssafy_web_test?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ssafy
+    password: ssafy
 
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: create-drop # SessionFactory가 시작될 때, Drip, Create, Alter 종료될 때 Drop
-                            # SpringBoot 서버과 시작될 때마다 테이블들을 새로 만들기 때문에
-                            # 편의를 위해서 서버가 시작될 때마다 Data를 자동으로 DB에 넣어주는 기능 활용하면 좋음!
-                            
-    defer-datasource-initialization: true # boot 버전이 2.5.0 이상이면 하이버네이트 초기화 과정보다 data.sql이 먼저 실행되어
-                                          # 오류 발생 가능 -> 이 설정 넣어서 해결!         
+      naming:
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      ddl-auto: update
     properties:
       hibernate:
-        format_sql: true
-        show_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
 
 #jwt:
 #  header: Authorization
