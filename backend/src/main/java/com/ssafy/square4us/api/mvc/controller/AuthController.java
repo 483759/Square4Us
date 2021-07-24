@@ -36,7 +36,7 @@ public class AuthController {
 		String email = loginInfo.getEmail();
 		String password = loginInfo.getPassword();
 		String accessToken="";
-		
+
 		try {
 			Member member = memberService.getMemberByEmail(email);
 
