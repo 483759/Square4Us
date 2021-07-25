@@ -15,7 +15,7 @@ import com.ssafy.square4us.api.request.MemberLoginPostReq;
 import com.ssafy.square4us.api.response.BasicResponseBody;
 import com.ssafy.square4us.api.response.MemberLoginPostRes;
 import com.ssafy.square4us.common.auth.MemberDetails;
-import com.ssafy.square4us.common.util.JwtTokenUtil;
+import com.ssafy.square4us.common.util.JwtTokenProvider;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -50,7 +50,7 @@ public class AuthController {
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BasicResponseBody.of(401, "일치하지 않는 비밀번호"));
 			}
 			return ResponseEntity
-					.ok(MemberLoginPostRes.of(200, "로그인 성공", JwtTokenUtil.generateToken(new MemberDetails(member))));
+					.ok(MemberLoginPostRes.of(200, "로그인 성공", JwtTokenProvider.generateToken(new MemberDetails(member))));
 
 		} catch (Exception e) {
 			e.printStackTrace();

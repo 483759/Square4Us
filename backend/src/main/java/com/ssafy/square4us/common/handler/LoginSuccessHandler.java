@@ -11,12 +11,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import com.ssafy.square4us.common.util.JwtTokenUtil;
+import com.ssafy.square4us.common.util.JwtTokenProvider;
 
 @Component
 public class LoginSuccessHandler implements AuthenticationSuccessHandler{
 
-	@Autowired JwtTokenUtil jwtTokenUtil;
+	@Autowired JwtTokenProvider jwtTokenUtil;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,

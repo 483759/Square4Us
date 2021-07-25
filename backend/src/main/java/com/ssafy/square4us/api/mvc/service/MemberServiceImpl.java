@@ -30,4 +30,18 @@ public class MemberServiceImpl implements MemberService{
 		Member member = new Member(joinInfo.getEmail(), joinInfo.getNickname(), passwordEncoder.encode(joinInfo.getPassword()));
 		return memberRepository.save(member);
 	}
+
+	//임시 구현 테스트
+	@Override
+	public Long updateMemberByEmail(MemberJoinPostReq updateInfo) {
+		Optional<Member> member = memberRepository.findByEmail(updateInfo.getEmail());
+		if(!member.isPresent())
+			return null;
+		
+		member.get().setNickname(updateInfo.getNickname());
+		member.get().setPassword(passwordEncoder.encode(updateInfo.getPassword()));
+		memberRepository.save(member.get());
+		
+		return member.get().getId();		
+	}
 }

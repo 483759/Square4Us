@@ -18,8 +18,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.ssafy.square4us.common.auth.MemberDetails;
 
 @Component
-public class JwtTokenUtil {
-	private static final Logger logger = LoggerFactory.getLogger(JwtTokenUtil.class);
+public class JwtTokenProvider {
+	private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
 	private static String secretKey;
 	private static int expiryTime;
@@ -29,13 +29,13 @@ public class JwtTokenUtil {
 	public static final String ISSUER = "483759@naver.com";
 
 	@Autowired
-	public JwtTokenUtil(@Value("${jwt.secret}") String secretKey, @Value("${jwt.expiryTime}") int expiryTime) {
+	public JwtTokenProvider(@Value("${jwt.secret}") String secretKey, @Value("${jwt.expiryTime}") int expiryTime) {
 		this.secretKey = secretKey;
 		this.expiryTime = expiryTime;
 	}
 
 	public static void setExpiryTime(int expiryTime) {
-		JwtTokenUtil.expiryTime = expiryTime;
+		JwtTokenProvider.expiryTime = expiryTime;
 	}
 	
 	public static JWTVerifier getVerifier() {
