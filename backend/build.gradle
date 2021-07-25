@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.5.2'
+	id 'org.springframework.boot' version '2.4.5'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
@@ -20,19 +20,23 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'mysql:mysql-connector-java'
+    annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa")
 	annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	
 	//spring security
-	//implementation 'org.springframework.boot:spring-boot-starter-security'
-	//testImplementation 'org.springframework.security:spring-security-test'    
+    implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.7.RELEASE'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation("org.springframework.plugin:spring-plugin-core:2.0.0.RELEASE")
+	testImplementation 'org.springframework.security:spring-security-test'    
     
 	runtimeOnly 'com.h2database:h2'
     
@@ -41,10 +45,15 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     
-    //jwt token
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
-	implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
-	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+    implementation('commons-io:commons-io:2.6')
+    implementation("org.apache.commons:commons-collections4:4.4")
+    implementation("org.apache.commons:commons-lang3:3.9")
+    
+    //jwt token    
+    implementation("com.auth0:java-jwt:3.10.3")
+    //implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+	//implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+	//implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 	
 	//swagger
 	implementation("io.springfox:springfox-swagger2:3.0.0")
@@ -52,6 +61,10 @@ dependencies {
     implementation("io.springfox:springfox-data-rest:3.0.0")
     implementation("io.springfox:springfox-bean-validators:3.0.0")
     implementation("io.springfox:springfox-boot-starter:3.0.0")
+    //implementation 'org.springdoc:springdoc-openapi-ui:1.5.2'
+    
+    
+    compileOnly("javax.annotation:javax.annotation-api:1.2")
     
     //guava
     implementation("com.google.guava:guava:29.0-jre")

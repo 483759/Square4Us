@@ -29,16 +29,27 @@ class LoginTest {
 	private MemberRepository memberRepo;
 
 	@Test
+	@Rollback
 	public void login() {
-		String email = "1234";
+		String email = "483759@naver.com";
 		String pwd = "1234";
+		
+		memberRepo.save(
+				Member.builder()
+				.email("483759@naver.com")
+				.password("1234")
+				.role("USER")
+				.nickname("윤이진")
+				.build()
+				
+				);
 
 		Member member = memberService.getMemberByEmail(email);
 		//Optional<Member> member = memberRepo.findByEmail(email);
 
 		if (member!=null) {
 			System.out.println(member);
-			assertEquals(member.getEmail(), "1234");
+			assertEquals(member.getEmail(), "483759@naver.com");
 		}else {
 			assertFalse(false);
 		}

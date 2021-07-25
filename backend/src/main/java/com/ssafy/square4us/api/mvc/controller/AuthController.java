@@ -3,6 +3,7 @@ package com.ssafy.square4us.api.mvc.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,8 @@ import com.ssafy.square4us.api.mvc.service.MemberService;
 import com.ssafy.square4us.api.request.MemberLoginPostReq;
 import com.ssafy.square4us.api.response.BasicResponseBody;
 import com.ssafy.square4us.api.response.MemberLoginPostRes;
+import com.ssafy.square4us.common.auth.MemberDetails;
+import com.ssafy.square4us.common.util.JwtTokenUtil;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -22,8 +25,8 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-	@Autowired
-	MemberService memberService;
+	@Autowired MemberService memberService;
+	@Autowired PasswordEncoder passwordEncoder;
 
 	@PostMapping("/login")
 	@ApiOperation(value = "로그인", notes = "이메일과 패스워드를 입력하여 로그인한다")
@@ -35,7 +38,6 @@ public class AuthController {
 			 @ApiParam(value = "로그인 정보", required = true) @RequestBody MemberLoginPostReq loginInfo) {
 		String email = loginInfo.getEmail();
 		String password = loginInfo.getPassword();
-		String accessToken="";
 
 		try {
 			Member member = memberService.getMemberByEmail(email);
@@ -43,10 +45,10 @@ public class AuthController {
 			if (member == null) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BasicResponseBody.of(404, "존재하지 않는 계정"));
 			}
-			if (member.getPassword().equals(password) == false) {
+			if (passwordEncoder.matches(password, member.getPassword()) == false) {
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BasicResponseBody.of(401, "일치하지 않는 비밀번호"));
 			}
-			return ResponseEntity.ok(MemberLoginPostRes.of(200, "로그인 성공", accessToken));
+			return ResponseEntity.ok(MemberLoginPostRes.of(200, "로그인 성공", JwtTokenUtil.generateToken(new MemberDetails(member))));
 
 		} catch (Exception e) {
 			e.printStackTrace();
