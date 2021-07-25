@@ -17,29 +17,26 @@ import com.ssafy.square4us.api.response.BasicResponseBody;
 import com.ssafy.square4us.api.response.MemberInfoGetRes;
 import com.ssafy.square4us.common.auth.MemberDetails;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import springfox.documentation.annotations.ApiIgnore;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
-@Api(value = "멤버 API", tags = "Member")
+//@Tag(description = "멤버 API", name = "Member")
 @RestController
-@RequestMapping(value = "/member")
+@RequestMapping(value = "/api/v1/member")
 public class MemberController {
 	@Autowired MemberService memberService;
 	
 	@PostMapping("/join")
-	@ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.") 
-    @ApiResponses({
-        @ApiResponse(code = 200, message = "성공"),
-        @ApiResponse(code = 401, message = "인증 실패"),
-        @ApiResponse(code = 404, message = "사용자 없음"),
-        @ApiResponse(code = 500, message = "서버 오류")
+	@Operation(summary = "회원 가입", description = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.", responses = {
+        @ApiResponse(responseCode = "200", description = "성공"),
+        @ApiResponse(responseCode = "401", description = "인증 실패"),
+        @ApiResponse(responseCode = "404", description = "사용자 없음"),
+        @ApiResponse(responseCode = "500", description = "서버 오류")
     })
 	public ResponseEntity<? extends BasicResponseBody> register(
-			@RequestBody @ApiParam(value="회원가입 정보", required = true) MemberJoinPostReq joinInfo) {
+			@RequestBody @Parameter(name="회원가입 정보", required = true) MemberJoinPostReq joinInfo) {
 		
 		Member confirmMember = memberService.getMemberByEmail(joinInfo.getEmail());
 		if(confirmMember!=null) {
@@ -53,14 +50,13 @@ public class MemberController {
 	}
 	
 	@GetMapping("/me")
-	@ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.") 
-    @ApiResponses({
-        @ApiResponse(code = 200, message = "성공"),
-        @ApiResponse(code = 401, message = "인증 실패"),
-        @ApiResponse(code = 404, message = "사용자 없음"),
-        @ApiResponse(code = 500, message = "서버 오류")
+	@Operation(summary = "회원 본인 정보 조회", description = "로그인한 회원 본인의 정보를 응답한다.", responses = {
+        @ApiResponse(responseCode = "200", description = "성공"),
+        @ApiResponse(responseCode = "401", description = "인증 실패"),
+        @ApiResponse(responseCode = "404", description = "사용자 없음"),
+        @ApiResponse(responseCode = "500", description = "서버 오류")
     })
-	public ResponseEntity<MemberInfoGetRes> getUserInfo(@ApiIgnore Authentication authentication) {
+	public ResponseEntity<MemberInfoGetRes> getUserInfo(@Parameter(hidden = true) Authentication authentication) {
 		/**
 		 * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
 		 * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.

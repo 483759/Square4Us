@@ -1,7 +1,6 @@
 package com.ssafy.square4us.api.request;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,10 +12,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@ApiModel("MemberLoginPostRequest")
+@Schema(description = "MemberLoginPostRequest")
 public class MemberLoginPostReq {
-	@ApiModelProperty(name="email", example="ssafy@naver.com")
+	@Schema(name="email", example="ssafy@naver.com")
 	String email;
-	@ApiModelProperty(name="password", example="password1234")
+	@Schema(name="password", example="password1234")
 	String password;
 }

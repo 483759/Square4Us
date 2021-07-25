@@ -1,7 +1,6 @@
 package com.ssafy.square4us.api.response;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,12 +10,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("BasicResponseBody")
+@Schema(description = "BasicResponseBody")
 public class BasicResponseBody {
-	@ApiModelProperty(name = "Response Code", example = "200")
+	@Schema(name = "Response Code", example = "200")
 	Integer statusCode = null;
 
-	@ApiModelProperty(name = "Response Message", example = "정상")
+	@Schema(name = "Response Message", example = "정상")
 	String message = null;
 	
 	public BasicResponseBody(Integer statusCode) {

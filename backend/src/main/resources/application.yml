@@ -42,11 +42,20 @@ jwt:
   token-validity-in-seconds: 86400
   expiryTime: 1296000000
 
-springfox:
-  documentation:
-    swagger:
-      v2:
-        use-model-v3: false
+springdoc:
+  version: 1.0
+  api-docs:
+    path: /api-docs
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
+  paths-to-match:
+  - /api/v1/**
 
 logging:
   level:
