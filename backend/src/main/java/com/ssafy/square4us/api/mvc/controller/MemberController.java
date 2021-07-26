@@ -30,9 +30,9 @@ public class MemberController {
 	
 	@PostMapping("/join")
 	@Operation(summary = "회원 가입", description = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.", responses = {
-        @ApiResponse(responseCode = "200", description = "성공"),
-        @ApiResponse(responseCode = "401", description = "인증 실패"),
-        @ApiResponse(responseCode = "404", description = "사용자 없음"),
+        @ApiResponse(responseCode = "201", description = "성공"),
+        @ApiResponse(responseCode = "409", description = "중복된 계정 오류"),
+        @ApiResponse(responseCode = "503", description = "회원가입 실패"),
         @ApiResponse(responseCode = "500", description = "서버 오류")
     })
 	public ResponseEntity<? extends BasicResponseBody> register(
@@ -40,13 +40,17 @@ public class MemberController {
 		
 		Member confirmMember = memberService.getMemberByEmail(joinInfo.getEmail());
 		if(confirmMember!=null) {
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(BasicResponseBody.of(406, "이미 존재하는 id입니다"));
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(BasicResponseBody.of(409, "이미 존재하는 계정입니다"));
 		}
 		
 		//임의로 리턴된 Member 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
-		Member Member = memberService.createMember(joinInfo);
+		Member member = memberService.createMember(joinInfo);
 		
-		return ResponseEntity.status(200).body(BasicResponseBody.of(200, "Success"));
+		if(member==null)
+		{
+			return ResponseEntity.status(503).body(BasicResponseBody.of(503, "회원가입에 실패했습니다."));
+		}
+		return ResponseEntity.status(201).body(BasicResponseBody.of(201, "회원가입 성공"));
 	}
 	
 	@GetMapping("/me")
