@@ -1,24 +1,28 @@
 <template>
-  <div>
-    <div style="height: 100px">
-      <h3>email</h3>
-      <input style="height: 40px " type="text" v-model="state.email"> 
+<button @click="modalPopup">
+  signup
+</button>
+
+<div v-if="modal == true">
+  <div class="modal__background">
+    <div class="modal__box">
+      <form action="">
+        <h2 class="modal_body">SignUp</h2>
+        <hr>
+        <p>email <input type="text" v-model="email">
+        </p>
+        <p>password <input type="text" v-model="password">
+        </p>
+        <p>
+          <label for="password_confirmation"></label>
+          password_confirmation <input type="text" name="password_confirmation" v-model="password_confirmation">
+        </p>
+        <button @click="modalPopup">close</button>
+        <button>signup</button>
+      </form>
     </div>
-  
-  <div style="height: 100px">
-    <h3>password</h3>
-    <input style="height: 40px " type="text" v-model="state.password">
   </div>
-
-  <div style="height: 100px">
-    <h3>password confirmation</h3>
-    <input style="height: 40px " type="text" v-model="state.password_confirmation">
-  </div>
-  
-   <!-- @click="signup" -->
-  </div>  
-  
-
+</div>
 
 
 
@@ -28,7 +32,7 @@
 
 <script>
 // import axios from 'axios'
-import {reactive} from 'vue'
+import {reactive, ref} from '@vue/reactivity'
 export default {
     name: 'SignUp',
     setup() {
@@ -43,9 +47,17 @@ export default {
       //     method: 'post',
       //   })
       // }
+      const modal = ref(false)
+      const modalPopup = () => {
+        console.log(modal)
+        console.log(modal.value)
+        modal.value = !modal.value
 
+      }
       return {
-        state
+        state,
+        modalPopup,
+        modal
       }
     }
 
@@ -54,5 +66,48 @@ export default {
 </script>
 
 <style>
-
+/* 모달창의 배경을 만든다 */
+.modal__background{
+  position: fixed;
+  top:0; left: 0; bottom: 0; right: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 9997;
+}
+ 
+/* 모달창 영역을 꾸민다 */
+.modal__box{
+  z-index: 9998;
+  position: absolute;
+  top: calc(50vh - 100px); left: calc(50vw - 200px);
+  background-color: white;
+  display: flex; justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  width: 400px;
+  height: 400px;
+}
+body {
+  margin : 0;
+}
+div {
+  box-sizing: border-box;
+}
+.black-bg {
+   z-index: 9998;
+  width: 100%; height:100%;
+  background: rgba(0,0,0,0.5);
+  position: fixed; padding: 20px;
+}
+.white-bg {
+   z-index: 9997;
+  width: 100%; background: white;
+  border-radius: 8px;
+  padding: 20px;
+}
+.modal_body {
+  position: absolute;
+  top: 10%;
+  left: 35%;
+} 
 </style>
+
