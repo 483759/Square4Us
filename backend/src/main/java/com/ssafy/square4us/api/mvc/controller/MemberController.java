@@ -66,9 +66,8 @@ public class MemberController {
 		 * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
 		 */
 		
-		System.out.println(authentication.toString());
 		MemberDetails userDetails = (MemberDetails)authentication.getDetails();
-		System.out.println(userDetails.toString());
+		
 		String userId = userDetails.getUsername();
 		Member user = memberService.getMemberByEmail(userId);
 		
