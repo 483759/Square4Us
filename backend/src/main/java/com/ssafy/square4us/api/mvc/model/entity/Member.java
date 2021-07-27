@@ -33,35 +33,35 @@ public class Member {
 	@Column(name = "member_id")
 	private Long id;
 
-	String email;
+	private String email;
 
 //	@Enumerated(EnumType.STRING)
 //	MemberRole role;		
 //	시간날 때 Enum으로 수정할 것
 	@ColumnDefault("USER")
-	String role;
+	private String role;
 
-	boolean is_quit = false;
+	private boolean is_quit = false;
 
-	String nickname;
+	private String nickname;
 
 	@Column(nullable = true)
-	String quit_at;
+	private String quit_at;
 	@Column(nullable = true)
-	String boj_id;
+	private String boj_id;
 	@Column(nullable = true)
-	String boj_rank;
+	private String boj_rank;
 	@Column(nullable = true)
-	String profile_name;
+	private String profile_name;
 	@Column(nullable = true)
-	String profile_path;
+	private String profile_path;
 	@Column(nullable = true)
 	@ColumnDefault("0")
-	int report;
+	private int report;
 
 	@JsonIgnore
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	String password;
+	private String password;
 
 	@Builder
 	public Member(String email, String role, String nickname, String password) {
