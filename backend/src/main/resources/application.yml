@@ -1,6 +1,6 @@
 server:
   address: localhost
-  port: 80
+  port: 8080
   servlet:
     context-path: /
     encoding:
@@ -34,18 +34,28 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
-#jwt:
-#  header: Authorization
+jwt:
+  header: Authorization
   #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
   #echo 'silvernine-tech-spring-boot-jwt-tutorial-secret-silvernine-tech-spring-boot-jwt-tutorial-secret'|base64
-#  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
-#  token-validity-in-seconds: 86400
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  token-validity-in-seconds: 86400
+  expiryTime: 1296000000
 
-springfox:
-  documentation:
-    swagger:
-      v2:
-        use-model-v3: false
+springdoc:
+  version: 1.0
+  api-docs:
+    path: /api-docs
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
+  paths-to-match:
+  - /api/v1/**
 
 logging:
   level:
