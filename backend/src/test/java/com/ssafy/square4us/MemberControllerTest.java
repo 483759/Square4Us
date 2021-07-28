@@ -59,7 +59,7 @@ class MemberControllerTest {
 		 */
 		try {
 			ResultActions result = 
-					mockMvc.perform(MockMvcRequestBuilders.post("/member/login")
+					mockMvc.perform(MockMvcRequestBuilders.post("/api/member/login")
 					.accept(MediaType.APPLICATION_JSON)
 					.content(objectMapper.writeValueAsString(loginInfo))
 					.contentType(MediaType.APPLICATION_JSON));
@@ -82,7 +82,7 @@ class MemberControllerTest {
 
 		try {
 			ResultActions result = 
-					mockMvc.perform(MockMvcRequestBuilders.post("/member/login")
+					mockMvc.perform(MockMvcRequestBuilders.post("/api/member/login")
 					.accept(MediaType.APPLICATION_JSON)
 					.content(objectMapper.writeValueAsString(loginInfo))
 					.contentType(MediaType.APPLICATION_JSON));
@@ -104,7 +104,7 @@ class MemberControllerTest {
 
 		try {
 			ResultActions result = 
-					mockMvc.perform(MockMvcRequestBuilders.post("/member/login")
+					mockMvc.perform(MockMvcRequestBuilders.post("/api/member/login")
 					.accept(MediaType.APPLICATION_JSON)
 					.content(objectMapper.writeValueAsString(loginInfo))
 					.contentType(MediaType.APPLICATION_JSON));
@@ -127,7 +127,7 @@ class MemberControllerTest {
 		
 		try {
 			ResultActions result = 
-					mockMvc.perform(MockMvcRequestBuilders.post("/member/join")
+					mockMvc.perform(MockMvcRequestBuilders.post("/api/member/join")
 							.accept(MediaType.APPLICATION_JSON)
 							.content(objectMapper.writeValueAsString(joinInfo))
 							.contentType(MediaType.APPLICATION_JSON)
@@ -151,7 +151,7 @@ class MemberControllerTest {
 		
 		try {
 			ResultActions result = 
-					mockMvc.perform(MockMvcRequestBuilders.post("/member/join")
+					mockMvc.perform(MockMvcRequestBuilders.post("/api/member/join")
 							.accept(MediaType.APPLICATION_JSON)
 							.content(objectMapper.writeValueAsString(joinInfo))
 							.contentType(MediaType.APPLICATION_JSON)
