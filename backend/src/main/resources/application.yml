@@ -60,3 +60,5 @@ springdoc:
 logging:
   level:
     me.silvernine: DEBUG
+  pattern:
+    level: DEBUG
