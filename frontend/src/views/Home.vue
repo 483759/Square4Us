@@ -1,10 +1,11 @@
 <template>
-<h1>Home</h1>
+<Header/>
 <SignUp/>
 <Login/>
 </template>
 
 <script>
+import Header from '@/components/Header'
 import SignUp from '@/components/home/SignUp'
 import Login from '@/components/home/Login'
 // import { reactive } from '@vue/reactivity'
@@ -12,7 +13,8 @@ export default {
   name: 'Home',
   components: {
     SignUp,
-    Login
+    Login,
+    Header
   }
 }
 

@@ -1,14 +1,16 @@
 <template>
   <div id="nav">
-    <router-link :to="{ name: 'Home' }">Home</router-link>
-    <!-- <router-link :to="{ name: 'Tutorial' }">Tutorial</router-link> |
+    <!-- <router-link :to="{ name: 'Home' }">Home</router-link> |
+    <router-link :to="{ name: 'Tutorial' }">Tutorial</router-link> |
     <router-link :to="{ name: 'UserInfo' }">UserInfo</router-link> |
     <router-link :to="{ name: 'ConferenceBase' }">ConferenceBase</router-link> |
     <router-link :to="{ name: 'ConferenceRoom' }">ConferenceRoom</router-link> |
     <router-link :to="{ name: 'ConferenceReport' }">ConferenceReport</router-link> | -->
   </div>
+  
   <router-view/>
 </template>
+
 
 <style>
 #app {
