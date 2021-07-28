@@ -13,7 +13,8 @@
       <Login/>
       <SignUp/>
     </section>
-    </nav>
+  </nav>
+  <router-view></router-view>
 </template>
 
 <script>
@@ -36,7 +37,6 @@ export default {
   justify-content: space-between;
   padding: 25px;
   height: 100px;
-  border: 1px solid black;
   vertical-align: middle;
   user-select:none;
 }
