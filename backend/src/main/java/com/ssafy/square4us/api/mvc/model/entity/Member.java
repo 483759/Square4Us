@@ -35,16 +35,8 @@ public class Member {
 
 	private String email;
 
-<<<<<<< HEAD
 	@Enumerated(EnumType.STRING)
-	MemberRole role = MemberRole.USER;		
-=======
-//	@Enumerated(EnumType.STRING)
-//	MemberRole role;		
-//	시간날 때 Enum으로 수정할 것
-	@ColumnDefault("USER")
-	private String role;
->>>>>>> f41eb65415196b820e192b7b54f78c4def8c96f0
+	MemberRole role = MemberRole.USER;	
 
 	private boolean is_quit = false;
 
@@ -53,15 +45,7 @@ public class Member {
 	@Column(nullable = true)
 	private String quit_at;
 	@Column(nullable = true)
-<<<<<<< HEAD
-	String profile_name;
-=======
-	private String boj_id;
-	@Column(nullable = true)
-	private String boj_rank;
-	@Column(nullable = true)
 	private String profile_name;
->>>>>>> f41eb65415196b820e192b7b54f78c4def8c96f0
 	@Column(nullable = true)
 	private String profile_path;
 	@Column(nullable = true)
