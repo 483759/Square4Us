@@ -13,13 +13,13 @@
         <label for="password">Password :</label>
         <input type="password"  id="password" name="password" v-model="credentials.password">
         </p>
-        <button>로그인</button>
+        <button >로그인</button>
       </form>
       </div>
     </article>
   </section>
 
-  <button @click="changeModal">로그인</button>
+  <button class='btn-to-a' @click="changeModal">로그인</button>
 </template>
 
 <script>
@@ -120,5 +120,8 @@ export default {
 
   #login-form {
     margin: 30% auto;
+  }
+  input {
+    border: 1px solid black;
   }
 </style>

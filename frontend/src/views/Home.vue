@@ -1,18 +1,14 @@
 <template>
-<h1>Home</h1>
-<SignUp/>
-<Login/>
+<Header/>
 </template>
 
 <script>
-import SignUp from '@/components/home/SignUp'
-import Login from '@/components/home/Login'
+import Header from '@/components/Header'
 // import { reactive } from '@vue/reactivity'
 export default {
   name: 'Home',
   components: {
-    SignUp,
-    Login
+    Header
   }
 }
 
