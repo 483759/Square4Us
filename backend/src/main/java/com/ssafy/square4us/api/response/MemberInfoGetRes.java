@@ -40,7 +40,7 @@ public class MemberInfoGetRes {
 	public static MemberInfoGetRes of(Member member) {
 		MemberInfoGetRes res = new MemberInfoGetRes();
 		res.setEmail(member.getEmail());
-		res.setRole(member.getRole());
+		res.setRole(member.getRole().toString());
 		res.set_quit(member.is_quit());
 		res.setNickname(member.getNickname());
 		res.setQuit_at(member.getQuit_at());

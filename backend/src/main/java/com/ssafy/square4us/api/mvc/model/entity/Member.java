@@ -35,11 +35,8 @@ public class Member {
 
 	String email;
 
-//	@Enumerated(EnumType.STRING)
-//	MemberRole role;		
-//	시간날 때 Enum으로 수정할 것
-	@ColumnDefault("USER")
-	String role;
+	@Enumerated(EnumType.STRING)
+	MemberRole role = MemberRole.USER;		
 
 	boolean is_quit = false;
 
@@ -64,20 +61,24 @@ public class Member {
 	String password;
 
 	@Builder
-	public Member(String email, String role, String nickname, String password) {
+	public Member(String email, MemberRole role, String nickname, String password) {
 		super();
 		this.email = email;
 		this.role = role;
 		this.nickname = nickname;
 		this.password = password;
 	}
-
+	
+	
 	@Builder
 	public Member(String email, String nickname, String password) {
 		super();
 		this.email = email;
-		this.role = "USER";
+		//this.role = MemberRole.USER;
 		this.nickname = nickname;
 		this.password = password;
 	}
+
+
+
 }
