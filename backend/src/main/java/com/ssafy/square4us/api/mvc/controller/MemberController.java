@@ -28,7 +28,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 //@Tag(description = "멤버 API", name = "Member")
 @RestController
-@RequestMapping(value = "/member")
+@RequestMapping(value = "/api/member")
 public class MemberController {
 	@Autowired
 	MemberService memberService;
