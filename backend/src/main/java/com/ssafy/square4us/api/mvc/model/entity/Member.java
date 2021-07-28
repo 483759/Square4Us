@@ -45,10 +45,6 @@ public class Member {
 	@Column(nullable = true)
 	String quit_at;
 	@Column(nullable = true)
-	String boj_id;
-	@Column(nullable = true)
-	String boj_rank;
-	@Column(nullable = true)
 	String profile_name;
 	@Column(nullable = true)
 	String profile_path;

@@ -3,6 +3,8 @@ package com.ssafy.square4us;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
+import javax.transaction.Transactional;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +41,7 @@ import com.ssafy.square4us.common.util.ResponseBodyWriteUtil;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@Rollback(false)
+@Transactional
 class MemberControllerTest {
 
 	@Autowired MockMvc mockMvc;
