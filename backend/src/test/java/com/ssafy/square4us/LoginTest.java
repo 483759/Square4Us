@@ -43,7 +43,7 @@ class LoginTest {
 				Member.builder()
 				.email("483759@naver.com")
 				.password("1234")
-				.role("USER")
+				//.role()
 				.nickname("윤이진")
 				.build()
 				

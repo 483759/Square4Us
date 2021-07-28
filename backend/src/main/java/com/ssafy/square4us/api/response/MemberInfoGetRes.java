@@ -26,10 +26,6 @@ public class MemberInfoGetRes {
 	String nickname;
 	@Schema(name = "회원이 탈퇴한 날짜")
 	String quit_at;
-	@Schema(name = "회원의 백준 온라인 저지 ID")
-	String boj_id;
-	@Schema(name = "회원의 백준 온라인 저지 등급")
-	String boj_rank;
 	@Schema(name = "회원의 프로필 사진명")
 	String profile_name;
 	@Schema(name = "회원의 프로필 사진 경로")
@@ -40,12 +36,10 @@ public class MemberInfoGetRes {
 	public static MemberInfoGetRes of(Member member) {
 		MemberInfoGetRes res = new MemberInfoGetRes();
 		res.setEmail(member.getEmail());
-		res.setRole(member.getRole());
+		res.setRole(member.getRole().toString());
 		res.set_quit(member.is_quit());
 		res.setNickname(member.getNickname());
 		res.setQuit_at(member.getQuit_at());
-		res.setBoj_id(member.getBoj_id());
-		res.setBoj_rank(member.getBoj_rank());
 		res.setProfile_name(member.getProfile_name());
 		res.setProfile_path(member.getProfile_path());
 		res.setReport(member.getReport());
