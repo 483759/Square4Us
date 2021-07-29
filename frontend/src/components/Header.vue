@@ -32,7 +32,8 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
 #nav {
-  background-color: white;
+  background-color: var(--headerBackground);
+  color: var(--textColor);
   display: flex;
   justify-content: space-between;
   padding: 25px;
@@ -45,7 +46,7 @@ export default {
   display: block;
   text-decoration: none;
   font-weight: bold;
-  color: #2c3e50;
+  color: var(--textColor);
   padding: 7px;
 }
 
@@ -58,6 +59,7 @@ export default {
 .btn-to-a {
   border: 0;
   background-color: rgb(255, 255, 255, 0);
+  color: var(--textColor);
   font-weight: bold;
 }
 
@@ -75,7 +77,6 @@ export default {
 #logo-icon{
   width: 50px;
   height: 50px;
-  background-color: grey;
   cursor: pointer;
 }
 
@@ -83,7 +84,7 @@ export default {
   font-family: 'Inter', sans-serif;
   font-size: 20px;
   text-decoration: none;
-  transition: 0.3s;
+  /* transition: 0.3s; */
 }
 #logo-text:hover, .btn-to-a:hover, #nav a:hover {
   color: #42b983;

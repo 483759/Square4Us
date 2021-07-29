@@ -23,7 +23,7 @@ export default {
 <style>
   #conf-header{
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     /* background-color: white; */
     margin: 30px auto;
     width: 100%;

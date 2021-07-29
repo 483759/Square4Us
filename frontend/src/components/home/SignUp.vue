@@ -3,7 +3,7 @@
   signup
 </button>
 
-<div v-if="modal == true">
+<div v-show="modal == true">
   <div class="modal__background">
     <div class="modal__box">
       <form action="">
@@ -79,7 +79,8 @@ export default {
   z-index: 9998;
   position: absolute;
   top: calc(50vh - 100px); left: calc(50vw - 200px);
-  background-color: white;
+  background-color: var(--background);
+  color: var(--textColor);
   display: flex; justify-content: center;
   align-items: center;
   border-radius: 10px;
