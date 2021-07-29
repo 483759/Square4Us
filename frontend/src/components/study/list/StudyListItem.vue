@@ -1,12 +1,12 @@
 <template>
   <li class='study-item'>
-    confListItem
+    StudyListItem
   </li>
 </template>
 
 <script>
 export default {
-
+  name: 'StudyListItem'
 }
 </script>
 

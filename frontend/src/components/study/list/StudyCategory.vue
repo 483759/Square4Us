@@ -1,12 +1,12 @@
 <template>
   <article id='study-category'>
-    ConferenceCategory
+    StudyCategory
   </article>
 </template>
 
 <script>
 export default {
-  name: 'ConferenceCategory'
+  name: 'StudyCategory'
 }
 </script>
 

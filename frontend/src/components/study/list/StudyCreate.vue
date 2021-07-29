@@ -1,13 +1,13 @@
 <template>
   <article id='study-create'>
-    ConferenceCreate
+    StudyCreate
     <button>스터디 생성</button>
   </article>
 </template>
 
 <script>
 export default {
-  name: 'ConferenceCreate'
+  name: 'StudyCreate'
 }
 </script>
 

@@ -1,10 +1,10 @@
 <template>
-  <h1>ConferenceReport</h1>
+  <h1>StudyReport</h1>
 </template>
 
 <script>
 export default {
-  name : "ConferenceReport"
+  name : "StudyReport"
 }
 </script>
 

@@ -5,11 +5,12 @@
       <router-link id="logo-text" class='text-hover' :to="{ name: 'Home' }">Sqeare 4 Us</router-link>
     </section>
     <section id='nav-list'>
-      <router-link :to="{ name: 'Tutorial' }">Tuto</router-link> 
+      <router-link :to="{ name: 'StudyList' }">Study</router-link> 
       <router-link :to="{ name: 'UserInfo' }">User</router-link> 
-      <router-link :to="{ name: 'ConferenceBase' }">ConfBase</router-link> 
-      <router-link :to="{ name: 'ConferenceRoom' }">ConfRoom</router-link> 
-      <router-link :to="{ name: 'ConferenceReport' }">ConfReport</router-link>
+      <!-- <router-link :to="{ name: 'StudyMain' }">StudyMain</router-link> 
+      <router-link :to="{ name: 'Tutorial' }">Tutorial</router-link> 
+      <router-link :to="{ name: 'Meeting' }">Meeting</router-link> 
+      <router-link :to="{ name: 'StudyReport' }">StudyReport</router-link> -->
       <Login/>
       <SignUp/>
     </section>
