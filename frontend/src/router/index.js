@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Tutorial from '@/views/Tutorial.vue'
-import UserInfo from '@/views/UserInfo.vue'
+import User from '@/views/User.vue'
 import Study from '@/views/Study.vue'
 import StudyList from '@/views/StudyList.vue'
 import StudyMain from '@/views/StudyMain.vue'
@@ -15,6 +15,7 @@ const routes = [
     component: Home,
     children: [
       { path: '/tutorial', name: 'Tutorial', component: Tutorial },
+      { path: '/user', name: 'User', component: User },
       { path: '/userinfo', name: 'UserInfo', component: UserInfo },
       { path: '/study', name: 'Study', component: Study },
       { path: '/study/list', name: 'StudyList', component: StudyList },
