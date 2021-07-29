@@ -1,10 +1,10 @@
 <template>
-  <section id='conf-body'>
+  <article id='conf-body'>
     ConferenceBody
     <ul>
       <ConferenceListItem v-for='item in state.studyList' :key='item'/>
     </ul>
-  </section>
+  </article>
 
 </template>
 
@@ -31,8 +31,8 @@ export default {
 
   #conf-body {
     width: 100%;
-    height: 100%;
-    background-color: white;
+    height: auto;
+    background-color: var(--headerBackground);
     padding: 0 20px;
     
   }
@@ -46,7 +46,7 @@ export default {
   }
 
   ul > li {
-    border: 1px solid black;
+    border: 1px solid var(--textColor);
     flex: 1 1 25%;
     min-height: 200px;
   }
@@ -57,7 +57,7 @@ export default {
   }
   @media (min-width:721px) and (max-width:1024px) {
     ul > li {
-      border: 1px solid black;
+      border: 1px solid var(--textColor);
       flex: 1 1 50%;
       min-height: 300px;
     }
@@ -68,9 +68,9 @@ export default {
       border-radius: 0;
     }
     ul > li {
-      border: 1px solid black;
+      border: 1px solid var(--textColor);
       flex: 1 1 100%;
-      min-height: 250px;
+      min-height: 350px;
     }
   }
 </style>
