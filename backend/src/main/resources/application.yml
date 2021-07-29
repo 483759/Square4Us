@@ -29,7 +29,7 @@ spring:
       naming:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-      ddl-auto: update
+      ddl-auto: 
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect

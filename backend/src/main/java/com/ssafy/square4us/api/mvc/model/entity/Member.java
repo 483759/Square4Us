@@ -33,28 +33,28 @@ public class Member {
 	@Column(name = "member_id")
 	private Long id;
 
-	String email;
+	private String email;
 
 	@Enumerated(EnumType.STRING)
-	MemberRole role = MemberRole.USER;		
+	MemberRole role = MemberRole.USER;	
 
-	boolean is_quit = false;
+	private boolean is_quit = false;
 
-	String nickname;
+	private String nickname;
 
 	@Column(nullable = true)
-	String quit_at;
+	private String quit_at;
 	@Column(nullable = true)
-	String profile_name;
+	private String profile_name;
 	@Column(nullable = true)
-	String profile_path;
+	private String profile_path;
 	@Column(nullable = true)
 	@ColumnDefault("0")
-	int report;
+	private int report;
 
 	@JsonIgnore
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	String password;
+	private String password;
 
 	@Builder
 	public Member(String email, MemberRole role, String nickname, String password) {
