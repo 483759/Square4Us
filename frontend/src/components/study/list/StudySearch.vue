@@ -1,13 +1,13 @@
 <template>
   <article id='study-search'>
-    ConferenceSearchBar
+    StudySearch
     <input type="text">
   </article>
 </template>
 
 <script>
 export default {
-  name: 'ConferenceSearchBar'
+  name: 'StudySearch'
 }
 </script>
 

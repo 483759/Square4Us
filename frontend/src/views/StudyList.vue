@@ -1,18 +1,18 @@
 <template>
 <section id='conf-list'>
-  <ConferenceListHeader/>
-  <ConferenceListBody/>
+  <StudyListHeader/>
+  <StudyListBody/>
 </section>
 </template>
 
 <script>
-import ConferenceListHeader from '@/components/conference/ConferenceListHeader.vue'
-import ConferenceListBody from '@/components/conference/ConferenceListBody.vue'
+import StudyListHeader from '@/components/study/list/StudyListHeader.vue'
+import StudyListBody from '@/components/study/list/StudyListBody.vue'
 export default {
-  name: 'ConferenceList',
+  name: 'StudyList',
   components: {
-    ConferenceListHeader,
-    ConferenceListBody
+    StudyListHeader,
+    StudyListBody
   }
 }
 </script>

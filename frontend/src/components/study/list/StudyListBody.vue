@@ -1,20 +1,20 @@
 <template>
   <article id='conf-body'>
-    ConferenceBody
+    StudyBody
     <ul>
-      <ConferenceListItem v-for='item in state.studyList' :key='item'/>
+      <StudyListItem v-for='item in state.studyList' :key='item'/>
     </ul>
   </article>
 
 </template>
 
 <script>
-import ConferenceListItem from '@/components/conference/ConferenceListItem.vue'
+import StudyListItem from '@/components/study/list/StudyListItem.vue'
 import { reactive } from '@vue/reactivity'
 export default {
-  name: 'ConferenceListBody',
+  name: 'StudyListBody',
   components: {
-    ConferenceListItem
+    StudyListItem
   },
   setup() {
     const state = reactive({

@@ -2,9 +2,11 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Tutorial from '@/views/Tutorial.vue'
 import UserInfo from '@/views/UserInfo.vue'
-import ConferenceBase from '@/views/ConferenceBase.vue'
-import ConferenceRoom from '@/views/ConferenceRoom.vue'
-import ConferenceReport from '@/views/ConferenceReport.vue'
+import Study from '@/views/Study.vue'
+import StudyList from '@/views/StudyList.vue'
+import StudyMain from '@/views/StudyMain.vue'
+import Meeting from '@/views/Meeting.vue'
+import StudyReport from '@/views/StudyReport.vue'
 
 const routes = [
   {
@@ -12,23 +14,15 @@ const routes = [
     name: 'Home',
     component: Home,
     children: [
-      { path: 'tutorial', name: 'Tutorial', component: Tutorial },
-      { path: 'userinfo', name: 'UserInfo', component: UserInfo },
-      { path: 'conference-base', name: 'ConferenceBase', component: ConferenceBase },
-      {
-        path: 'conference-report',
-        name: 'ConferenceReport',
-        component: ConferenceReport
-      },
+      { path: '/tutorial', name: 'Tutorial', component: Tutorial },
+      { path: '/userinfo', name: 'UserInfo', component: UserInfo },
+      { path: '/study', name: 'Study', component: Study },
+      { path: '/study/list', name: 'StudyList', component: StudyList },
+      { path: '/study/main', name: 'StudyMain', component: StudyMain },
+      { path: '/study/report', name: 'StudyReport', component: StudyReport },
     ]
   },
-  {
-    path: '/conference-room',
-    name: 'ConferenceRoom',
-    component: ConferenceRoom
-  },
-
-
+  { path: '/study/main/room', name: 'Meeting', component: Meeting },
 ]
 
 const router = createRouter({
