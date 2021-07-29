@@ -1,8 +1,8 @@
 <template>
   <!-- section은 백그라운드가 될 것 -->
-  <section :class="['background', isLogin && 'show']" @click.stop="changeModal"> 
+  <article :class="['background', isLogin && 'show']" @click.stop="changeModal"> 
     <!-- article은 window 창이 될 것 : 내부에 팝업이 뜨므로? 나중에 확인 -->
-    <article class='window'>
+    <!-- <article class='window'> -->
       <div class='popup' @click.stop="">
         <form id='login-form' method="POST" @submit.prevent="login">
         <p>
@@ -13,11 +13,11 @@
         <label for="password">Password :</label>
         <input type="password"  id="password" name="password" v-model="credentials.password">
         </p>
-        <button >로그인</button>
+        <button>로그인</button>
       </form>
       </div>
-    </article>
-  </section>
+    <!-- </article> -->
+  </article>
 
   <button class='btn-to-a' @click="changeModal">로그인</button>
 </template>
@@ -86,7 +86,7 @@ export default {
     position: absolute;
     top: 50%;
     left: 50%;
-    background-color: #ffffff;
+    background-color: var(--background);
     /* 박스 그림자 */
     box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
     

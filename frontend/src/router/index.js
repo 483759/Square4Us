@@ -12,11 +12,11 @@ const routes = [
     name: 'Home',
     component: Home,
     children: [
-      { path: '/tutorial', name: 'Tutorial', component: Tutorial },
-      { path: '/userinfo', name: 'UserInfo', component: UserInfo },
-      { path: '/conference-base', name: 'ConferenceBase', component: ConferenceBase },
+      { path: 'tutorial', name: 'Tutorial', component: Tutorial },
+      { path: 'userinfo', name: 'UserInfo', component: UserInfo },
+      { path: 'conference-base', name: 'ConferenceBase', component: ConferenceBase },
       {
-        path: '/conference-report',
+        path: 'conference-report',
         name: 'ConferenceReport',
         component: ConferenceReport
       },
