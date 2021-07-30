@@ -1,7 +1,7 @@
 <template>
   <nav id='nav'>
-    <section id='logo'>
-      <img id='logo-icon' src="logo.png" alt="로고">
+    <section id='logo' >
+      <img id='logo-icon' src="/logo.png" alt="로고" @click="$router.push({name: 'Home'})">
       <router-link id="logo-text" class='text-hover' :to="{ name: 'Home' }">Sqeare 4 Us</router-link>
     </section>
     <section id='nav-list'>
@@ -31,7 +31,6 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
 #nav {
   background-color: var(--headerBackground);
   color: var(--textColor);
@@ -39,6 +38,7 @@ export default {
   justify-content: space-between;
   padding: 25px;
   height: 100px;
+  box-sizing: border-box;
   vertical-align: middle;
   user-select:none;
 }
@@ -59,9 +59,11 @@ export default {
 
 .btn-to-a {
   border: 0;
+  font-size: 1rem;
+  cursor: pointer;
   background-color: rgb(255, 255, 255, 0);
   color: var(--textColor);
-  font-weight: bold;
+  font-weight: bolder;
 }
 
 #logo, #nav-list {
@@ -82,9 +84,7 @@ export default {
 }
 
 #logo-text{
-  font-family: 'Inter', sans-serif;
   font-size: 20px;
-  text-decoration: none;
   /* transition: 0.3s; */
 }
 #logo-text:hover, .btn-to-a:hover, #nav a:hover {

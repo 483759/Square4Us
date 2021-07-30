@@ -1,63 +1,34 @@
 <template>
-  <!-- section은 백그라운드가 될 것 -->
-  <article :class="['background', isLogin && 'show']" @click.stop="changeModal"> 
-    <!-- article은 window 창이 될 것 : 내부에 팝업이 뜨므로? 나중에 확인 -->
-    <!-- <article class='window'> -->
-      <div class='popup' @click.stop="">
-        <form id='login-form' method="POST" @submit.prevent="login">
-        <p>
-        <label for="email">Email :</label>
-        <input type="email" id="email" name="email" v-model="credentials.email">
-        </p>
-        <p>
-        <label for="password">Password :</label>
-        <input type="password"  id="password" name="password" v-model="credentials.password">
-        </p>
-        <button>Login</button>
-      </form>
-      </div>
-    <!-- </article> -->
+    <!-- section은 백그라운드가 될 것 -->
+  <article :class="['background']" @click.stop="changeModal"> 
+    <div class='popup' @click.stop="">
+      <slot></slot> 
+      <!-- 부모의 태그 내부에 작성된 내용이 여기 나옴 -->
+    </div>
   </article>
 
-  <button class='btn-to-a' @click="changeModal">Login</button>
+  <button class='btn-to-a' @click="changeModal">프롭스가 들어갈 것</button>
 </template>
-
 <script>
-import axios from 'axios'
 import { reactive, ref } from '@vue/reactivity'
 export default {
-  name : "Login",
-  setup(){
-    // state : credentials
-    const credentials = reactive({
+  name: 'GeneralModal',
+  setup() {
+    // content : 내부에 들어갈 값 모음
+    const content = reactive({
       email : "",
       password : "",
     })
-    // state : openModel
-    const isLogin = ref(false)
-
-    // 로그인 함수
-    const login = ()=>{
-      console.log("로그인!");
-      console.log(credentials);
-      axios({
-      method : "POST",
-      url : "#",
-      data : {
-        credentials
-      }
-      })
-    }
-    // 팝업 함수
+    // 모달 보여줄지 여부
+    const isShow = ref(false)
     const changeModal = ()=>{
-      isLogin.value = !isLogin.value
+      isShow.value = !isShow.value
     }
-    // setup의 리턴
+
     return {
-      credentials,
+      content,
+      isShow,
       changeModal,
-      isLogin,
-      login,
     }
   }
 }

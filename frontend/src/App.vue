@@ -28,8 +28,9 @@
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
 html, body, #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -74,5 +75,10 @@ html, body, #app {
   font-size: 0.8rem;
   user-select: none;
   border: 1px solid var(--headerBackground);
+}
+
+ul {
+  padding: 0;
+  list-style: none;
 }
 </style>
