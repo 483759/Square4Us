@@ -1,6 +1,6 @@
 <template>
 <button class='btn-to-a' @click="modalPopup">
-  signup
+  Signup
 </button>
 
 <div v-show="modal == true">
@@ -18,7 +18,7 @@
           password_confirmation <input type="text" name="password_confirmation" v-model="password_confirmation">
         </p>
         <button @click="modalPopup">close</button>
-        <button >signup</button>
+        <button >Signup</button>
       </form>
     </div>
   </div>
