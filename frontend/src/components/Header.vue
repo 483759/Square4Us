@@ -2,11 +2,11 @@
   <nav id='nav'>
     <section id='logo' >
       <img id='logo-icon' src="/logo.png" alt="로고" @click="$router.push({name: 'Home'})">
-      <router-link id="logo-text" class='text-hover' :to="{ name: 'Home' }">Sqeare 4 Us</router-link>
+      <router-link id="logo-text" class='text-hover' :to="{ name: 'Home' }">Square 4 Us</router-link>
     </section>
     <section id='nav-list'>
       <router-link :to="{ name: 'StudyList' }">Study</router-link> 
-      <router-link :to="{ name: 'UserInfo' }">User</router-link> 
+      <router-link :to="{ name: 'User' }">User</router-link> 
       <!-- <router-link :to="{ name: 'StudyMain' }">StudyMain</router-link> 
       <router-link :to="{ name: 'Tutorial' }">Tutorial</router-link> 
       <router-link :to="{ name: 'Meeting' }">Meeting</router-link> 

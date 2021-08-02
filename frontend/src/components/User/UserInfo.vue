@@ -1,7 +1,7 @@
 <template >
 <h1>내 정보</h1>
 <hr>
-<section class="myInfoBox" >
+<section class="usersection myInfoBox" >
     <div>
         <!-- 왼쪽블럭 -->
         <p>userInfo</p>
@@ -94,7 +94,7 @@ export default {
 template {
     background-color: #f2f2f2;
 }
-section{
+.usersection{
     display: flex;
 }
 .myInfoBox {
