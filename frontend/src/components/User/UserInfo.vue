@@ -32,9 +32,10 @@
     <div style="margin-bottom : 40px" >
       <button class="menuButton" v-show="!data.imgChange" @click="imgchangebutton">프로필 사진 수정</button>
       <div v-if="data.imgChange" >
-          <input type="text" v-model="imgUrl" style="height:40px">
+          <input type="text" placeholder="{{credentials.profile_path}}" v-model="credentials.profile_path" style="height:40px">
           <div class="buttonsection" >
             <button class="cancelButton" @click="imgchangebutton">취소</button>
+            <!-- 사진저장 버튼을 누를 때 따로 보내야할지 모르겠음 -->
             <button class="cancelButton" @click="putimage">사진 저장</button>
           </div>
         </div>
@@ -54,7 +55,7 @@ export default {
             nickname: 'your nickname',
             introduction: 'introduction',
             email: 'your email',
-            
+            profile_path: 'profile path'
 
         })
         const data = reactive({
