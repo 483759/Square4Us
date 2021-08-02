@@ -1,9 +1,9 @@
 <template>
   
-<header>
+<header class="userheader">
   <h1>UserInfo</h1>
 </header>
-<body>
+<section class="userbody">
   <div name="menu" class="menubar  display=flex ml-0">
     <div>
     <button @click="infopage1" :class="{ 'clickedbutton': data.click1, 'menubutton': !data.click1 }"  >UserInfo</button>
@@ -44,7 +44,7 @@
     
   </div>
   
-</body>
+</section>
 
 </template>
 
@@ -133,12 +133,12 @@ export default {
 </script>
 
 <style>
-header{
+.userheader{
   /* margin-top: 100px; */
   margin-bottom: 100px;
   background-color: white;
 }
-body{
+.userbody{
   /* display: flex; */
   /* flex-direction: row; */
   height: 100%;

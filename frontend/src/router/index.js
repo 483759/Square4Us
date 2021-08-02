@@ -16,7 +16,7 @@ const routes = [
     children: [
       { path: '/tutorial', name: 'Tutorial', component: Tutorial },
       { path: '/user', name: 'User', component: User },
-      { path: '/userinfo', name: 'UserInfo', component: UserInfo },
+      // { path: '/userinfo', name: 'UserInfo', component: UserInfo },
       { path: '/study', name: 'Study', component: Study },
       { path: '/study/list', name: 'StudyList', component: StudyList },
       { path: '/study/main', name: 'StudyMain', component: StudyMain },
