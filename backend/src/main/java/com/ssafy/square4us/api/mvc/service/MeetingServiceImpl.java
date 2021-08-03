@@ -1,15 +1,13 @@
 package com.ssafy.square4us.api.mvc.service;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.ssafy.square4us.api.mvc.model.entity.Meeting;
 import com.ssafy.square4us.api.mvc.model.repository.MeetingRepository;
 import com.ssafy.square4us.api.request.MeetingCreatePostReq;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class MeetingServiceImpl implements MeetingService {
 
     private final MeetingRepository meetingRepo;
-    
+
     @Override
     @Transactional
     public Meeting createMeeting(MeetingCreatePostReq meetingInfo) {

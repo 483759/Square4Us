@@ -12,17 +12,17 @@ import lombok.Setter;
 @AllArgsConstructor
 @Schema(description = "BasicResponseBody")
 public class BasicResponseBody {
-	@Schema(name = "Response Code", example = "200")
-	Integer statusCode = null;
+    @Schema(name = "Response Code", example = "200")
+    Integer statusCode = null;
 
-	@Schema(name = "Response Message", example = "정상")
-	String message = null;
-	
-	public BasicResponseBody(Integer statusCode) {
-		this.statusCode = statusCode;
-	}
-	
-	public static BasicResponseBody of(Integer statusCode, String message) {
-		return new BasicResponseBody(statusCode, message);
-	}
+    @Schema(name = "Response Message", example = "정상")
+    String message = null;
+
+    public BasicResponseBody(Integer statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public static BasicResponseBody of(Integer statusCode, String message) {
+        return new BasicResponseBody(statusCode, message);
+    }
 }

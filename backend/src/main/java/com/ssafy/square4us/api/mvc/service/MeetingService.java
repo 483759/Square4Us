@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface MeetingService {
     Meeting createMeeting(MeetingCreatePostReq meetingInfo);
+
     List<Meeting> findAllMeetings();
 }
