@@ -9,18 +9,20 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.model.entity.Study;
 import com.ssafy.square4us.api.mvc.model.entity.StudyMember;
+import com.ssafy.square4us.api.mvc.model.repository.MeetingRepository;
 import com.ssafy.square4us.api.mvc.model.repository.StudyMemberRepository;
 import com.ssafy.square4us.api.mvc.model.repository.StudyRepository;
 import com.ssafy.square4us.api.request.StudyCreatePostReq;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class StudyServiceImpl implements StudyService {
 
-	@Autowired
-	StudyRepository studyRepo;
-	@Autowired
-	StudyMemberRepository studyMemberRepo;
+	private final StudyRepository studyRepo;
+	private final StudyMemberRepository studyMemberRepo;
 
 	@Override
 	@Transactional

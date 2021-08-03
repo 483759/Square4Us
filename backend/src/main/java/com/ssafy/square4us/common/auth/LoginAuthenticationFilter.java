@@ -24,12 +24,12 @@ import com.ssafy.square4us.common.handler.LoginSuccessHandler;
 import com.ssafy.square4us.common.util.JwtTokenProvider;
 import com.ssafy.square4us.common.util.ResponseBodyWriteUtil;
 
+import lombok.RequiredArgsConstructor;
+
 public class LoginAuthenticationFilter extends BasicAuthenticationFilter {
 
-	MemberService memberService;
-	@Autowired LoginSuccessHandler loginSuccessHandler;
-	@Autowired LoginFailureHandler loginFailureHandler;
-
+	private MemberService memberService;
+	
 	public LoginAuthenticationFilter(AuthenticationManager authenticationManager) {
 		super(authenticationManager);
 	}

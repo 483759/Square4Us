@@ -25,14 +25,14 @@ import com.ssafy.square4us.common.auth.MemberDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "/api/study")
 public class StudyController {
-	@Autowired
-	StudyService studyService;
-	@Autowired
-	MemberService memberService;
+	private final StudyService studyService;
+	private final MemberService memberService;
 
 	@PostMapping("")
 	@Operation(summary = "스터디 생성", description = "스터디를 생성한다", responses = {

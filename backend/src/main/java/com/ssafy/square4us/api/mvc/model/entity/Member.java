@@ -75,6 +75,10 @@ public class Member {
 		this.password = password;
 	}
 
-
+	@Builder
+	public Member(String email) {
+		super();
+		this.email = email;
+	}
 
 }

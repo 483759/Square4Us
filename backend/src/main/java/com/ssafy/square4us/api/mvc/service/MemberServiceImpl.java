@@ -1,7 +1,9 @@
 package com.ssafy.square4us.api.mvc.service;
 
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,16 +12,24 @@ import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.model.repository.MemberRepository;
 import com.ssafy.square4us.api.request.MemberJoinPostReq;
 
+import lombok.RequiredArgsConstructor;
+
 /**
  * ReadOnly 달고 Create, Update, Delete는 따로 표기
  * */
 @Service
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class MemberServiceImpl implements MemberService{
 
-	@Autowired MemberRepository memberRepository;
-	@Autowired PasswordEncoder passwordEncoder;
+	private MemberRepository memberRepository;
+	private PasswordEncoder passwordEncoder;
 	
+	public MemberServiceImpl(MemberRepository memberRepository) {
+		this.memberRepository = memberRepository;
+		passwordEncoder = new BCryptPasswordEncoder();
+	}
+
 	@Override
 	@Transactional(readOnly = true)
 	public Member getMemberByEmail(String email) {
