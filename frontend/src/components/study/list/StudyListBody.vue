@@ -1,6 +1,6 @@
 <template>
-  <article id='conf-body'>
-    <ul id='study-list'>
+  <article id='study-body'>
+    <ul id='study-ul'>
       <StudyListItem v-for='item in state.studyList' :key='item'/>
     </ul>
   </article>
@@ -28,7 +28,7 @@ export default {
 
 <style>
 
-  #conf-body {
+  #study-body {
     width: 100%;
     height: auto;
     background-color: var(--headerBackground);
@@ -37,26 +37,26 @@ export default {
     
   }
 
-  #study-list {
+  #study-ul {
     height: 90%;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
   }
 
-  #study-list > li {
+  #study-ul > li {
     border: 1px solid var(--textColor);
     flex: 1 1 20%;
     min-height: 200px;
     
   }
   @media (min-width: 1241px) {
-    #conf-body {
+    #study-body {
       border-radius: 5px;
     }
   }
   @media (min-width:721px) and (max-width:1024px) {
-    #study-list > li {
+    #study-ul > li {
       border: 1px solid var(--textColor);
       flex: 1 1 40%;
       min-height: 300px;
@@ -64,10 +64,10 @@ export default {
   }
 
   @media (max-width:720px) {
-    #conf-body{
+    #study-body{
       border-radius: 0;
     }
-    #study-list > li {
+    #study-ul > li {
       border: 1px solid var(--textColor);
       flex: 1 1 100%;
       min-height: 350px;
