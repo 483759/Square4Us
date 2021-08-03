@@ -33,7 +33,7 @@ public class Meeting extends BaseTimeEntity {
     private boolean isRun = false;
 
     @Builder
-    public Meeting(long studyId, String thumbnailName, String thumbnailPath, int maxPeople) {
+    public Meeting(Long studyId, String thumbnailName, String thumbnailPath, int maxPeople) {
         super();
         this.studyId = studyId;
         this.thumbnailName = thumbnailName;

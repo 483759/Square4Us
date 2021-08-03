@@ -2,7 +2,6 @@ package com.ssafy.square4us.api.mvc.controller;
 
 import java.util.List;
 
-import com.ssafy.square4us.api.mvc.model.entity.Study;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.square4us.api.mvc.model.entity.Meeting;
+import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.service.MeetingService;
+import com.ssafy.square4us.api.mvc.service.MemberService;
+import com.ssafy.square4us.api.request.MeetingCreatePostReq;
 import com.ssafy.square4us.api.response.BasicResponseBody;
 import com.ssafy.square4us.api.response.MeetingCreatePostRes;
-import com.ssafy.square4us.api.response.StudyListGetRes;
+import com.ssafy.square4us.api.response.MeetingListGetRes;
 import com.ssafy.square4us.common.auth.MemberDetails;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,6 +31,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 public class MeetingController {
     @Autowired
     private MeetingService meetingService;
+    @Autowired
+    private MemberService memberService;
 
     @PostMapping("")
     @Operation(summary = "미팅 생성", description = "미팅 생성한다", responses = {
@@ -53,7 +58,7 @@ public class MeetingController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(BasicResponseBody.of(403, "미팅 생성에 실패했습니다"));
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(StudyCreatePostRes.of(201, "미팅 생성", newStudy));
+        return ResponseEntity.status(HttpStatus.CREATED).body(MeetingCreatePostRes.of(201, "미팅 생성", newMeeting));
     }
 
     @GetMapping("")
@@ -65,7 +70,7 @@ public class MeetingController {
         if(list==null) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(BasicResponseBody.of(204, "존재하지 않음"));
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(StudyListGetRes.of(200, "성공", list));
+        return ResponseEntity.status(HttpStatus.CREATED).body(MeetingListGetRes.of(200, "성공", list));
     }
 
 }
