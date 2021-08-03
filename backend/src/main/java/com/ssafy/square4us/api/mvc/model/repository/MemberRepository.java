@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 
+import lombok.RequiredArgsConstructor;
+
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long>{
 	public Optional<Member> findByEmail(String email);

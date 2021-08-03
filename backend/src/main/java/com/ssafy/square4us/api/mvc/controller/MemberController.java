@@ -1,10 +1,9 @@
 package com.ssafy.square4us.api.mvc.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,17 +22,15 @@ import com.ssafy.square4us.common.util.JwtTokenProvider;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import lombok.RequiredArgsConstructor;
 
 //@Tag(description = "멤버 API", name = "Member")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "/api/member")
 public class MemberController {
-	@Autowired
-	MemberService memberService;
-	@Autowired
-	PasswordEncoder passwordEncoder;
+	private final MemberService memberService;
 
 	@PostMapping("/login")
 	@Operation(summary = "로그인", description = "이메일과 패스워드를 입력하여 로그인한다", responses = {
@@ -52,7 +49,7 @@ public class MemberController {
 			if (member == null) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BasicResponseBody.of(404, "존재하지 않는 계정"));
 			}
-			if (passwordEncoder.matches(password, member.getPassword()) == false) {
+			if (new BCryptPasswordEncoder().matches(password, member.getPassword()) == false) {
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BasicResponseBody.of(401, "일치하지 않는 비밀번호"));
 			}
 			return ResponseEntity

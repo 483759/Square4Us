@@ -30,7 +30,9 @@ dependencies {
     annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa")
 	annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation('org.springframework.boot:spring-boot-starter-test'){
+		exclude module : 'junit'
+	}
 	
 	//spring security
     implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.7.RELEASE'
@@ -41,9 +43,12 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
     
 	// https://mvnrepository.com/artifact/junit/junit
-	testImplementation 'junit:junit:4.12'
+	testImplementation("org.junit.jupiter:junit-jupiter-api")
+	testCompile("org.junit.jupiter:junit-jupiter-params")
+	testRuntime("org.junit.jupiter:junit-jupiter-engine")
+	//testImplementation 'junit:junit:4.12'
 	// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
-	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+	//testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     
     implementation('commons-io:commons-io:2.6')
     implementation("org.apache.commons:commons-collections4:4.4")
@@ -53,11 +58,6 @@ dependencies {
     implementation("com.auth0:java-jwt:3.10.3")
 	
 	//swagger
-//	implementation("io.springfox:springfox-swagger2:3.0.0")
-//	implementation("io.springfox:springfox-swagger-ui:3.0.0")
-//	implementation("io.springfox:springfox-data-rest:3.0.0")
-//	implementation("io.springfox:springfox-bean-validators:3.0.0")
-//	implementation("io.springfox:springfox-boot-starter:3.0.0")
     implementation 'org.springdoc:springdoc-openapi-ui:1.5.2'
     
     

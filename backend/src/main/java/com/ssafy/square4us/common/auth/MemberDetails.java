@@ -12,12 +12,12 @@ import com.ssafy.square4us.api.mvc.model.entity.Member;
 
 public class MemberDetails implements UserDetails{	
 	private static final long serialVersionUID = 1L;
-	
-	@Autowired Member member;
-	boolean accountNonExpired;
-	boolean accountNonLocked;
-	boolean credentialNonExpired;
-	boolean enabled;
+
+	private Member member;
+	private boolean accountNonExpired;
+	private boolean accountNonLocked;
+	private boolean credentialNonExpired;
+	private boolean enabled;
 	Collection<? extends GrantedAuthority> authorities;
 	
 	public MemberDetails(Member member) {

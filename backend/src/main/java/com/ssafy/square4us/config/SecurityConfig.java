@@ -1,6 +1,5 @@
 package com.ssafy.square4us.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -17,23 +16,23 @@ import com.ssafy.square4us.api.mvc.service.MemberService;
 import com.ssafy.square4us.common.auth.LoginAuthenticationFilter;
 import com.ssafy.square4us.common.auth.MemberDetailsService;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
-	@Autowired MemberService memberService;
-	@Autowired MemberDetailsService memberDetailsService;
-	
-	@Bean
-	public PasswordEncoder getPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	
+	private final MemberService memberService;
+	private final MemberDetailsService memberDetailsService;
+		
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		
+		
 		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-		daoAuthenticationProvider.setPasswordEncoder(getPasswordEncoder());
+		daoAuthenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
 		daoAuthenticationProvider.setUserDetailsService(this.memberDetailsService);
 		
 		auth.authenticationProvider(daoAuthenticationProvider);

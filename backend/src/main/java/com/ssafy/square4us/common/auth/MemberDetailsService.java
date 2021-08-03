@@ -9,10 +9,13 @@ import org.springframework.stereotype.Component;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.service.MemberService;
 
+import lombok.RequiredArgsConstructor;
+
 @Component
+@RequiredArgsConstructor
 public class MemberDetailsService implements UserDetailsService {
-	@Autowired
-	MemberService memberService;
+
+	private final MemberService memberService;
 
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
