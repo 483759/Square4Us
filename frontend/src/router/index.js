@@ -7,13 +7,15 @@ import StudyList from '@/views/StudyList.vue'
 import StudyMain from '@/views/StudyMain.vue'
 import Meeting from '@/views/Meeting.vue'
 import StudyReport from '@/views/StudyReport.vue'
-
+import Main from '@/views/Main.vue'
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
     children: [
+      
+      {  path: '', name: 'Main', component: Main },
       { path: '/tutorial', name: 'Tutorial', component: Tutorial },
       { path: '/user', name: 'User', component: User },
       // { path: '/userinfo', name: 'UserInfo', component: UserInfo },
