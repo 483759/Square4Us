@@ -9,7 +9,6 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @ToString
 public class Study extends BaseTimeEntity {
     @Id
@@ -22,17 +21,19 @@ public class Study extends BaseTimeEntity {
     @Column(name = "study_name")
     private String name;
 
-    @Column(name = "is_dissolve")
-    private boolean isDessolved = false;
+    @Column(name = "dismantle_flag")
+    private boolean dismantle_flag = false;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dissolve_at")
-    private Date dsvDate;
+    @Column(name = "dismantle_date")
+    private Date dismantle_date;
 
     @Builder
-    public Study(String category, String name) {
-        super();
+    public Study(Long id, String category, String name, boolean dismantle_flag, Date dismantle_date) {
+        this.id = id;
         this.category = category;
         this.name = name;
+        this.dismantle_flag = dismantle_flag;
+        this.dismantle_date = dismantle_date;
     }
 }
