@@ -23,19 +23,10 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    min-width: 900px;
     /* height: 100%; */
   }
 
-  @media (max-width: 1240px) {
-    #study-list{
-      padding: 0 0;
-    }
-  }
 
-  @media (min-width:1241px) {
-    #study-list{
-      padding: 0 5%;
-    }
-  }
   
 </style>

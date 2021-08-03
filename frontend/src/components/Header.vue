@@ -7,8 +7,8 @@
     <section id='nav-list'>
       <router-link :to="{ name: 'StudyList' }">Study</router-link> 
       <router-link :to="{ name: 'UserInfo' }">User</router-link> 
-      <!-- <router-link :to="{ name: 'StudyMain' }">StudyMain</router-link> 
-      <router-link :to="{ name: 'Tutorial' }">Tutorial</router-link> 
+      <router-link :to="{ name: 'StudyMain' }">StudyMain</router-link> 
+      <!-- <router-link :to="{ name: 'Tutorial' }">Tutorial</router-link> 
       <router-link :to="{ name: 'Meeting' }">Meeting</router-link> 
       <router-link :to="{ name: 'StudyReport' }">StudyReport</router-link> -->
       <Login/>
@@ -38,6 +38,7 @@ export default {
   justify-content: space-between;
   padding: 25px;
   height: 100px;
+  min-width: 900px;
   box-sizing: border-box;
   vertical-align: middle;
   user-select:none;

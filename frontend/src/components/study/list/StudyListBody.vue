@@ -50,27 +50,5 @@ export default {
     min-height: 200px;
     
   }
-  @media (min-width: 1241px) {
-    #study-body {
-      border-radius: 5px;
-    }
-  }
-  @media (min-width:721px) and (max-width:1024px) {
-    #study-ul > li {
-      border: 1px solid var(--textColor);
-      flex: 1 1 40%;
-      min-height: 300px;
-    }
-  }
-
-  @media (max-width:720px) {
-    #study-body{
-      border-radius: 0;
-    }
-    #study-ul > li {
-      border: 1px solid var(--textColor);
-      flex: 1 1 100%;
-      min-height: 350px;
-    }
-  }
+  
 </style>
