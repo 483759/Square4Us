@@ -1,5 +1,5 @@
 <template>
-  <header id='conf-header'>
+  <header id='study-header'>
       <StudyCategory/>
       <StudySearch/>
       <StudyCreate/>
@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style>
-  #conf-header{
+  #study-header{
     display: flex;
     /* justify-content: space-between; */
     /* background-color: white; */
