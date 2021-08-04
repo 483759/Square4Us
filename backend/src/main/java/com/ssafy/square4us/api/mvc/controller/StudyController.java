@@ -79,8 +79,8 @@ public class StudyController {
         return ResponseEntity.status(HttpStatus.CREATED).body(Study.InfoGetRes.of(200, "성공", study));
     }
 
-    @PostMapping("/delete/{studyId}")
-    @Operation(summary = "", description = "", responses = {
+    @DeleteMapping("/{studyId}")
+    @Operation(summary = "스터디 폐쇄", description = "특정 스터디를 없앤다", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "401", description = "인증 실패"),
             @ApiResponse(responseCode = "404", description = "사용자 없음")

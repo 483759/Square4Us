@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,27 +39,20 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     public Study findByStudyId(Long studyId) {
-        Optional<Study> study = studyRepo.findById(studyId);
-        if(!study.isPresent()){
-            return null;
-        }
-        return study.get();
+        return studyRepositorySupport.findByStudyId(studyId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Study> findAllStudies() {
-        return studyRepo.findAll();
+        return studyRepositorySupport.findAllStudy();
     }
 
     @Override
     @Transactional
     public boolean deleteByStudyId(Long studyId) {
         Long affectedRow = studyRepositorySupport.deleteStudyById(studyId);
-        if (affectedRow == 0) {
-            return false;
-        }
-        return true;
+        return affectedRow != 0;
     }
 
 }
