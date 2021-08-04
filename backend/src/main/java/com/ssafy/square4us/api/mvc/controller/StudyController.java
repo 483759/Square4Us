@@ -36,10 +36,7 @@ public class StudyController {
                                                               @RequestBody @Parameter(name = "스터디 생성 정보", required = true) StudyCreatePostReq studyInfo) {
 
         MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
-        System.out.println(memberDetails);
-
         String memberId = memberDetails.getUsername();
-        System.out.println(memberId);
 
         Member member = memberService.getMemberByEmail(memberId);
 

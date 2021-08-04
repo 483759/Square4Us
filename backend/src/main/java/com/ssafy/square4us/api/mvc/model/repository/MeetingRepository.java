@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface MeetingRepository extends JpaRepository<Meeting, Long> {
-    public List<Meeting> findAll();
+    List<Meeting> findAll();
 }

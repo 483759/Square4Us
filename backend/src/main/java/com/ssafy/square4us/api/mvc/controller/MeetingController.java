@@ -22,7 +22,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/api/meeting")
+@RequestMapping(value = "/api/study/{studyId}/meeting")
 public class MeetingController {
 
     private final MeetingService meetingService;
@@ -34,10 +34,10 @@ public class MeetingController {
             @ApiResponse(responseCode = "401", description = "권한 없음"),
             @ApiResponse(responseCode = "403", description = "미팅 생성 실패")})
     public ResponseEntity<? extends BasicResponseBody> create(@Parameter(hidden = true) Authentication authentication,
-                                                              @RequestBody @Parameter(name = "미팅 생성 정보", required = true) MeetingCreatePostReq meetingInfo) {
+                                                              @PathVariable("studyId") Long studyId,
+                                                              @RequestBody @Parameter(name = "미팅 생성 정보", required = true) Meeting.CreatePostReq meetingInfo) {
 
         MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
-
         String memberId = memberDetails.getUsername();
 
         Member member = memberService.getMemberByEmail(memberId);
@@ -46,7 +46,7 @@ public class MeetingController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BasicResponseBody.of(401, "생성 권한이 존재하지 않습니다"));
         }
 
-        Meeting newMeeting = meetingService.createMeeting(meetingInfo);
+        Meeting newMeeting = meetingService.createMeeting(studyId, meetingInfo);
 
         if (newMeeting == null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(BasicResponseBody.of(403, "미팅 생성에 실패했습니다"));
