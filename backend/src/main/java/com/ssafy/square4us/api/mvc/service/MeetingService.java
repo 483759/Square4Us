@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface MeetingService {
     Meeting createMeeting(Long studyId, Meeting.CreatePostReq meetingInfo);
-
+    Meeting enterMeeting(Long meetingId);
     List<Meeting> findAllMeetings();
 }

@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface StudyRepository extends JpaRepository<Study, Long> {
-    public List<Study> findAll();
+    List<Study> findAll();
+    Study findByName(String name);
 }

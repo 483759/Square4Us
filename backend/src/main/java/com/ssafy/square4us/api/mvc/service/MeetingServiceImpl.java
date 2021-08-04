@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,17 @@ public class MeetingServiceImpl implements MeetingService {
                         .build()
         );
         return meeting;
+    }
+
+    @Override
+    @Transactional
+    public Meeting enterMeeting(Long meetingId){
+        Optional<Meeting> meeting = meetingRepo.findById(meetingId);
+        if(!meeting.isPresent()){
+            return null;
+        }
+
+        return meeting.get();
     }
 
     @Override
