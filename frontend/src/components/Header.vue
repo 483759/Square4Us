@@ -1,11 +1,11 @@
 <template>
   <nav id='nav'>
-    <section id='logo' >
+    <section id='logo'>
       <img id='logo-icon' src="/logo.png" alt="로고" @click="$router.push({name: 'Main'})">
-      <div style="flex-wrap: wrap{margin: 0 auto}">
-        <router-link id="logo-text" class='text-hover' style="font: 40px font-weight: bold" :to="{ name: 'Main' }">Square 4 Us</router-link>
-        <a style="font-size: 1px flex-direction: row margin: 0px" @click="$router.push({name: 'Main'})">we link the world</a>
-      </div>
+      <div class="slogan-box">
+        <router-link id="logo-text square" class='text-hover' :to="{ name: 'Main' }">Square 4 Us</router-link>
+        <a class="slogan" @click="$router.push({name: 'Main'})">we link the world</a>
+      </div> 
     </section>
     
     <section id='nav-list'>
@@ -22,9 +22,6 @@
       <div class="nav-b">
         <SignUp/>
       </div>
-        
-      
-      
     </section>
   </nav>
   <router-view></router-view>
@@ -61,7 +58,7 @@ export default {
   height: 100px;
   min-width: 900px;
   box-sizing: border-box;
-  vertical-align: middle;
+  /* vertical-align: middle; */
   user-select:none;
 }
 #nav a {
@@ -109,7 +106,7 @@ export default {
 
 #logo, #nav-list {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   margin: 7px;
   
@@ -153,4 +150,19 @@ export default {
   padding-top: 5px;
   margin: white;
 }
+
+.slogan-box{
+  flex-wrap: wrap;
+  margin: 0 auto
+  /* {margin: 0 auto} */
+}
+.square{
+  font: 40px;
+  font-weight: bold;
+}
+.slogan{
+  font-size: 1px;
+  flex-direction: row;
+  margin: 0px
+} 
 </style>

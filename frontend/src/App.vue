@@ -44,6 +44,9 @@ html, body, #app {
   flex-direction: column;
 
 }
+ul {
+  margin : 0;
+}
 
 :root[color-theme='light'] {
   --headerBackground : white;

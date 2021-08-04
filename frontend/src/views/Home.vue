@@ -1,13 +1,9 @@
 <template>
 <Header/>
-
-
 </template>
 
 <script>
 import Header from '@/components/Header'
-
-// import { reactive } from '@vue/reactivity'
 export default {
   name: 'Home',
   components: {

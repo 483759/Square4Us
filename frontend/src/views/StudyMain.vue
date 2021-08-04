@@ -1,42 +1,33 @@
 <template>
   <AsideFrame>
+
     <template v-slot:aside-header>
         <img id='aside-header-thumbnail' src="/meeting-thumbnail.jpg" alt="썸네일">
     </template>
+
     <template v-slot:aside-body>
       <StudyMainAside :menus='menus' :activeIndex='activeIndex' @onClickMenu='(idx)=>{activeIndex = idx}'/>
     </template>
+
     <template v-slot:section>
-      <div id='section-title'>{{menus[activeIndex]}} (스터디_ID  {{ studyId }})</div>
+      <header id='section-title'>{{menus[activeIndex]}} (스터디_ID  {{ studyId }})</header>
       <!-- 컴포넌트 파서 알맞은 위치의 div를 컴포넌트로 대체하면 됨 -->
-      <div v-if="activeIndex === 0">
-        스터디 메인
-      </div>
-      <div v-else-if="activeIndex === 1">
-        미팅
-      </div>
-      <div v-else-if="activeIndex === 2">
-        게시글
-      </div>
-      <div v-else-if="activeIndex === 3">
-        스터디 학습 자료
-      </div>
-      <div v-else-if="activeIndex === 4">
-        통계
-      </div>
-      <div v-else-if="activeIndex === 5">
-        스터디 설정
-      </div>
-      <div v-else>
-        아무것에도 포함 안됨
-      </div>
+      <div class='study-main' v-if="activeIndex === 0"> <!-- 스터디 메인 --> </div>
+      <StudyMainMeeting v-else-if="activeIndex === 1" :studyId='studyId' />
+      <div v-else-if="activeIndex === 2"> 게시글 </div>
+      <div v-else-if="activeIndex === 3"> 스터디 학습 자료 </div>
+      <div v-else-if="activeIndex === 4"> 통계 </div>
+      <div v-else-if="activeIndex === 5"> 스터디 설정 </div>
+      <div v-else> 아무것에도 포함 안됨 </div>
     </template>
+    
   </AsideFrame>
 </template>
 
 <script>
 import AsideFrame from '@/components/AsideFrame.vue'
 import StudyMainAside from '@/components/study/main/StudyMainAside.vue'
+import StudyMainMeeting from '@/components/study/main/StudyMainMeeting.vue'
 import { ref } from '@vue/reactivity'
 export default {
   name: 'StudyMain',
@@ -48,7 +39,8 @@ export default {
   },
   components :{
     AsideFrame,
-    StudyMainAside
+    StudyMainAside,
+    StudyMainMeeting
   },
   setup() {
     const menus = [
@@ -85,5 +77,11 @@ export default {
   font-size: 1.1rem;
   display: flex;
   padding-left: 25px;
+}
+
+.study-main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 </style>

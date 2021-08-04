@@ -44,7 +44,6 @@ export default {
   font-weight: bold;
   font-size: 0.9rem;
   color: #195C77;
-  
 }
 
 #aside-list > li:hover{
