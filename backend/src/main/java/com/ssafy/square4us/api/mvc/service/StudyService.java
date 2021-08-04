@@ -11,4 +11,6 @@ public interface StudyService {
     Study findByStudyId(Long studyId);
 
     List<Study> findAllStudies();
+
+    boolean deleteByStudyId(Long studyId);
 }

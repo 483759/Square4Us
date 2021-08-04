@@ -5,6 +5,7 @@ import com.ssafy.square4us.api.mvc.model.entity.Study;
 import com.ssafy.square4us.api.mvc.model.entity.StudyMember;
 import com.ssafy.square4us.api.mvc.model.repository.StudyMemberRepository;
 import com.ssafy.square4us.api.mvc.model.repository.StudyRepository;
+import com.ssafy.square4us.api.mvc.model.repository.StudyRepositorySupport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class StudyServiceImpl implements StudyService {
 
     private final StudyRepository studyRepo;
+    private final StudyRepositorySupport studyRepositorySupport;
     private final StudyMemberRepository studyMemberRepo;
 
     @Override
@@ -49,6 +51,16 @@ public class StudyServiceImpl implements StudyService {
     @Transactional(readOnly = true)
     public List<Study> findAllStudies() {
         return studyRepo.findAll();
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteByStudyId(Long studyId) {
+        Long affectedRow = studyRepositorySupport.deleteStudyById(studyId);
+        if (affectedRow == 0) {
+            return false;
+        }
+        return true;
     }
 
 }

@@ -76,7 +76,26 @@ public class StudyController {
             return ResponseFactory.NoContent();
         }
 
-        //return null;
         return ResponseEntity.status(HttpStatus.CREATED).body(Study.InfoGetRes.of(200, "성공", study));
+    }
+
+    @PostMapping("/delete/{studyId}")
+    @Operation(summary = "", description = "", responses = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "401", description = "인증 실패"),
+            @ApiResponse(responseCode = "404", description = "사용자 없음")
+    })
+    public ResponseEntity<? extends BasicResponseBody> deleteStudy(@PathVariable("studyId") Long studyId) {
+        Study study = studyService.findByStudyId(studyId);
+
+        if (study == null) {
+            return ResponseFactory.NotFound();
+        }
+
+        boolean flag = studyService.deleteByStudyId(studyId);
+
+        if (!flag) return ResponseFactory.Conflict();
+
+        return ResponseFactory.Ok();
     }
 }
