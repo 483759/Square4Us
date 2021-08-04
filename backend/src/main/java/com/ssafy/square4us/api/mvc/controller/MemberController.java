@@ -2,7 +2,6 @@ package com.ssafy.square4us.api.mvc.controller;
 
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.service.MemberService;
-import com.ssafy.square4us.api.request.MemberJoinPostReq;
 import com.ssafy.square4us.api.request.MemberLoginPostReq;
 import com.ssafy.square4us.api.request.MemberUpdatePatchReq;
 import com.ssafy.square4us.api.response.BasicResponseBody;
@@ -64,7 +63,7 @@ public class MemberController {
             @ApiResponse(responseCode = "503", description = "회원가입 실패"),
             @ApiResponse(responseCode = "500", description = "서버 오류")})
     public ResponseEntity<? extends BasicResponseBody> register(
-            @RequestBody @Parameter(name = "회원가입 정보", required = true) MemberJoinPostReq joinInfo) {
+            @RequestBody @Parameter(name = "회원가입 정보", required = true) Member.JoinPostReq joinInfo) {
 
         Member confirmMember = memberService.getMemberByEmail(joinInfo.getEmail());
         if (confirmMember != null) {

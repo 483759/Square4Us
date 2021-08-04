@@ -3,7 +3,6 @@ package com.ssafy.square4us.api.mvc.service;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.model.repository.MemberRepository;
 import com.ssafy.square4us.api.mvc.model.repository.MemberRepositorySupport;
-import com.ssafy.square4us.api.request.MemberJoinPostReq;
 import com.ssafy.square4us.api.request.MemberUpdatePatchReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -41,7 +40,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public Member createMember(MemberJoinPostReq joinInfo) {
+    public Member createMember(Member.JoinPostReq joinInfo) {
         //Member member = new Member(joinInfo.getEmail(), joinInfo.getNickname(), new BCryptPasswordEncoder().encode(joinInfo.getPassword()));
         Member member = Member.builder()
                 .email(joinInfo.getEmail())

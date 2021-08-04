@@ -2,6 +2,7 @@ package com.ssafy.square4us.api.mvc.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -46,5 +47,23 @@ public class Member {
         this.nickname = nickname;
         this.profile_name = profile_name;
         this.profile_path = profile_path;
+    }
+
+    @Getter
+    @Schema(description = "MemberJoinPostRequest")
+    public static class JoinPostReq{
+        @Schema(name = "email", example = "ssafy@naver.com")
+        String email;
+        @Schema(name = "password", example = "password1234")
+        String password;
+        @Schema(name = "nickname", example = "윤이진")
+        String nickname;
+
+        @Builder
+        public JoinPostReq(String email, String password, String nickname) {
+            this.email = email;
+            this.password = password;
+            this.nickname = nickname;
+        }
     }
 }

@@ -48,21 +48,6 @@ public class Study extends BaseTimeEntity {
             this.study = study;
         }
 
-        //        private Long id;
-//        private String category;
-//        private String name;
-//        private char dismantle_flag;
-//        private Date dismantle_date;
-//
-//        public InfoGetRes(Integer statusCode, String message, Long id, String category, String name, char dismantle_flag, Date dismantle_date) {
-//            super(statusCode, message);
-//            this.id = id;
-//            this.category = category;
-//            this.name = name;
-//            this.dismantle_flag = dismantle_flag;
-//            this.dismantle_date = dismantle_date;
-//        }
-
         public static InfoGetRes of(Integer statusCode, String message, Study study){
             return new InfoGetRes(statusCode, message, study);
         }

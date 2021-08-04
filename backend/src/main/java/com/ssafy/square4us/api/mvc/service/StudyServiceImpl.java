@@ -30,7 +30,7 @@ public class StudyServiceImpl implements StudyService {
                         .category(studyInfo.getCategory())
                         .name(studyInfo.getName())
                         .build());
-        StudyMember sm = new StudyMember(true, study, member);
+        StudyMember sm = new StudyMember('T', study, member);
 
         studyMemberRepo.save(sm);
 

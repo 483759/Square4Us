@@ -17,8 +17,8 @@ public class StudyMember extends BaseTimeEntity {
     @Column(name = "study_member_id")
     private Long id;
 
-    @Column(name = "is_leader")
-    private boolean leader;
+    @Column(name = "leader_flag")
+    private char leader;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_id", referencedColumnName = "study_id")
@@ -29,7 +29,7 @@ public class StudyMember extends BaseTimeEntity {
     private Member member;
 
     @Builder
-    public StudyMember(boolean leader, Study study, Member member) {
+    public StudyMember(char leader, Study study, Member member) {
         super();
         this.leader = leader;
         this.study = study;

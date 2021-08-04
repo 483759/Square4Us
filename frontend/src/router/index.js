@@ -10,23 +10,22 @@ import StudyReport from '@/views/StudyReport.vue'
 import Main from '@/views/Main.vue'
 
 const routes = [
-    {
-        path: '/',
-        name: 'Home',
-        component: Home,
-        children: [
-
-            {path: '', name: 'Main', component: Main},
-            {path: '/tutorial', name: 'Tutorial', component: Tutorial},
-            {path: '/user', name: 'User', component: User},
-            // { path: '/userinfo', name: 'UserInfo', component: UserInfo },
-            {path: '/study', name: 'Study', component: Study},
-            {path: '/study/list', name: 'StudyList', component: StudyList},
-            {path: '/study/main', name: 'StudyMain', component: StudyMain},
-            {path: '/study/report', name: 'StudyReport', component: StudyReport},
-        ]
-    },
-    {path: '/study/main/room', name: 'Meeting', component: Meeting},
+  {
+    path: '/',
+    name: 'Home',
+    component: Home,
+    children: [
+      { path: '', name: 'Main', component: Main },
+      { path: '/tutorial', name: 'Tutorial', component: Tutorial },
+      { path: '/user', name: 'User', component: User },
+      // { path: '/userinfo', name: 'UserInfo', component: UserInfo },
+      { path: '/study', name: 'Study', component: Study },
+      { path: '/study/list', name: 'StudyList', component: StudyList },
+      { path: '/study/:studyId', name: 'StudyMain', component: StudyMain, props : true },
+      { path: '/study/report', name: 'StudyReport', component: StudyReport },
+    ]
+  },
+  { path: '/study/main/room', name: 'Meeting', component: Meeting },
 ]
 
 const router = createRouter({

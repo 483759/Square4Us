@@ -39,6 +39,14 @@ html, body, #app {
   width: 100%;
   background-color: var(--background);
 }
+#app {
+  display: flex;
+  flex-direction: column;
+
+}
+ul {
+  margin : 0;
+}
 
 :root[color-theme='light'] {
   --headerBackground : white;

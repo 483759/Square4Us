@@ -1,5 +1,5 @@
 <template>
-<section id='conf-list'>
+<section id='study-list'>
   <StudyListHeader/>
   <StudyListBody/>
 </section>
@@ -18,23 +18,15 @@ export default {
 </script>
 
 <style>
-  #conf-list{
+  #study-list{
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%;
+    min-width: 900px;
+    /* height: 100%; */
   }
 
-  @media (max-width: 1240px) {
-    #conf-list{
-      padding: 0 0;
-    }
-  }
 
-  @media (min-width:1241px) {
-    #conf-list{
-      padding: 0 5%;
-    }
-  }
   
 </style>
