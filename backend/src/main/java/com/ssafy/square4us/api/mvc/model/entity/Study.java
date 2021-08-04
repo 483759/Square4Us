@@ -40,6 +40,20 @@ public class Study extends BaseTimeEntity {
     }
 
     @Getter
+    public class CreatePostReq extends BasicResponseBody {
+        @Schema(name = "category", example = "ALGORITHM")
+        String category;
+        @Schema(name = "name", example = "모르고리즘")
+        String name;
+
+        public CreatePostReq(Integer statusCode, String message, String category, String name) {
+            super(statusCode, message);
+            this.category = category;
+            this.name = name;
+        }
+    }
+
+    @Getter
     public static class InfoGetRes extends BasicResponseBody {
         Study study;
 
@@ -52,5 +66,6 @@ public class Study extends BaseTimeEntity {
             return new InfoGetRes(statusCode, message, study);
         }
     }
+
 
 }

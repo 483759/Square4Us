@@ -4,7 +4,6 @@ import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.model.entity.Study;
 import com.ssafy.square4us.api.mvc.service.MemberService;
 import com.ssafy.square4us.api.mvc.service.StudyService;
-import com.ssafy.square4us.api.request.StudyCreatePostReq;
 import com.ssafy.square4us.api.response.BasicResponseBody;
 import com.ssafy.square4us.api.response.ResponseFactory;
 import com.ssafy.square4us.api.response.StudyCreatePostRes;
@@ -34,7 +33,7 @@ public class StudyController {
             @ApiResponse(responseCode = "401", description = "권한 없음"),
             @ApiResponse(responseCode = "403", description = "스터디 생성 실패")})
     public ResponseEntity<? extends BasicResponseBody> create(@Parameter(hidden = true) Authentication authentication,
-                                                              @RequestBody @Parameter(name = "스터디 생성 정보", required = true) StudyCreatePostReq studyInfo) {
+                                                              @RequestBody @Parameter(name = "스터디 생성 정보", required = true) Study.CreatePostReq studyInfo) {
 
         MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
         String memberId = memberDetails.getUsername();
