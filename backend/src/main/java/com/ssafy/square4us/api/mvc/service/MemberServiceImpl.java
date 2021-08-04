@@ -21,12 +21,6 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final MemberRepositorySupport memberRepositorySupport;
-//	private PasswordEncoder passwordEncoder;
-//	
-//	public MemberServiceImpl(MemberRepository memberRepository) {
-//		this.memberRepository = memberRepository;
-//		passwordEncoder = new BCryptPasswordEncoder();
-//	}
 
     @Override
     @Transactional(readOnly = true)
@@ -41,7 +35,6 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public Member createMember(Member.JoinPostReq joinInfo) {
-        //Member member = new Member(joinInfo.getEmail(), joinInfo.getNickname(), new BCryptPasswordEncoder().encode(joinInfo.getPassword()));
         Member member = Member.builder()
                 .email(joinInfo.getEmail())
                 .nickname(joinInfo.getNickname())
@@ -50,7 +43,6 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.save(member);
     }
 
-    //임시 구현 테스트
     @Override
     @Transactional
     public Long updateMemberByEmail(String email, MemberUpdatePatchReq updateInfo) {
@@ -59,10 +51,6 @@ public class MemberServiceImpl implements MemberService {
                 .profile_name(updateInfo.getProfile_name())
                 .profile_path(updateInfo.getProfile_path())
                 .build();
-//        member.setNickname(updateInfo.getNickname());
-//        member.setProfile_name(updateInfo.getProfile_name());
-//        member.setProfile_path(updateInfo.getProfile_path());
-//        memberRepository.save(member);
         return memberRepositorySupport.updateByMemberEmail(member);
     }
 }

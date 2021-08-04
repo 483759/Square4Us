@@ -83,16 +83,26 @@ public class StudyController {
     @Operation(summary = "스터디 폐쇄", description = "특정 스터디를 없앤다", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "401", description = "인증 실패"),
-            @ApiResponse(responseCode = "404", description = "사용자 없음")
+            @ApiResponse(responseCode = "409", description = "스터디 폐쇄 실패")
     })
-    public ResponseEntity<? extends BasicResponseBody> deleteStudy(@PathVariable("studyId") Long studyId) {
+    public ResponseEntity<? extends BasicResponseBody> deleteStudy(@Parameter(hidden = true) Authentication authentication, @PathVariable("studyId") Long studyId) {
+        if (authentication == null) {
+            return ResponseFactory.Unauthorized();
+        }
+
+        MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
+
+        if (memberDetails == null) {
+            return ResponseFactory.Unauthorized();
+        }
+        String email = memberDetails.getUsername();
         Study study = studyService.findByStudyId(studyId);
 
         if (study == null) {
             return ResponseFactory.NotFound();
         }
 
-        boolean flag = studyService.deleteByStudyId(studyId);
+        boolean flag = studyService.deleteByStudyId(email, studyId);
 
         if (!flag) return ResponseFactory.Conflict();
 

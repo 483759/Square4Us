@@ -50,7 +50,12 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional
-    public boolean deleteByStudyId(Long studyId) {
+    public boolean deleteByStudyId(String email, Long studyId) {
+        StudyMember sm = studyRepositorySupport.getStudyMemberByEmail(email, studyId);
+        if (sm.getLeader() != 'T') {
+            return false;
+        }
+
         Long affectedRow = studyRepositorySupport.deleteStudyById(studyId);
         return affectedRow != 0;
     }
