@@ -1,22 +1,40 @@
 <template>
   <nav id='nav'>
     <section id='logo' >
-      <img id='logo-icon' src="/logo.png" alt="로고" @click="$router.push({name: 'Home'})">
-      <router-link id="logo-text" class='text-hover' :to="{ name: 'Home' }">Sqeare 4 Us</router-link>
+      <img id='logo-icon' src="/logo.png" alt="로고" @click="$router.push({name: 'Main'})">
+      <div style="flex-wrap: wrap{margin: 0 auto}">
+        <router-link id="logo-text" class='text-hover' style="font: 40px font-weight: bold" :to="{ name: 'Main' }">Square 4 Us</router-link>
+        <a style="font-size: 1px flex-direction: row margin: 0px" @click="$router.push({name: 'Main'})">we link the world</a>
+      </div>
     </section>
+    
     <section id='nav-list'>
       <router-link :to="{ name: 'StudyList' }">Study</router-link> 
-      <router-link :to="{ name: 'UserInfo' }">User</router-link> 
+      <router-link :to="{ name: 'User' }">User</router-link> 
       <router-link :to="{ path: `/study/${1}` }">1번 스터디메인</router-link> 
       <router-link :to="{ path: `/study/${2}` }">2번 스터디메인</router-link> 
       <!-- <router-link :to="{ name: 'Tutorial' }">Tutorial</router-link> 
       <router-link :to="{ name: 'Meeting' }">Meeting</router-link> 
       <router-link :to="{ name: 'StudyReport' }">StudyReport</router-link> -->
-      <Login/>
-      <SignUp/>
+      <div class="nav-b">
+        <Login/>
+      </div>
+      <div class="nav-b">
+        <SignUp/>
+      </div>
+        
+      
+      
     </section>
   </nav>
   <router-view></router-view>
+  <footer id="footer">
+    <div>삼성청년 SW 아카테미</div> 
+    <div>대전캠퍼스 5기 3반8팀</div>
+    <div >2학기 공통 프로젝트</div> 
+  </footer>
+
+
 </template>
 
 <script>
@@ -32,7 +50,9 @@ export default {
 </script>
 
 <style>
-#nav {
+#nav{
+  top: 0;
+  position: sticky;
   background-color: var(--headerBackground);
   color: var(--textColor);
   display: flex;
@@ -44,13 +64,32 @@ export default {
   vertical-align: middle;
   user-select:none;
 }
-
 #nav a {
   display: block;
   text-decoration: none;
   font-weight: bold;
   color: var(--textColor);
-  padding: 7px;
+  padding: 0px;
+  text-align: right;
+}
+
+
+#nav-list a {
+  display: block;
+  text-decoration: none;
+  font-weight: bold;
+  color: var(--textColor);
+  padding: 20px;
+  font-size: 16px;
+}
+
+.nav-b {
+  padding-left: 14px;
+  padding-right: 14px;
+  padding-top: 19px;
+  padding-bottom: 19px;
+  font-size: 20px;
+  /* router기본 패딩값 있으므로 list-a 보다 6작게 위 아래는 1작게 */
 }
 
 /* 현재 페이지 강조하는 style */
@@ -70,28 +109,48 @@ export default {
 
 #logo, #nav-list {
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
+  margin: 7px;
   
 }
 #logo{
-  width: 200px;
+  width: 400px;
+  padding: 0;
 }
 
 
 #logo-icon{
-  width: 50px;
-  height: 50px;
+  width: 70px;
+  height: 70px;
   cursor: pointer;
+  margin-right: 20px;
 }
 
 #logo-text{
-  font-size: 20px;
+  font-size: 30px;
+  
   /* transition: 0.3s; */
 }
 #logo-text:hover, .btn-to-a:hover, #nav a:hover {
   color: #42b983;
   transition: 0.3s;
   
+}
+#footer {
+  position: relative;
+  bottom: 0;
+  font: bolder;
+  font-size: 10px;
+  text-align: right;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: right;
+  background: #f2f2f2;
+  height: 42px;
+  flex-direction: column;
+  margin-bottom:5px;
+  padding-top: 5px;
+  margin: white;
 }
 </style>

@@ -12,16 +12,16 @@ spring:
   devtools:
     livereload:
       enabled: true
-      
+
   data:
     web:
       pageable:
         one-indexed-parameters: true
 
   datasource:
-    url: jdbc:mysql://localhost:3306/ssafy_web_test?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
+    url: jdbc:mysql://54.180.140.242:3306/ssafy_web_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ssafy
+    username: root
     password: ssafy
 
   jpa:
@@ -29,7 +29,7 @@ spring:
       naming:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-      ddl-auto: 
+      ddl-auto:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
@@ -55,7 +55,7 @@ springdoc:
     disable-swagger-default-url: true
     display-query-params-without-oauth2: true
   paths-to-match:
-  - /**
+    - /**
 
 logging:
   level:

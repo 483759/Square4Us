@@ -3,7 +3,6 @@ package com.ssafy.square4us.api.mvc.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -17,7 +16,7 @@ public class Meeting extends BaseTimeEntity {
     @Column(name = "meeting_id")
     private Long id;
 
-    @Column(name="study_id")
+    @Column(name = "study_id")
     private Long studyId;
 
     @Column(name = "thumbnail_name")
@@ -33,7 +32,7 @@ public class Meeting extends BaseTimeEntity {
     private boolean isRun = false;
 
     @Builder
-    public Meeting(long studyId, String thumbnailName, String thumbnailPath, int maxPeople) {
+    public Meeting(Long studyId, String thumbnailName, String thumbnailPath, int maxPeople) {
         super();
         this.studyId = studyId;
         this.thumbnailName = thumbnailName;

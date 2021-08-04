@@ -1,7 +1,16 @@
 <template>
   <h1>스터디관리</h1>
-  <button @click="getStudy">a</button>
-  <StudyList/>
+  <section class="studysection"> 
+    <div style="width: 50%"> 
+      <h2>내가 개설한 스터디</h2>
+        <StudyList/>
+    </div>
+    <div style="width: 50%">
+      <h2>내가 가입한 스터디</h2>
+      <!-- 내가 가입한 스터디 리스트 컴포턴트 -->
+    </div>
+  </section>
+  
 </template>
 
 <script>
@@ -36,5 +45,9 @@ setup() {
 </script>
 
 <style>
+
+.studysection {
+  display: flex;
+}
 
 </style>

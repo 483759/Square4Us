@@ -1,21 +1,5 @@
 package com.ssafy.square4us.common.util;
 
-import java.io.UnsupportedEncodingException;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
@@ -24,47 +8,58 @@ import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.service.MemberService;
 import com.ssafy.square4us.common.auth.MemberDetails;
 import com.ssafy.square4us.common.handler.AuthorizationHeaderNotExistsException;
-
 import lombok.Setter;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 
 //@ConfigurationProperties(prefix = "demo.token")
 @Aspect
 @Component
 public class AuthorizationAspect {
 
-	@Setter
-	private String apiKey;
-	@Setter
-	private String secretKey;
-	@Autowired
-	private MemberService memberService;
+    @Setter
+    private String apiKey;
+    @Setter
+    private String secretKey;
+    @Autowired
+    private MemberService memberService;
 
-	//@Before("execution(public * com.ssafy.square4us.api.mvc.controller..*Controller.*(..)) ")
-	public void insertAdminLog(JoinPoint joinPoint)
-			throws UnsupportedEncodingException, TokenExpiredException, JWTVerificationException {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-				.getRequest();
-		String header = request.getHeader(JwtTokenProvider.HEADER_STRING);
+    //@Before("execution(public * com.ssafy.square4us.api.mvc.controller..*Controller.*(..)) ")
+    public void insertAdminLog(JoinPoint joinPoint)
+            throws UnsupportedEncodingException, TokenExpiredException, JWTVerificationException {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                .getRequest();
+        String header = request.getHeader(JwtTokenProvider.HEADER_STRING);
 
-		if (header == null || !header.startsWith(JwtTokenProvider.TOKEN_PREFIX)) {
-			throw new AuthorizationHeaderNotExistsException();
-		}
+        if (header == null || !header.startsWith(JwtTokenProvider.TOKEN_PREFIX)) {
+            throw new AuthorizationHeaderNotExistsException();
+        }
 
-		// try {
-		JWTVerifier verifier = JwtTokenProvider.getVerifier();
-		DecodedJWT decodedJWT = verifier.verify(header.replace(JwtTokenProvider.TOKEN_PREFIX, ""));
-		String email = decodedJWT.getSubject();
+        // try {
+        JWTVerifier verifier = JwtTokenProvider.getVerifier();
+        DecodedJWT decodedJWT = verifier.verify(header.replace(JwtTokenProvider.TOKEN_PREFIX, ""));
+        String email = decodedJWT.getSubject();
 
-		// if(email==null) throw new Exception();
-		Member member = memberService.getMemberByEmail(email);
-		// if(member==null) throw new Exception();
-		MemberDetails memberDetails = new MemberDetails(member);
+        // if(email==null) throw new Exception();
+        Member member = memberService.getMemberByEmail(email);
+        // if(member==null) throw new Exception();
+        MemberDetails memberDetails = new MemberDetails(member);
 
-		UsernamePasswordAuthenticationToken jwtAuthToken = new UsernamePasswordAuthenticationToken(email,
-				decodedJWT.getClaim("USER_ROLE"), memberDetails.getAuthorities());
-		jwtAuthToken.setDetails(memberDetails);
+        UsernamePasswordAuthenticationToken jwtAuthToken = new UsernamePasswordAuthenticationToken(email,
+                decodedJWT.getClaim("USER_ROLE"), memberDetails.getAuthorities());
+        jwtAuthToken.setDetails(memberDetails);
 
-		SecurityContextHolder.getContext().setAuthentication((Authentication) jwtAuthToken);
+        SecurityContextHolder.getContext().setAuthentication((Authentication) jwtAuthToken);
 //		}catch(Exception e) {
 //			e.printStackTrace();
 //			ResponseBodyWriteUtil.sendError(request, response, e);
@@ -98,7 +93,7 @@ public class AuthorizationAspect {
 //		} else {
 //			throw new InvalidTokenException();
 //		}
-	}
+    }
 
 //	@Before("execution(public * com.ssafy.square4us.api.mvc.controller..*Controller.*(..)) ")
 //	public void insertAdminLog(JoinPoint joinPoint) throws AuthorizationHeaderNotExistsException, InvalidTokenException {

@@ -1,12 +1,13 @@
 <template>
   
-<header>
-  <h1>UserInfo</h1>
+<header class="userheader">
+  <p>UserInfo</p>
 </header>
-<body>
+<section class="userbody">
+ 
   <div name="menu" class="menubar  display=flex ml-0">
     <div>
-    <button @click="infopage1" :class="{ 'clickedbutton': data.click1, 'menubutton': !data.click1 }"  >UserInfo</button>
+    <button @click="infopage1" :class="{ 'clickedbutton': data.click1, 'menubutton': !data.click1 }">UserInfo</button>
     </div>
     <div>
     <button  @click="infopage2" :class="{ 'clickedbutton': data.click2, 'menubutton': !data.click2 }">profileManage</button>
@@ -44,7 +45,7 @@
     
   </div>
   
-</body>
+</section>
 
 </template>
 
@@ -133,12 +134,15 @@ export default {
 </script>
 
 <style>
-header{
-  /* margin-top: 100px; */
+.userheader{
+  margin-top: 100px;
   margin-bottom: 100px;
   background-color: white;
+  font-size: 50px;
+  background-color: #F2F2F2;
+  color: #195C77;
 }
-body{
+.userbody{
   /* display: flex; */
   /* flex-direction: row; */
   height: 100%;
@@ -158,6 +162,9 @@ body{
   /* background-color: white; */
   color: #195C77;
   height: 70%;
+  border: 0.5px transparent;
+  border-bottom: 0.5px black ;
+  
 }
 .menubutton {
   /* margin-left: 100px; */
@@ -166,6 +173,10 @@ body{
   background-color: #195C77;
   color: white;
   font: 20px sans-serif;
+  padding-bottom: 5px;
+  border: 1px transparent;
+  border-bottom: 1px black ;
+  /* box-shadow: 1px 1px 10px 5px #13475c inset; */
 }
 .clickedbutton {
   height: 70px;
@@ -173,6 +184,7 @@ body{
   background-color: white;
   color: #195C77;
   font: 20px sans-serif;
+  box-shadow: 2px 5px 5px 3px #103b4d ;
 }
 .xbutton {
   height: 300px;

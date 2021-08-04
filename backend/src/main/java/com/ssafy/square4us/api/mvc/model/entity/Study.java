@@ -1,53 +1,39 @@
 package com.ssafy.square4us.api.mvc.model.entity;
 
+import lombok.*;
+
+import javax.persistence.*;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.springframework.data.annotation.CreatedDate;
-
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @ToString
-public class Study extends BaseTimeEntity{
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "study_id")
-	private Long id;
+public class Study extends BaseTimeEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "study_id")
+    private Long id;
 
-	private String category;
+    private String category;
 
-	@Column(name = "study_name")
-	private String name;
+    @Column(name = "study_name")
+    private String name;
 
-	@Column(name = "is_dissolve")
-	private boolean isDessolved = false;
+    @Column(name = "dismantle_flag")
+    private boolean dismantle_flag = false;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "dissolve_at")
-	private Date dsvDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "dismantle_date")
+    private Date dismantle_date;
 
-	@Builder
-	public Study(String category, String name) {
-		super();
-		this.category = category;
-		this.name = name;
-	}
+    @Builder
+    public Study(Long id, String category, String name, boolean dismantle_flag, Date dismantle_date) {
+        this.id = id;
+        this.category = category;
+        this.name = name;
+        this.dismantle_flag = dismantle_flag;
+        this.dismantle_date = dismantle_date;
+    }
 }
