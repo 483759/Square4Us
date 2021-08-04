@@ -18,7 +18,7 @@ const routes = [
       { path: '/userinfo', name: 'UserInfo', component: UserInfo },
       { path: '/study', name: 'Study', component: Study },
       { path: '/study/list', name: 'StudyList', component: StudyList },
-      { path: '/study/main', name: 'StudyMain', component: StudyMain },
+      { path: '/study/:studyId', name: 'StudyMain', component: StudyMain, props : true },
       { path: '/study/report', name: 'StudyReport', component: StudyReport },
     ]
   },

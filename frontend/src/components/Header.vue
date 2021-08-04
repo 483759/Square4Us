@@ -7,7 +7,8 @@
     <section id='nav-list'>
       <router-link :to="{ name: 'StudyList' }">Study</router-link> 
       <router-link :to="{ name: 'UserInfo' }">User</router-link> 
-      <router-link :to="{ name: 'StudyMain' }">StudyMain</router-link> 
+      <router-link :to="{ path: `/study/${1}` }">1번 스터디메인</router-link> 
+      <router-link :to="{ path: `/study/${2}` }">2번 스터디메인</router-link> 
       <!-- <router-link :to="{ name: 'Tutorial' }">Tutorial</router-link> 
       <router-link :to="{ name: 'Meeting' }">Meeting</router-link> 
       <router-link :to="{ name: 'StudyReport' }">StudyReport</router-link> -->

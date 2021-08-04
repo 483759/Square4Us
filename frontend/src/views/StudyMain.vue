@@ -4,41 +4,66 @@
         <img id='aside-header-thumbnail' src="/meeting-thumbnail.jpg" alt="썸네일">
     </template>
     <template v-slot:aside-body>
-      <div id='empty-block'>
-      </div>
-      <ul id='aside-list'>
-      <li>
-        스터디 메인
-      </li> 
-      <li class='active'>
-        미팅
-      </li> 
-      <li>
-        게시글
-      </li> 
-      <li>
-        스터디 학습 자료
-      </li>
-      <li>
-        통계
-      </li>
-      <li>
-        스터디 설정
-      </li>
-      </ul>
+      <StudyMainAside :menus='menus' :activeIndex='activeIndex' @onClickMenu='(idx)=>{activeIndex = idx}'/>
     </template>
     <template v-slot:section>
-      <div id='section-title'>스터디 메인</div> 
+      <div id='section-title'>{{menus[activeIndex]}} (스터디_ID  {{ studyId }})</div>
+      <!-- 컴포넌트 파서 알맞은 위치의 div를 컴포넌트로 대체하면 됨 -->
+      <div v-if="activeIndex === 0">
+        스터디 메인
+      </div>
+      <div v-else-if="activeIndex === 1">
+        미팅
+      </div>
+      <div v-else-if="activeIndex === 2">
+        게시글
+      </div>
+      <div v-else-if="activeIndex === 3">
+        스터디 학습 자료
+      </div>
+      <div v-else-if="activeIndex === 4">
+        통계
+      </div>
+      <div v-else-if="activeIndex === 5">
+        스터디 설정
+      </div>
+      <div v-else>
+        아무것에도 포함 안됨
+      </div>
     </template>
   </AsideFrame>
 </template>
 
 <script>
 import AsideFrame from '@/components/AsideFrame.vue'
+import StudyMainAside from '@/components/study/main/StudyMainAside.vue'
+import { ref } from '@vue/reactivity'
 export default {
   name: 'StudyMain',
+  props: {
+    studyId: {
+      type: String,
+      required : true
+    }
+  },
   components :{
-    AsideFrame
+    AsideFrame,
+    StudyMainAside
+  },
+  setup() {
+    const menus = [
+      '스터디 메인', 
+      '미팅', 
+      '게시글', 
+      '스터디 학습 자료', 
+      '통계', 
+      '스터디 설정'
+    ]
+    const activeIndex = ref(0)
+    return {
+      menus,
+      activeIndex,
+    }
   }
 }
 </script>
@@ -48,35 +73,6 @@ export default {
   width: 230px;
   border-radius: 5px;
   box-shadow: -1px -1px 1px 1px rgb(231, 231, 231);
-}
-
-#empty-block {
-  border-bottom: 1px solid #195C77;
-  height: 20px;
-}
-
-#aside-list {
-  margin: 0;
-}
-
-
-#aside-list > li{
-  display: flex;
-  box-sizing: border-box;
-  border-bottom: 1px solid #195C77;
-  height: 50px;
-  padding-left: 25px;
-  align-items: center;
-  font-weight: bold;
-  font-size: 0.9rem;
-  color: #195C77;
-  
-}
-
-.active {
-  color:white !important;
-  background-color: #195C77 !important;
-  /* background-clip: border-box; */
 }
 
 #section-title{
