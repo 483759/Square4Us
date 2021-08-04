@@ -7,6 +7,7 @@ import com.ssafy.square4us.api.request.MemberUpdatePatchReq;
 import com.ssafy.square4us.api.response.BasicResponseBody;
 import com.ssafy.square4us.api.response.MemberInfoGetRes;
 import com.ssafy.square4us.api.response.MemberLoginPostRes;
+import com.ssafy.square4us.api.response.ResponseFactory;
 import com.ssafy.square4us.common.auth.MemberDetails;
 import com.ssafy.square4us.common.util.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
@@ -66,7 +67,7 @@ public class MemberController {
 
         Member confirmMember = memberService.getMemberByEmail(joinInfo.getEmail());
         if (confirmMember != null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(BasicResponseBody.of(409, "이미 존재하는 계정입니다"));
+            return ResponseFactory.Conflict();
         }
 
         // 임의로 리턴된 Member 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
@@ -86,10 +87,15 @@ public class MemberController {
             @ApiResponse(responseCode = "500", description = "서버 오류")})
     public ResponseEntity<? extends BasicResponseBody> getUserInfo(
             @Parameter(hidden = true) Authentication authentication) {
+        if(authentication==null){
+            return ResponseFactory.Forbidden();
+        }
+
         MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
 
-        if (memberDetails == null)
-            return ResponseEntity.status(401).body(BasicResponseBody.of(401, "인증 실패"));
+        if (memberDetails == null){
+            return ResponseFactory.Unauthorized();
+        }
 
         String email = memberDetails.getUsername();
         Member member = memberService.getMemberByEmail(email);
@@ -105,14 +111,18 @@ public class MemberController {
     public ResponseEntity<? extends BasicResponseBody> modifyUserInfo(
             @Parameter(hidden = true) Authentication authentication,
             @RequestBody @Parameter(name = "회원 정보 수정", required = true) MemberUpdatePatchReq updateInfo) {
+        if(authentication==null){
+            return ResponseFactory.Forbidden();
+        }
+
         MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
 
-        if (memberDetails == null)
-            return ResponseEntity.status(401).body(BasicResponseBody.of(401, "인증 실패"));
+        if (memberDetails == null){
+            return ResponseFactory.Unauthorized();
+        }
 
         String email = memberDetails.getUsername();
-        //Member member = memberService.getMemberByEmail(email);
-        Long id = memberService.updateMemberByEmail(email, updateInfo);
+        memberService.updateMemberByEmail(email, updateInfo);
 
         return ResponseEntity.ok(MemberInfoGetRes.of(200, "성공", memberService.getMemberByEmail(email)));
     }

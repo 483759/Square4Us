@@ -6,6 +6,7 @@ import com.ssafy.square4us.api.mvc.service.MemberService;
 import com.ssafy.square4us.api.mvc.service.StudyService;
 import com.ssafy.square4us.api.request.StudyCreatePostReq;
 import com.ssafy.square4us.api.response.BasicResponseBody;
+import com.ssafy.square4us.api.response.ResponseFactory;
 import com.ssafy.square4us.api.response.StudyCreatePostRes;
 import com.ssafy.square4us.api.response.StudyListGetRes;
 import com.ssafy.square4us.common.auth.MemberDetails;
@@ -36,19 +37,18 @@ public class StudyController {
                                                               @RequestBody @Parameter(name = "스터디 생성 정보", required = true) StudyCreatePostReq studyInfo) {
 
         MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
-
         String memberId = memberDetails.getUsername();
 
         Member member = memberService.getMemberByEmail(memberId);
 
         if (member == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BasicResponseBody.of(401, "생성 권한이 존재하지 않습니다"));
+            return ResponseFactory.Unauthorized();
         }
 
         Study newStudy = studyService.createStudy(studyInfo, member);
 
         if (newStudy == null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(BasicResponseBody.of(403, "스터디 생성에 실패했습니다"));
+            return ResponseFactory.Forbidden();
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(StudyCreatePostRes.of(201, "스터디 생성", newStudy));
@@ -61,8 +61,23 @@ public class StudyController {
     public ResponseEntity<? extends BasicResponseBody> readAll() {
         List<Study> list = studyService.findAllStudies();
         if (list == null) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(BasicResponseBody.of(204, "존재하지 않음"));
+            return ResponseFactory.NoContent();
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(StudyListGetRes.of(200, "성공", list));
+    }
+
+    @GetMapping("{studyId}")
+    @Operation(summary = "스터디 정보 조회", description = "특정 스터디의 정보를 조회한다", responses = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "204", description = "존재하지 않음")})
+    public ResponseEntity<? extends BasicResponseBody> getStudyById(@PathVariable("studyId") Long studyId) {
+        Study study = studyService.findByStudyId(studyId);
+
+        if (study == null) {
+            return ResponseFactory.NoContent();
+        }
+
+        //return null;
+        return ResponseEntity.status(HttpStatus.CREATED).body(Study.InfoGetRes.of(200, "성공", study));
     }
 }
