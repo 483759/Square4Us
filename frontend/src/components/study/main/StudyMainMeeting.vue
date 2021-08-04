@@ -15,6 +15,7 @@
 <script>
 import { reactive } from '@vue/reactivity'
 import StudyMainMeetingItem from '@/components/study/main/StudyMainMeetingItem.vue'
+import router from '@/router'
 export default {
   name: 'StudyMainMeeting',
   props: {
@@ -57,7 +58,7 @@ export default {
 
     const onEnter = (meetingId)=>{ // 채팅방 입장
       console.log(`${props.studyId}번 스터디, ${meetingId}번 방 입장!`);
-      // 푸시하기
+      router.push({path: `/study/${props.studyId}/meeting/${meetingId}`})
     }
     return {
       state,

@@ -25,7 +25,7 @@ const routes = [
       { path: '/study/report', name: 'StudyReport', component: StudyReport },
     ]
   },
-  { path: '/study/main/room', name: 'Meeting', component: Meeting },
+  { path: '/study/:studyId/meeting/:meetingId', name: 'Meeting', component: Meeting, props : true },
 ]
 
 const router = createRouter({
