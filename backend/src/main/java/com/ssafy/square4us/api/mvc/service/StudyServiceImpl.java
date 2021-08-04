@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +35,15 @@ public class StudyServiceImpl implements StudyService {
         studyMemberRepo.save(sm);
 
         return study;
+    }
+
+    @Override
+    public Study findByStudyId(Long studyId) {
+        Optional<Study> study = studyRepo.findById(studyId);
+        if(!study.isPresent()){
+            return null;
+        }
+        return study.get();
     }
 
     @Override

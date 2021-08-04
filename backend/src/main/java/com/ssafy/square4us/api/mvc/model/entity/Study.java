@@ -1,5 +1,7 @@
 package com.ssafy.square4us.api.mvc.model.entity;
 
+import com.ssafy.square4us.api.response.BasicResponseBody;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,7 +11,6 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @ToString
 public class Study extends BaseTimeEntity {
     @Id
@@ -23,16 +24,48 @@ public class Study extends BaseTimeEntity {
     private String name;
 
     @Column(name = "dismantle_flag")
-    private boolean dismantle_flag = false;
+    private char dismantle_flag = 'F';
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "dismantle_date")
     private Date dismantle_date;
 
     @Builder
-    public Study(String category, String name) {
-        super();
+    public Study(Long id, String category, String name, char dismantle_flag, Date dismantle_date) {
+        this.id = id;
         this.category = category;
         this.name = name;
+        this.dismantle_flag = dismantle_flag;
+        this.dismantle_date = dismantle_date;
     }
+
+    @Getter
+    public static class InfoGetRes extends BasicResponseBody {
+        Study study;
+
+        public InfoGetRes(Integer statusCode, String message, Study study) {
+            super(statusCode, message);
+            this.study = study;
+        }
+
+        //        private Long id;
+//        private String category;
+//        private String name;
+//        private char dismantle_flag;
+//        private Date dismantle_date;
+//
+//        public InfoGetRes(Integer statusCode, String message, Long id, String category, String name, char dismantle_flag, Date dismantle_date) {
+//            super(statusCode, message);
+//            this.id = id;
+//            this.category = category;
+//            this.name = name;
+//            this.dismantle_flag = dismantle_flag;
+//            this.dismantle_date = dismantle_date;
+//        }
+
+        public static InfoGetRes of(Integer statusCode, String message, Study study){
+            return new InfoGetRes(statusCode, message, study);
+        }
+    }
+
 }

@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface StudyService {
     Study createStudy(StudyCreatePostReq studyInfo, Member member);
-
+    Study findByStudyId(Long studyId);
     List<Study> findAllStudies();
 }
