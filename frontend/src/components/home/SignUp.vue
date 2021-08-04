@@ -9,13 +9,13 @@
       <form action="">
         <h2 class="modal_body">SignUp</h2>
         <hr>
-        <p>email <input type="text" v-model="email">
+        <p>email <input type="text" v-model="state.email">
         </p>
-        <p>password <input type="text" v-model="password">
+        <p>password <input type="text" v-model="state.password">
         </p>
         <p>
           <label for="password_confirmation"></label>
-          password_confirmation <input type="text" name="password_confirmation" v-model="password_confirmation">
+          password_confirmation <input type="text" name="password_confirmation" v-model="state.passwordConfirmation">
         </p>
         <button @click="modalPopup">close</button>
         <button >Signup</button>
@@ -36,23 +36,14 @@ import {reactive, ref} from '@vue/reactivity'
 export default {
     name: 'SignUp',
     setup() {
-      let state = reactive({
+      const state = reactive({
         email: '',
         password: '',
-        password_confirmation: '',
+        passwordConfirmation: '',
       })
-      console.log(state)
-      // function signup() {
-      //   axios({
-      //     method: 'post',
-      //   })
-      // }
       const modal = ref(false)
       const modalPopup = () => {
-        console.log(modal)
-        console.log(modal.value)
         modal.value = !modal.value
-
       }
       return {
         state,
@@ -73,7 +64,7 @@ export default {
   background: rgba(0, 0, 0, 0.8);
   z-index: 9997;
 }
- 
+
 /* 모달창 영역을 꾸민다 */
 .modal__box{
   z-index: 9998;
@@ -94,13 +85,13 @@ div {
   box-sizing: border-box;
 }
 .black-bg {
-   z-index: 9998;
+  z-index: 9998;
   width: 100%; height:100%;
   background: rgba(0,0,0,0.5);
   position: fixed; padding: 20px;
 }
 .white-bg {
-   z-index: 9997;
+  z-index: 9997;
   width: 100%; background: white;
   border-radius: 8px;
   padding: 20px;

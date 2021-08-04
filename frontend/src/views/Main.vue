@@ -5,7 +5,6 @@
     <div>Square 4 us에서 새로운 스터디를 경험하세요</div>
     <div></div>
     </div>
-
     <button class="signbtn" style="color: #f2f2f2"><SignUp/></button>
     
 </template>
