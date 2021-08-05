@@ -4,27 +4,29 @@
 </template>
 
 <script>
-// export default {
-//   name: 'App',
-//   setup() {
-//     const changeTheme = (e)=>{
-//       const htmlTag = document.getElementsByTagName('html')[0]
-//       console.log(htmlTag);
-//       const theme = htmlTag.getAttribute('color-theme')
-//       if (theme ==='light') {
-//         htmlTag.setAttribute('color-theme', 'dark')
-//         e.target.textContent = 'light'
-//       } else {
-//         htmlTag.setAttribute('color-theme', 'light')
-//         e.target.textContent = 'dark'
-//       }
-//     }
+import axios from 'axios'
+export default {
+  name: 'App',
+  setup() {
+    axios.defaults.baseURL = 'http://localhost:8080/api'
+    // const changeTheme = (e)=>{
+    //   const htmlTag = document.getElementsByTagName('html')[0]
+    //   console.log(htmlTag);
+    //   const theme = htmlTag.getAttribute('color-theme')
+    //   if (theme ==='light') {
+    //     htmlTag.setAttribute('color-theme', 'dark')
+    //     e.target.textContent = 'light'
+    //   } else {
+    //     htmlTag.setAttribute('color-theme', 'light')
+    //     e.target.textContent = 'dark'
+    //   }
+    // }
 
-//     return {
-//       changeTheme
-//     }
-//   }
-// }
+    // return {
+    //   changeTheme
+    // }
+  }
+}
 </script>
 
 <style>
