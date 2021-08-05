@@ -21,7 +21,7 @@ export default {
   props: {
     isShow : {
       type: Boolean,
-      required: true
+      required: true,
     },
     popupId : {
       default : ()=> `popup-${_.uniqueId()}`
@@ -71,6 +71,7 @@ export default {
     top: 50%;
     left: 50%;
     background-color: white;
+    border-radius: 5px;
     /* 박스 그림자 */
     box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
     
@@ -89,7 +90,6 @@ export default {
   .popup {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
   }
 
 

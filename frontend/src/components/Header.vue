@@ -16,12 +16,14 @@
       <!-- <router-link :to="{ name: 'Tutorial' }">Tutorial</router-link> 
       <router-link :to="{ name: 'Meeting' }">Meeting</router-link> 
       <router-link :to="{ name: 'StudyReport' }">StudyReport</router-link> -->
-      <div class="nav-b">
+      <div v-if='!isLogin'>
         <Login/>
-      </div>
-      <div class="nav-b">
         <SignUp/>
       </div>
+      <div v-else>
+        로그아웃
+      </div>
+
     </section>
   </nav>
   <router-view></router-view>
@@ -37,11 +39,19 @@
 <script>
 import SignUp from '@/components/home/SignUp'
 import Login from '@/components/home/Login'
+import { computed } from '@vue/runtime-core'
+import store from '@/store'
 export default {
   name : 'Header',
   components: {
     Login,
     SignUp,
+  },
+  setup() {
+    const isLogin = computed(()=> store.state.isLogin)
+    return {
+      isLogin
+    }
   }
 }
 </script>
@@ -80,15 +90,6 @@ export default {
   font-size: 16px;
 }
 
-.nav-b {
-  padding-left: 14px;
-  padding-right: 14px;
-  padding-top: 19px;
-  padding-bottom: 19px;
-  font-size: 20px;
-  /* router기본 패딩값 있으므로 list-a 보다 6작게 위 아래는 1작게 */
-}
-
 /* 현재 페이지 강조하는 style */
 /* #nav a.router-link-exact-active {
   color: #42b983;
@@ -111,11 +112,11 @@ export default {
   margin: 7px;
   
 }
+
 #logo{
   width: 400px;
   padding: 0;
 }
-
 
 #logo-icon{
   width: 70px;
@@ -126,7 +127,6 @@ export default {
 
 #logo-text{
   font-size: 30px;
-  
   /* transition: 0.3s; */
 }
 #logo-text:hover, .btn-to-a:hover, #nav a:hover {
@@ -154,7 +154,6 @@ export default {
 .slogan-box{
   flex-wrap: wrap;
   margin: 0 auto
-  /* {margin: 0 auto} */
 }
 .square{
   font: 40px;
