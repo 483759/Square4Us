@@ -1,26 +1,28 @@
 <template>
-  <article :class="['background', isShow && 'show']" @click="changeModal"> 
+  <article :class="['background', isShow && 'show']" @click="$emit('switchModal')"> 
     <div class='popup' :id='popupId' @click.stop="">
         <slot name='header'></slot>
         <slot></slot>
         <slot name='footer'></slot>
     </div>
   </article>
-    <button @click="changeModal">
-      <slot name='button'>
-        열기
-      </slot>
-    </button>
+  <slot name='button'>
+    <!-- <button @click="$emit('switchModal')"> 열기 </button> -->
+  </slot>
 </template>
 
 <script>
 import _ from 'lodash'
-import { ref } from '@vue/reactivity'
 import ModalApi from '@/api/ModalApi.js'
 import { onMounted } from '@vue/runtime-core'
 export default {
   name: 'Modal',
+  emits: ['switchModal'], // 하나의 태그로 묶이지 않은 경우 명시적으로 emit을 선언해주어야 한다
   props: {
+    isShow : {
+      type: Boolean,
+      required: true
+    },
     popupId : {
       default : ()=> `popup-${_.uniqueId()}`
     },
@@ -38,19 +40,10 @@ export default {
     }
   },
   setup(props) {
-    // 모달 보여줄지 여부
-    const isShow = ref(false)
-    const changeModal = ()=>{
-      isShow.value = !isShow.value
-    }
     // 모달 사이즈 지정
     onMounted(()=>{
       ModalApi.setModalSize(props.popupId, props.width, props.height, props.top, props.left) // 너비, 높이
     })
-    return {
-      isShow,
-      changeModal,
-    }
   }
 }
 </script>
