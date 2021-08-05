@@ -4,12 +4,10 @@ import com.ssafy.square4us.api.mvc.model.entity.Meeting;
 import com.ssafy.square4us.api.mvc.model.entity.Study;
 import com.ssafy.square4us.api.mvc.model.repository.MeetingRepository;
 import com.ssafy.square4us.api.mvc.model.repository.StudyRepository;
-import com.ssafy.square4us.api.request.MeetingCreatePostReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +33,7 @@ public class MeetingServiceImpl implements MeetingService {
                         .thumbnailName(meetingInfo.getThumbnailName())
                         .thumbnailPath(meetingInfo.getThumbnailPath())
                         .maximum(meetingInfo.getMaximum())
+                        .run_flag('T')
                         .build()
         );
         return meeting;

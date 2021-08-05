@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -63,8 +64,21 @@ public class Meeting extends BaseTimeEntity {
     }
 
     @Getter
+    public static class CreatePostRes {
+        Long id;
+
+        public CreatePostRes(Long id) {
+            this.id = id;
+        }
+
+        public static BasicResponseBody<CreatePostRes> of(Integer statusCode, String message, Long id) {
+            return BasicResponseBody.of(statusCode, message, new CreatePostRes(id));
+        }
+    }
+
+    @Getter
     @Schema(description = "특정 미팅 입장 Response")
-    public static class EnterGetRes extends BasicResponseBody {
+    public static class EnterGetRes {
         @Schema(description = "미팅 아이디", example = "2")
         private Long id;
 
@@ -80,8 +94,7 @@ public class Meeting extends BaseTimeEntity {
         @Schema(description = "run_flag", example = "T")
         private char run_flag = 'T';
 
-        public EnterGetRes(Integer statusCode, String message, Long id, String thumbnailName, String thumbnailPath, int maximum, char run_flag) {
-            super(statusCode, message);
+        public EnterGetRes(Long id, String thumbnailName, String thumbnailPath, int maximum, char run_flag) {
             this.id = id;
             this.thumbnailName = thumbnailName;
             this.thumbnailPath = thumbnailPath;
@@ -89,8 +102,23 @@ public class Meeting extends BaseTimeEntity {
             this.run_flag = run_flag;
         }
 
-        public static EnterGetRes of(Integer statusCode, String message, Meeting meeting){
-            return new EnterGetRes(statusCode, message, meeting.getId(), meeting.getThumbnailName(), meeting.getThumbnailPath(), meeting.getMaximum(), meeting.getRun_flag());
+        public static BasicResponseBody<EnterGetRes> of(Integer statusCode, String message, Meeting meeting) {
+            return BasicResponseBody.of(statusCode, message, new EnterGetRes(meeting.getId(), meeting.getThumbnailName(), meeting.getThumbnailPath(), meeting.getMaximum(), meeting.getRun_flag()));
         }
     }
+
+    @Getter
+    @Schema(description = "All Meeting List Get Response")
+    public static class ListGetRes {
+        List<Meeting> meetings;
+
+        public ListGetRes(List<Meeting> meetings) {
+            this.meetings = meetings;
+        }
+
+        public static BasicResponseBody<ListGetRes> of(Integer statusCode, String message, List<Meeting> meetingList) {
+            return BasicResponseBody.of(statusCode, message, new ListGetRes(meetingList));
+        }
+    }
+
 }

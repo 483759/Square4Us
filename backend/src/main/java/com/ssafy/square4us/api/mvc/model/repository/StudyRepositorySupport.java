@@ -19,7 +19,8 @@ public class StudyRepositorySupport {
     public List<Study> findAllStudy() {
         return jpaQueryFactory
                 .select(qStudy)
-                .where(qStudy.dismantle_flag.ne('T'))
+                .from(qStudy)
+                .where(qStudy.dismantleFlag.ne('T'))
                 .fetch();
     }
 
@@ -27,7 +28,7 @@ public class StudyRepositorySupport {
         return jpaQueryFactory
                 .select(qStudy)
                 .from(qStudy)
-                .where(qStudy.id.eq(studyId), qStudy.dismantle_flag.ne('T'))
+                .where(qStudy.id.eq(studyId), qStudy.dismantleFlag.ne('T'))
                 .fetchOne();
     }
 
@@ -40,14 +41,13 @@ public class StudyRepositorySupport {
                 .where(qMember.email.eq(email), qStudy.id.eq(studyId))
                 .fetchOne()
                 ;
-
     }
 
     public Long deleteStudyById(Long studyId) {
         return jpaQueryFactory.update(qStudy)
                 .where(qStudy.id.eq(studyId))
-                .set(qStudy.dismantle_flag, 'T')
-                .set(qStudy.dismantle_date, new Date(System.currentTimeMillis()))
+                .set(qStudy.dismantleFlag, 'T')
+                .set(qStudy.dismantleDate, new Date(System.currentTimeMillis()))
                 .execute();
     }
 }

@@ -29,6 +29,7 @@ public class StudyServiceImpl implements StudyService {
                 Study.builder()
                         .category(studyInfo.getCategory())
                         .name(studyInfo.getName())
+                        .dismantleFlag('F')
                         .build());
         StudyMember sm = new StudyMember('T', study, member);
 
@@ -52,12 +53,23 @@ public class StudyServiceImpl implements StudyService {
     @Transactional
     public boolean deleteByStudyId(String email, Long studyId) {
         StudyMember sm = studyRepositorySupport.getStudyMemberByEmail(email, studyId);
-        if (sm.getLeader() != 'T') {
+        if (sm == null || sm.getLeader() != 'T') {
             return false;
         }
 
         Long affectedRow = studyRepositorySupport.deleteStudyById(studyId);
         return affectedRow != 0;
+    }
+
+    @Override
+    public boolean resign(String email, Long studyId) {
+        StudyMember sm = studyRepositorySupport.getStudyMemberByEmail(email, studyId);
+        if (sm == null || sm.getLeader() != 'F') {
+            return false;
+        }
+
+        //Long affectedRow =
+        return true;
     }
 
 }

@@ -15,4 +15,7 @@ public interface StudyService {
 
     @Transactional
     boolean deleteByStudyId(String email, Long studyId);
+
+    @Transactional
+    boolean resign(String email, Long studyId);
 }
