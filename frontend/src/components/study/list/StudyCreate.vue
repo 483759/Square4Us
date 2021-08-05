@@ -1,7 +1,7 @@
 <template>
   <article id='study-create'>
     StudyCreate
-    <Modal width='600px' height='800px' top='500px' left ='500px'>
+    <Modal :isShow='isShow' @switchModal='switchModal'>
       <template v-slot:header>
         <div>헤더</div> 
       </template>
@@ -12,7 +12,7 @@
         <div>푸터</div> 
       </template>
       <template v-slot:button>
-        
+        <button @click="switchModal">스터디생성</button>
       </template>
     </Modal>
   </article>
@@ -20,10 +20,22 @@
 
 <script>
 import Modal from '@/components/home/Modal.vue'
+import { ref } from '@vue/reactivity'
 export default {
   name: 'StudyCreate',
   components: {
     Modal
+  },
+  setup() {
+        // 모달 여닫기 관련
+    const isShow = ref(false)
+    const switchModal = ()=>{
+      isShow.value = !isShow.value
+    }
+    return {
+      isShow,
+      switchModal
+    }
   }
 }
 </script>
