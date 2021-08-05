@@ -8,22 +8,19 @@
       </div> 
     </section>
     
-    <section id='nav-list'>
+    <section v-if='isLogin' id='nav-list'>
+      <router-link :to="{ name: 'Tutorial' }">Tutorial</router-link> 
       <router-link :to="{ name: 'StudyList' }">Study</router-link> 
+      <router-link :to="{path: `/study/${1}`}">내 스터디</router-link> 
       <router-link :to="{ name: 'User' }">User</router-link> 
-      <router-link :to="{ path: `/study/${1}` }">1번 스터디메인</router-link> 
-      <router-link :to="{ path: `/study/${2}` }">2번 스터디메인</router-link> 
-      <!-- <router-link :to="{ name: 'Tutorial' }">Tutorial</router-link> 
-      <router-link :to="{ name: 'Meeting' }">Meeting</router-link> 
-      <router-link :to="{ name: 'StudyReport' }">StudyReport</router-link> -->
-      <div v-if='!isLogin'>
-        <Login/>
-        <SignUp/>
-      </div>
-      <div v-else>
-        로그아웃
-      </div>
-
+      <!-- <router-link :to="{ path: `/study/${1}` }">1번 스터디메인</router-link> 
+      <router-link :to="{ path: `/study/${2}` }">2번 스터디메인</router-link>  -->
+      <!-- <router-link :to="{ name: 'StudyReport' }">StudyReport</router-link> -->
+      <Logout/>
+    </section>
+    <section v-else id='nav-list'>
+      <Login/>
+      <SignUp/>
     </section>
   </nav>
   <router-view></router-view>
@@ -39,12 +36,14 @@
 <script>
 import SignUp from '@/components/home/SignUp'
 import Login from '@/components/home/Login'
+import Logout from '@/components/home/Logout'
 import { computed } from '@vue/runtime-core'
 import store from '@/store'
 export default {
   name : 'Header',
   components: {
     Login,
+    Logout,
     SignUp,
   },
   setup() {

@@ -10,6 +10,10 @@ export default createStore({
     LOGIN : function (state) {
       state.isLogin = true
     },
+    LOGOUT : function (state) {
+      state.isLogin = false
+      state.user = {}
+    },
     SET_USER: function (state, payload) {
       state.user = payload
     }
