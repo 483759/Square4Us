@@ -41,6 +41,9 @@ public class MeetingController {
     public ResponseEntity<? extends BasicResponseBody> create(@Parameter(hidden = true) Authentication authentication,
                                                               @PathVariable("studyId") Long studyId,
                                                               @RequestBody @Parameter(name = "미팅 생성 정보", required = true) Meeting.CreatePostReq meetingInfo) {
+        if (authentication == null) {
+            return ResponseFactory.forbidden();
+        }
 
         MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
         String memberId = memberDetails.getUsername();
@@ -60,11 +63,6 @@ public class MeetingController {
         }
 
         return ResponseEntity.ok(Meeting.CreatePostRes.of(201, "미팅 생성", newMeeting.getId()));
-        //원래는 201로 생성해야 함
-        //return ResponseEntity.created(new URI(ControllerLinkBuilder))
-        //return ResponseEntity.created("/api/study/{studyId}/meeting/{meetingId}");
-        //return ResponseEntity.created(Meeting.CreatePostRes.of(201, "미팅 생성", newMeeting.getId()));
-        //return ResponseEntity.status(HttpStatus.CREATED).body(MeetingCreatePostRes.of(201, "미팅 생성", newMeeting));
     }
 
     @GetMapping("{meetingId}")
@@ -74,16 +72,20 @@ public class MeetingController {
             @ApiResponse(responseCode = "403", description = "미팅이 존재하지 않음")})
     public ResponseEntity<? extends BasicResponseBody> enterMeeting(@Parameter(hidden = true) Authentication authentication,
                                                                     @PathVariable("studyId") Long studyId,
-                                                                    @PathVariable("meetingId") Long meetId){
+                                                                    @PathVariable("meetingId") Long meetId) {
+        if (authentication == null) {
+            return ResponseFactory.forbidden();
+        }
+
         Member member = authentication(authentication);
-        if(member == null){
+        if (member == null) {
             return ResponseFactory.unauthorized();
             //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BasicResponseBody.of(401, "권한이 존재하지 않습니다"));
         }
 
         Meeting meetingInfo = meetingService.enterMeeting(meetId);
 
-        if(meetingInfo==null){
+        if (meetingInfo == null) {
             return ResponseFactory.forbidden();
             //return ResponseEntity.status(HttpStatus.FORBIDDEN).body(BasicResponseBody.of(404, "미팅이 존재하지 않습니다"));
         }

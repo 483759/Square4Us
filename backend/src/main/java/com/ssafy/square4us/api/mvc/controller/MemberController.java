@@ -38,19 +38,15 @@ public class MemberController {
 
             if (member == null) {
                 return ResponseFactory.notFound();
-                //return ResponseEntity.status(HttpStatus.NOT_FOUND).body(BasicResponseBody.of(404, "존재하지 않는 계정"));
             }
             if (new BCryptPasswordEncoder().matches(password, member.getPassword()) == false) {
                 return ResponseFactory.unauthorized();
-                //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BasicResponseBody.of(401, "일치하지 않는 비밀번호"));
             }
             return ResponseEntity.ok(Member.LoginPostRes.of(200, "로그인 성공", JwtTokenProvider.generateToken(new MemberDetails(member))));
-            //return ResponseEntity.ok(MemberLoginPostRes.of(200, "로그인 성공", JwtTokenProvider.generateToken(new MemberDetails(member))));
 
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseFactory.internalServerError();
-            //return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BasicResponseBody.of(500, "서버 오류"));
         }
     }
 
@@ -68,15 +64,12 @@ public class MemberController {
             return ResponseFactory.conflict();
         }
 
-        // 임의로 리턴된 Member 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
         Member member = memberService.createMember(joinInfo);
 
         if (member == null) {
             return ResponseFactory.serviceUnavailable();
-            //return ResponseEntity.status(503).body(BasicResponseBody.of(503, "회원가입에 실패했습니다."));
         }
         return ResponseFactory.created();
-        //return ResponseEntity.status(201).body(BasicResponseBody.of(201, "회원가입 성공"));
     }
 
     @GetMapping("/me")

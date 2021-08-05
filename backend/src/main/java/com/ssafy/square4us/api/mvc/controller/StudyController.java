@@ -31,6 +31,9 @@ public class StudyController {
             @ApiResponse(responseCode = "403", description = "스터디 생성 실패")})
     public ResponseEntity<? extends BasicResponseBody> create(@Parameter(hidden = true) Authentication authentication,
                                                               @RequestBody @Parameter(name = "스터디 생성 정보", required = true) Study.CreatePostReq studyInfo) {
+        if (authentication == null) {
+            return ResponseFactory.forbidden();
+        }
 
         MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
         String memberId = memberDetails.getUsername();
@@ -48,7 +51,6 @@ public class StudyController {
         }
 
         return ResponseEntity.ok(Study.InfoGetRes.of(200, "스터디 생성 완료", newStudy.getId(), newStudy.getCategory(), newStudy.getName(), newStudy.getDismantleFlag(), newStudy.getDismantleDate()));
-        //return ResponseEntity.status(HttpStatus.CREATED).body(StudyCreatePostRes.of(201, "스터디 생성", newStudy));
     }
 
     @GetMapping("")
