@@ -2,7 +2,7 @@ package com.ssafy.square4us.common.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
-import com.ssafy.square4us.api.response.BasicResponseBody;
+import com.ssafy.square4us.api.mvc.model.dto.BasicResponseBody;
 import org.springframework.http.HttpStatus;
 
 import javax.servlet.http.HttpServletRequest;

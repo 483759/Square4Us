@@ -1,6 +1,6 @@
 package com.ssafy.square4us.api.mvc.model.entity;
 
-import com.ssafy.square4us.api.response.BasicResponseBody;
+import com.ssafy.square4us.api.mvc.model.dto.BasicResponseBody;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 

@@ -2,7 +2,7 @@ package com.ssafy.square4us.api.mvc.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ssafy.square4us.api.response.BasicResponseBody;
+import com.ssafy.square4us.api.mvc.model.dto.BasicResponseBody;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;

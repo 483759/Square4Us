@@ -1,6 +1,5 @@
-package com.ssafy.square4us.api.response;
+package com.ssafy.square4us.api.mvc.model.dto;
 
-import com.ssafy.square4us.api.mvc.model.dto.EmptyDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

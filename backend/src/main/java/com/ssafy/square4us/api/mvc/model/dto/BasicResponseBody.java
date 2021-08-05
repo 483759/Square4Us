@@ -1,4 +1,4 @@
-package com.ssafy.square4us.api.response;
+package com.ssafy.square4us.api.mvc.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

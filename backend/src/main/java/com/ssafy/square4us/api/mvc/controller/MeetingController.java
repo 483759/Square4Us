@@ -1,11 +1,11 @@
 package com.ssafy.square4us.api.mvc.controller;
 
+import com.ssafy.square4us.api.mvc.model.dto.BasicResponseBody;
+import com.ssafy.square4us.api.mvc.model.dto.ResponseFactory;
 import com.ssafy.square4us.api.mvc.model.entity.Meeting;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.service.MeetingService;
 import com.ssafy.square4us.api.mvc.service.MemberService;
-import com.ssafy.square4us.api.response.BasicResponseBody;
-import com.ssafy.square4us.api.response.ResponseFactory;
 import com.ssafy.square4us.common.auth.MemberDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
