@@ -30,7 +30,7 @@ public class ResponseBodyWriteUtil {
         message = message == null ? "" : message;
         Map<String, Object> data = ImmutableMap.of(
                 "timestamp", Calendar.getInstance().getTime(),
-                "status", httpStatus.value(),
+                "statusCode", httpStatus.value(),
                 "error", ex.getClass().getSimpleName(),
                 "message", message,
                 "path", request.getRequestURI()
