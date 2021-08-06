@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MeetingRepository extends JpaRepository<Meeting, Long>{
-    public List<Meeting> findAll();
+public interface MeetingRepository extends JpaRepository<Meeting, Long> {
+    List<Meeting> findAll();
 }

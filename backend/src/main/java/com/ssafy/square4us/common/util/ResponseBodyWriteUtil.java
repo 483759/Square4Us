@@ -1,22 +1,21 @@
 package com.ssafy.square4us.common.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableMap;
+import com.ssafy.square4us.api.mvc.model.dto.BasicResponseBody;
+import org.springframework.http.HttpStatus;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.http.HttpStatus;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableMap;
-import com.ssafy.square4us.api.response.BasicResponseBody;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class ResponseBodyWriteUtil {
-	public static void sendApiResponse(HttpServletResponse response, BasicResponseBody apiResponse) throws IOException {
+    public static void sendApiResponse(HttpServletResponse response, BasicResponseBody apiResponse) throws IOException {
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
@@ -31,7 +30,7 @@ public class ResponseBodyWriteUtil {
         message = message == null ? "" : message;
         Map<String, Object> data = ImmutableMap.of(
                 "timestamp", Calendar.getInstance().getTime(),
-                "status", httpStatus.value(),
+                "statusCode", httpStatus.value(),
                 "error", ex.getClass().getSimpleName(),
                 "message", message,
                 "path", request.getRequestURI()

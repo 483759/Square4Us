@@ -4,27 +4,49 @@
 </template>
 
 <script>
-// export default {
-//   name: 'App',
-//   setup() {
-//     const changeTheme = (e)=>{
-//       const htmlTag = document.getElementsByTagName('html')[0]
-//       console.log(htmlTag);
-//       const theme = htmlTag.getAttribute('color-theme')
-//       if (theme ==='light') {
-//         htmlTag.setAttribute('color-theme', 'dark')
-//         e.target.textContent = 'light'
-//       } else {
-//         htmlTag.setAttribute('color-theme', 'light')
-//         e.target.textContent = 'dark'
-//       }
-//     }
+import axios from 'axios'
+import { onMounted } from '@vue/runtime-core'
+import router from './router'
+import store from './store'
+export default {
+  name: 'App',
+  setup() {
+    onMounted(async()=>{
+      axios.defaults.baseURL = 'http://localhost:8080/api'
+      const jwt = localStorage.getItem('JWT')
+      if (jwt) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`
+        const response = await store.dispatch('getUser')
+        if (response) {
+          console.log('토큰유효함');
+          router.push({name: 'StudyList'})
+        }else{
+          console.log('토큰유효하지않음');
+          router.push({name: 'Main'})
+        }
+      }else{
+        console.log('토큰이 없습니다');
+        router.push({name: 'Main'})
+      }
+    })
+    // const changeTheme = (e)=>{
+    //   const htmlTag = document.getElementsByTagName('html')[0]
+    //   console.log(htmlTag);
+    //   const theme = htmlTag.getAttribute('color-theme')
+    //   if (theme ==='light') {
+    //     htmlTag.setAttribute('color-theme', 'dark')
+    //     e.target.textContent = 'light'
+    //   } else {
+    //     htmlTag.setAttribute('color-theme', 'light')
+    //     e.target.textContent = 'dark'
+    //   }
+    // }
 
-//     return {
-//       changeTheme
-//     }
-//   }
-// }
+    // return {
+    //   changeTheme
+    // }
+  }
+}
 </script>
 
 <style>
@@ -38,6 +60,14 @@ html, body, #app {
   height: 100%;
   width: 100%;
   background-color: var(--background);
+}
+#app {
+  display: flex;
+  flex-direction: column;
+
+}
+ul {
+  margin : 0;
 }
 
 :root[color-theme='light'] {
