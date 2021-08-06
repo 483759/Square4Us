@@ -77,7 +77,7 @@ export default {
 }
 .meeting-item > li {
   display: flex;
-  height: 90px;
+  height: 80px;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid #195C77;

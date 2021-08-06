@@ -25,7 +25,7 @@ export default {
 }
 .meeting-title {
   flex-grow: 1;
-  font-size: 1.15rem;
+  font-size: 0.95rem;
   font-weight: 600;
 }
 .meeting-button {
