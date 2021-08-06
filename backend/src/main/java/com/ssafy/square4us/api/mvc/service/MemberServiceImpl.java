@@ -52,4 +52,10 @@ public class MemberServiceImpl implements MemberService {
                 .build();
         return memberRepositorySupport.updateByMemberEmail(member);
     }
+
+    @Override
+    @Transactional
+    public void deleteMemberByEmail(String email) {
+        memberRepository.deleteByEmail(email);
+    }
 }

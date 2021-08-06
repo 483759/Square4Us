@@ -8,4 +8,6 @@ public interface MemberService {
     Member createMember(Member.JoinPostReq joinInfo);
 
     Long updateMemberByEmail(String email, Member.UpdatePatchReq updateInfo);
+
+    void deleteMemberByEmail(String email);
 }

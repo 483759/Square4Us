@@ -120,6 +120,28 @@ public class MemberController {
 
         Member modified = memberService.getMemberByEmail(email);
         return ResponseEntity.ok(Member.InfoGetRes.of(200, "수정 성공", modified.getEmail(), modified.getRole(), modified.getNickname(), modified.getProfile_name(), modified.getProfile_path(), modified.getReport()));
-        //return ResponseEntity.ok(MemberInfoGetRes.of(200, "성공", memberService.getMemberByEmail(email)));
     }
+
+    @DeleteMapping("me")
+    @Operation(summary = "회원 탈퇴", description = "회원의 정보를 삭제한다.", responses = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "401", description = "인증 실패"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")})
+    public ResponseEntity<? extends BasicResponseBody> deleteUserInfo(
+            @Parameter(hidden = true) Authentication authentication) {
+        if (authentication == null) {
+            return ResponseFactory.forbidden();
+        }
+
+        MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
+
+        if (memberDetails == null) {
+            return ResponseFactory.unauthorized();
+        }
+
+        memberService.deleteMemberByEmail(memberDetails.getUsername());
+
+        return ResponseFactory.ok();
+    }
+
 }
