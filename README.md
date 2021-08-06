@@ -29,6 +29,8 @@ Square 4 Us는 스터디를 찾고, 운영하고, 활동하길 원하는 많은 
 
 </details>
 
+<br>
+
 ### 개발 환경
 
 |이름|역할|세부|
@@ -61,6 +63,12 @@ Square 4 Us는 스터디를 찾고, 운영하고, 활동하길 원하는 많은 
 - __담당자__ : 천수승, 김준영
   <br>
 
+#### Commit Convention
+
+    #jira-issue-number [type]: commit message
+
+<br>
+
 #### 실행 방법
 
 ##### 포트 번호
@@ -68,6 +76,8 @@ Square 4 Us는 스터디를 찾고, 운영하고, 활동하길 원하는 많은 
     FrontEnd: 80
     BackEnd: 8080
     Database: 3306
+
+<br>
 
 ##### 실행 순서
 
