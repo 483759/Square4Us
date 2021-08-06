@@ -28,9 +28,12 @@ export default createStore({
         },
       }).catch((err)=>{
         console.log(err.response);
+        localStorage.removeItem('JWT');
       })
       if (!response) return false
-      localStorage.setItem('JWT', response.data.accessToken)
+      console.log(response.data);
+
+      localStorage.setItem('JWT', response.data.data.accessToken)
       context.commit('LOGIN')
       return true
     },
@@ -40,6 +43,7 @@ export default createStore({
         url: "/member/me",
       }).catch((err)=>{
         console.log(err.response);
+        localStorage.removeItem('JWT');
       })
       if (!response) return false
       context.commit('LOGIN')
