@@ -1,6 +1,7 @@
 package com.ssafy.square4us.common.auth;
 
 import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
@@ -56,12 +57,19 @@ public class LoginAuthenticationFilter extends BasicAuthenticationFilter {
             jwtAuthToken.setDetails(memberDetails);
 
             SecurityContextHolder.getContext().setAuthentication((Authentication) jwtAuthToken);
+        } catch (SecurityException ex) {
+            ResponseBodyWriteUtil.sendError(request, response, ex);
+            return;
+        } catch (IllegalArgumentException ex) {
+            ResponseBodyWriteUtil.sendError(request, response, ex);
+            return;
+        } catch (JWTDecodeException ex) {
+            ResponseBodyWriteUtil.sendError(request, response, ex);
+            return;
         } catch (JWTVerificationException ex) {
-            ex.printStackTrace();
             ResponseBodyWriteUtil.sendError(request, response, ex);
             return;
         } catch (Exception e) {
-            e.printStackTrace();
             ResponseBodyWriteUtil.sendError(request, response, e);
             return;
         }

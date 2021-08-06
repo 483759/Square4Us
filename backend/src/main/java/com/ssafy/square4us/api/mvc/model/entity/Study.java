@@ -1,11 +1,12 @@
 package com.ssafy.square4us.api.mvc.model.entity;
 
-import com.ssafy.square4us.api.response.BasicResponseBody;
+import com.ssafy.square4us.api.mvc.model.dto.BasicResponseBody;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,33 +25,69 @@ public class Study extends BaseTimeEntity {
     private String name;
 
     @Column(name = "dismantle_flag")
-    private char dismantle_flag = 'F';
+    private char dismantleFlag = 'F';
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "dismantle_date")
-    private Date dismantle_date;
+    private Date dismantleDate;
 
     @Builder
-    public Study(Long id, String category, String name, char dismantle_flag, Date dismantle_date) {
+    public Study(Long id, String category, String name, char dismantleFlag, Date dismantleDate) {
         this.id = id;
         this.category = category;
         this.name = name;
-        this.dismantle_flag = dismantle_flag;
-        this.dismantle_date = dismantle_date;
+        this.dismantleFlag = dismantleFlag;
+        this.dismantleDate = dismantleDate;
     }
 
     @Getter
-    public static class InfoGetRes extends BasicResponseBody {
-        Study study;
+    public static class CreatePostReq {
+        @Schema(name = "category", example = "ALGORITHM")
+        String category;
+        @Schema(name = "name", example = "모르고리즘")
+        String name;
 
-        public InfoGetRes(Integer statusCode, String message, Study study) {
-            super(statusCode, message);
-            this.study = study;
+        public CreatePostReq(String category, String name) {
+            this.category = category;
+            this.name = name;
         }
 
-        public static InfoGetRes of(Integer statusCode, String message, Study study){
-            return new InfoGetRes(statusCode, message, study);
+        public BasicResponseBody<CreatePostReq> of(Integer statusCode, String message, String category, String name) {
+            return BasicResponseBody.of(statusCode, message, new CreatePostReq(category, name));
         }
     }
 
+    @Getter
+    public static class InfoGetRes {
+        private Long id;
+        private String category;
+        private String name;
+        private char dismantleFlag;
+        private Date dismantleDate;
+
+        public InfoGetRes(Long id, String category, String name, char dismantleFlag, Date dismantleDate) {
+            this.id = id;
+            this.category = category;
+            this.name = name;
+            this.dismantleFlag = dismantleFlag;
+            this.dismantleDate = dismantleDate;
+        }
+
+        public static BasicResponseBody<InfoGetRes> of(Integer statusCode, String message, Long id, String category, String name, char dismantleFlag, Date dismantleDate) {
+            return BasicResponseBody.of(statusCode, message, new InfoGetRes(id, category, name, dismantleFlag, dismantleDate));
+        }
+    }
+
+    @Getter
+    public static class ListGetRes {
+        List<Study> studyList;
+
+        public ListGetRes(List<Study> studyList) {
+            this.studyList = studyList;
+        }
+
+        public static BasicResponseBody<Study.ListGetRes> of(Integer statusCode, String message, List<Study> studyList) {
+            return BasicResponseBody.of(statusCode, message, new Study.ListGetRes(studyList));
+        }
+    }
 }

@@ -2,7 +2,7 @@ package com.ssafy.square4us.common.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
-import com.ssafy.square4us.api.response.BasicResponseBody;
+import com.ssafy.square4us.api.mvc.model.dto.BasicResponseBody;
 import org.springframework.http.HttpStatus;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +30,7 @@ public class ResponseBodyWriteUtil {
         message = message == null ? "" : message;
         Map<String, Object> data = ImmutableMap.of(
                 "timestamp", Calendar.getInstance().getTime(),
-                "status", httpStatus.value(),
+                "statusCode", httpStatus.value(),
                 "error", ex.getClass().getSimpleName(),
                 "message", message,
                 "path", request.getRequestURI()

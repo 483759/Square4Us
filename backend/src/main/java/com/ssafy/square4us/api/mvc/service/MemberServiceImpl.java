@@ -3,7 +3,6 @@ package com.ssafy.square4us.api.mvc.service;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.model.repository.MemberRepository;
 import com.ssafy.square4us.api.mvc.model.repository.MemberRepositorySupport;
-import com.ssafy.square4us.api.request.MemberUpdatePatchReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,12 +20,6 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final MemberRepositorySupport memberRepositorySupport;
-//	private PasswordEncoder passwordEncoder;
-//	
-//	public MemberServiceImpl(MemberRepository memberRepository) {
-//		this.memberRepository = memberRepository;
-//		passwordEncoder = new BCryptPasswordEncoder();
-//	}
 
     @Override
     @Transactional(readOnly = true)
@@ -41,7 +34,6 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public Member createMember(Member.JoinPostReq joinInfo) {
-        //Member member = new Member(joinInfo.getEmail(), joinInfo.getNickname(), new BCryptPasswordEncoder().encode(joinInfo.getPassword()));
         Member member = Member.builder()
                 .email(joinInfo.getEmail())
                 .nickname(joinInfo.getNickname())
@@ -50,19 +42,14 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.save(member);
     }
 
-    //임시 구현 테스트
     @Override
     @Transactional
-    public Long updateMemberByEmail(String email, MemberUpdatePatchReq updateInfo) {
+    public Long updateMemberByEmail(String email, Member.UpdatePatchReq updateInfo) {
         Member member = Member.builder().email(email)
                 .nickname(updateInfo.getNickname())
                 .profile_name(updateInfo.getProfile_name())
                 .profile_path(updateInfo.getProfile_path())
                 .build();
-//        member.setNickname(updateInfo.getNickname());
-//        member.setProfile_name(updateInfo.getProfile_name());
-//        member.setProfile_path(updateInfo.getProfile_path());
-//        memberRepository.save(member);
         return memberRepositorySupport.updateByMemberEmail(member);
     }
 }
