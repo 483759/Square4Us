@@ -49,9 +49,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilter(new LoginAuthenticationFilter(authenticationManager(), memberService))
                 .authorizeRequests()
-                .antMatchers("/api/v1/member/me").authenticated()
+                .antMatchers("/api/member/me").authenticated()
                 .anyRequest().permitAll()
-                .and().cors();
+                .and().cors().configurationSource(corsConfigurationSource());
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        //configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean
