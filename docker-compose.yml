@@ -23,5 +23,3 @@ services:
     restart: unless-stopped
 networks: 
   square4us:
-environment: 
-  COMPOSE_PROJECT_NAME: square4us
