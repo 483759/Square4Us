@@ -27,7 +27,7 @@ export default createStore({
           ...credentials,
         },
       }).catch((err)=>{
-        console.log(err.response.data);
+        console.log(err.response);
       })
       if (!response) return false
       localStorage.setItem('JWT', response.data.accessToken)
@@ -35,14 +35,11 @@ export default createStore({
       return true
     },
     getUser : async function (context) {
-      
       const response = await axios({
         method: "GET",
         url: "/member/me",
       }).catch((err)=>{
-        if (err.response.data.status === 401) {
-          console.log('인증이 유효하지 않습니다');
-        }
+        console.log(err.response);
       })
       if (!response) return false
       context.commit('LOGIN')
