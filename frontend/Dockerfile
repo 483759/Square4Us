@@ -4,6 +4,7 @@ COPY package* ./
 RUN npm install
 COPY public ./public 
 COPY src ./src 
+COPY .env ./
 RUN npm run build
 
 # 2. 빌드 된 파일을 엔진엑스 컨테이너에 복사
