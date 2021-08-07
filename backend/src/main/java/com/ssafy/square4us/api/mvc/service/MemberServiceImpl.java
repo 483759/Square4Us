@@ -1,5 +1,6 @@
 package com.ssafy.square4us.api.mvc.service;
 
+import com.ssafy.square4us.api.mvc.model.dto.MemberDTO;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.model.repository.MemberRepository;
 import com.ssafy.square4us.api.mvc.model.repository.MemberRepositorySupport;
@@ -32,24 +33,39 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public MemberDTO getMemberDTOByEmail(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        if (!member.isPresent())
+            return null;
+
+        return new MemberDTO(member.get());
+    }
+
+    @Override
     @Transactional
-    public Member createMember(Member.JoinPostReq joinInfo) {
+    public MemberDTO createMember(MemberDTO.JoinPostReq joinInfo) {
         Member member = Member.builder()
                 .email(joinInfo.getEmail())
                 .nickname(joinInfo.getNickname())
                 .password(new BCryptPasswordEncoder().encode(joinInfo.getPassword()))
                 .build();
-        return memberRepository.save(member);
+        return new MemberDTO(memberRepository.save(member));
     }
 
     @Override
     @Transactional
-    public Long updateMemberByEmail(String email, Member.UpdatePatchReq updateInfo) {
+    public Long updateMemberByEmail(String email, MemberDTO.UpdatePatchReq updateInfo) {
         Member member = Member.builder().email(email)
                 .nickname(updateInfo.getNickname())
                 .profile_name(updateInfo.getProfile_name())
                 .profile_path(updateInfo.getProfile_path())
                 .build();
         return memberRepositorySupport.updateByMemberEmail(member);
+    }
+
+    @Override
+    @Transactional
+    public void deleteMemberByEmail(String email) {
+        memberRepository.deleteByEmail(email);
     }
 }

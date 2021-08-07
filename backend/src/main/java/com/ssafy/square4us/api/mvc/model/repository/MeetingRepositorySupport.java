@@ -1,7 +1,8 @@
 package com.ssafy.square4us.api.mvc.model.repository;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.square4us.api.mvc.model.entity.Meeting;
+import com.ssafy.square4us.api.mvc.model.dto.MeetingDTO;
 import com.ssafy.square4us.api.mvc.model.entity.QMeeting;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -14,9 +15,9 @@ public class MeetingRepositorySupport {
     private final JPAQueryFactory jpaQueryFactory;
     QMeeting qMeeting = QMeeting.meeting;
 
-    public List<Meeting> findAll() {
+    public List<MeetingDTO> findAll() {
         return jpaQueryFactory
-                .select(qMeeting)
+                .select(Projections.constructor(MeetingDTO.class, qMeeting))
                 .from(qMeeting)
                 .fetch();
     }
