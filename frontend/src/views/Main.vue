@@ -12,7 +12,7 @@
 <script>
 import SignUp from '@/components/home/SignUp'
 export default {
-  name : 'MainImage',
+  name : 'Main',
   components: {
     SignUp,
   }

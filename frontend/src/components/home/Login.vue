@@ -1,62 +1,74 @@
 <template>
-  <!-- section은 백그라운드가 될 것 -->
-  <article :class="['background', isLogin && 'show']" @click.stop="changeModal"> 
-    <!-- article은 window 창이 될 것 : 내부에 팝업이 뜨므로? 나중에 확인 -->
-    <!-- <article class='window'> -->
-      <div class='popup' @click.stop="">
-        <form id='login-form' method="POST" @submit.prevent="login">
-        <p>
-        <label for="email">Email :</label>
-        <input type="email" id="email" name="email" v-model="credentials.email">
-        </p>
-        <p>
-        <label for="password">Password :</label>
-        <input type="password"  id="password" name="password" v-model="credentials.password">
-        </p>
-        <button>Login</button>
-      </form>
-      </div>
-    <!-- </article> -->
-  </article>
+  <section class="modal_z_index">
+    <Modal  :isShow='isShow' @switchModal='switchModal'>
+      <!-- 모달헤더 -->
+      <template v-slot:header class="header_login">
+        <!-- <header> 헤더도 들어감 </header> -->
+        <button class="button_close" @click.stop="switchModal">X</button>
+      </template>
 
-  <button class='btn-to-a' @click="changeModal">Login</button>
+      <!-- 모달바디 -->
+      <template v-slot:default>
+        <section>
+          <div class="sloganbox_login">
+          <img class="logo_login" src="/square4us.png" alt="">
+          <span class="slogan_login">Square4us</span>
+        </div>
+           <form id='login-form' method="POST" @submit.prevent="login">
+          <!-- <p><label for="email">Email</label></p> -->
+          <p><input class="input_login" type="email" id="login_email" name="email" placeholder="이메일 입력" v-model="credentials.email"></p>
+          <!-- <p><label for="password">Password</label></p> -->
+          <p><input class="input_login" type="password"  id="login_password" name="password" placeholder="비밀번호" v-model="credentials.password"></p>
+          
+          <button class="button_login">Login</button>
+          
+        </form>
+        </section>
+      </template>
+
+      <!-- 모달푸터 -->
+      <template v-slot:footer>
+        <!-- <footer>푸터도 들어감</footer> -->
+        <a class="login_p">아직 회원이 아니신가요? </a>
+      </template>
+
+      <!-- 모달여닫는 버튼 (외부노츨) -->
+      <template v-slot:button>
+          <button class='btn-to-a' @click="switchModal">Login</button>
+      </template>
+    </Modal>
+  </section>
 </template>
 
 <script>
-import axios from 'axios'
+import Modal from '@/components/home/Modal.vue'
 import { reactive, ref } from '@vue/reactivity'
+import { useStore } from 'vuex'
 export default {
-  name : "Login",
-  setup(){
-    // state : credentials
+  name: 'Login',
+  components : {
+    Modal
+  },
+  setup() {
+    // 모달 여닫기 관련
+    const isShow = ref(false)
+    const switchModal = ()=>{
+      isShow.value = !isShow.value
+    }
+    //로그인 객체
     const credentials = reactive({
       email : "",
       password : "",
     })
-    // state : openModel
-    const isLogin = ref(false)
-
     // 로그인 함수
+    const store = useStore();
     const login = ()=>{
-      console.log("로그인!");
-      console.log(credentials);
-      axios({
-      method : "POST",
-      url : "#",
-      data : {
-        credentials
-      }
-      })
+      store.dispatch('login', credentials)
     }
-    // 팝업 함수
-    const changeModal = ()=>{
-      isLogin.value = !isLogin.value
-    }
-    // setup의 리턴
     return {
+      isShow,
+      switchModal,
       credentials,
-      changeModal,
-      isLogin,
       login,
     }
   }
@@ -64,7 +76,7 @@ export default {
 </script>
 
 <style>
-  .background {
+.background {
     visibility: hidden;
     position : fixed;
     top : 0;
@@ -91,7 +103,7 @@ export default {
     
     /* 임시 지정 */
     width: 400px;
-    height: 500px;
+    height: 400px;
     /* fade in-out */
     opacity: 0;
     /* 위치 조절 */
@@ -116,11 +128,81 @@ export default {
     /* 위치 변화 css 내용 전부 0.5초 주겠다 */
     transition: all 0.5s;
   }
+  .modal_z_index {
+    z-index: 3;
+  }
 
   #login-form {
-    margin: 30% auto;
+    margin: 0px 0px auto;
+    margin-top: 0;
   }
-  input {
-    border: 1px solid black;
+  .header_login{
+    display: flex;
+    flex-direction: row-reverse;  
+    justify-content: flex-start;
+    height: 35px;
   }
+  .footer_login{
+    display: flex;
+    justify-content: center;
+  }
+  .sloganbox_login {
+    margin: 60px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+  .logo_login {
+    height: 65px;
+    width: 65px;
+    margin-right: 25px;
+  }
+  .slogan_login{
+    height: 40px;
+    font: 40px sans-serif;
+    font-weight: bold;
+  }
+  .input_login {
+    border: 1px solid gray;
+    margin-top: 1px;
+    height: 50px;
+    margin-bottom: 10px;
+    width: 300px;
+    flex-basis: 150px;
+    box-sizing: border-box;
+    border-radius: 5px;
+  }
+  p {
+    margin: 0;
+  }
+  .button_login {
+    height: 50px;
+    width: 300px;
+    flex-basis: 150px;
+    background: #509186;
+    margin: 20px 0 30px ;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: transparent;
+  }
+  
+  .button_close {
+    display: block;
+    /* block으로 해야 x가 쉽게 가운데로 옴 */
+    height: 30px;
+    width: 30px;
+    border: gray;
+    border-radius: 5px;
+    margin: 0;
+    padding: auto;
+
+    box-shadow: 2px 1px 3px;
+    box-sizing: border-box;
+    
+  }
+  .login_p {
+    font-size: 10px;
+  }
+  
 </style>

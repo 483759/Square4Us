@@ -1,0 +1,25 @@
+version: "3.9"
+services: 
+  frontend:
+    container_name: frontend
+    build: 
+      context: ./frontend
+    ports: 
+      - 80:80
+    networks:
+      - square4us
+    restart: unless-stopped
+    depends_on:
+      - backend
+  backend:
+    container_name: backend
+    image: wns312/java-test:square4us
+    # build: 
+    #   context: ./backend
+    ports: 
+      - 8080:8080
+    networks:
+      - square4us
+    restart: unless-stopped
+networks: 
+  square4us:

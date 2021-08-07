@@ -8,40 +8,49 @@
       </div> 
     </section>
     
-    <section id='nav-list'>
-      <router-link :to="{ name: 'StudyList' }">Study</router-link> 
+    <section v-if='isLogin' id='nav-list'>
+      <router-link :to="{ name: 'Tutorial' }">Tutorial</router-link> 
+      <router-link :to="{ name: 'NewStudyList' }">Study</router-link> 
+      <!-- <router-link :to="{ name: 'StudyList' }">Study</router-link>  -->
+      <router-link :to="{path: `/study/${1}`}">MyStudy</router-link> 
       <router-link :to="{ name: 'User' }">User</router-link> 
-      <router-link :to="{ path: `/study/${1}` }">1번 스터디메인</router-link> 
-      <router-link :to="{ path: `/study/${2}` }">2번 스터디메인</router-link> 
-      <!-- <router-link :to="{ name: 'Tutorial' }">Tutorial</router-link> 
-      <router-link :to="{ name: 'Meeting' }">Meeting</router-link> 
-      <router-link :to="{ name: 'StudyReport' }">StudyReport</router-link> -->
-      <div class="nav-b">
-        <Login/>
-      </div>
-      <div class="nav-b">
-        <SignUp/>
-      </div>
+      <!-- <router-link :to="{ path: `/study/${1}` }">1번 스터디메인</router-link> 
+      <router-link :to="{ path: `/study/${2}` }">2번 스터디메인</router-link>  -->
+      <!-- <router-link :to="{ name: 'StudyReport' }">StudyReport</router-link> -->
+      <Logout/>
+    </section>
+    <section v-else id='nav-list'>
+      <router-link :to="{ name: 'StudyList' }">Study</router-link> 
+      <Login/>
+      <SignUp/>
     </section>
   </nav>
   <router-view></router-view>
-  <footer id="footer">
+  <!-- <footer id="footer">
     <div>삼성청년 SW 아카테미</div> 
     <div>대전캠퍼스 5기 3반8팀</div>
     <div >2학기 공통 프로젝트</div> 
-  </footer>
-
-
+  </footer> -->
 </template>
 
 <script>
 import SignUp from '@/components/home/SignUp'
 import Login from '@/components/home/Login'
+import Logout from '@/components/home/Logout'
+import { computed } from '@vue/runtime-core'
+import store from '@/store'
 export default {
   name : 'Header',
   components: {
     Login,
+    Logout,
     SignUp,
+  },
+  setup() {
+    const isLogin = computed(()=> store.state.isLogin)
+    return {
+      isLogin
+    }
   }
 }
 </script>
@@ -80,15 +89,6 @@ export default {
   font-size: 16px;
 }
 
-.nav-b {
-  padding-left: 14px;
-  padding-right: 14px;
-  padding-top: 19px;
-  padding-bottom: 19px;
-  font-size: 20px;
-  /* router기본 패딩값 있으므로 list-a 보다 6작게 위 아래는 1작게 */
-}
-
 /* 현재 페이지 강조하는 style */
 /* #nav a.router-link-exact-active {
   color: #42b983;
@@ -102,6 +102,7 @@ export default {
   background-color: rgb(255, 255, 255, 0);
   color: var(--textColor);
   font-weight: bolder;
+  padding: 20px;
 }
 
 #logo, #nav-list {
@@ -111,11 +112,11 @@ export default {
   margin: 7px;
   
 }
+
 #logo{
   width: 400px;
   padding: 0;
 }
-
 
 #logo-icon{
   width: 70px;
@@ -126,7 +127,6 @@ export default {
 
 #logo-text{
   font-size: 30px;
-  
   /* transition: 0.3s; */
 }
 #logo-text:hover, .btn-to-a:hover, #nav a:hover {
@@ -153,8 +153,8 @@ export default {
 
 .slogan-box{
   flex-wrap: wrap;
-  margin: 0 auto
-  /* {margin: 0 auto} */
+  padding-top: 1px;
+  margin: 0 ;
 }
 .square{
   font: 40px;

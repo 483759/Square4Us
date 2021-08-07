@@ -19,7 +19,7 @@ const routes = [
       { path: '/tutorial', name: 'Tutorial', component: Tutorial },
       { path: '/user', name: 'User', component: User },
       // { path: '/userinfo', name: 'UserInfo', component: UserInfo },
-      { path: '/study', name: 'Study', component: Study },
+      { path: '/study', name: 'Study', component: Study }, /* 실제 화상회의 페이지 */
       { path: '/study/list', name: 'StudyList', component: StudyList },
       { path: '/study/:studyId', name: 'StudyMain', component: StudyMain, props : true },
       { path: '/study/report', name: 'StudyReport', component: StudyReport },
