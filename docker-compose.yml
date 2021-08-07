@@ -6,6 +6,7 @@ services:
       context: ./frontend
     ports: 
       - 80:80
+      - 443:443
     networks:
       - square4us
     restart: unless-stopped

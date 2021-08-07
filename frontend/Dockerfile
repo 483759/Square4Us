@@ -3,8 +3,7 @@ WORKDIR /app
 COPY package* ./
 RUN npm install
 COPY public ./public 
-COPY src ./src 
-COPY .env ./
+COPY src ./src
 COPY .env.production ./
 RUN npm run build
 
