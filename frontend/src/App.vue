@@ -12,8 +12,8 @@ export default {
   name: 'App',
   setup() {
     onMounted(async()=>{
-      // console.log(process.env.VUE_APP_PROD_URL);
-      // console.log(process.env.VUE_APP_DEV_URL);
+      console.log(process.env);
+      console.log(process.env.VUE_APP_PROD_URL);
       axios.defaults.baseURL = process.env.NODE_ENV ==='production' ? process.env.VUE_APP_PROD_URL : process.env.VUE_APP_DEV_URL
       console.log(axios.defaults.baseURL);
       const jwt = localStorage.getItem('JWT')
