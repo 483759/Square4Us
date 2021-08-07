@@ -4,7 +4,6 @@ import com.ssafy.square4us.api.mvc.model.dto.MemberDTO;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.model.repository.MemberRepository;
 import com.ssafy.square4us.api.mvc.model.repository.MemberRepositorySupport;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,12 +14,16 @@ import java.util.Optional;
  * ReadOnly 달고 Create, Update, Delete는 따로 표기
  */
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final MemberRepositorySupport memberRepositorySupport;
+
+    public MemberServiceImpl(MemberRepository memberRepository, MemberRepositorySupport memberRepositorySupport) {
+        this.memberRepository = memberRepository;
+        this.memberRepositorySupport = memberRepositorySupport;
+    }
 
     @Override
     @Transactional(readOnly = true)

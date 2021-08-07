@@ -10,7 +10,6 @@ import com.ssafy.square4us.common.auth.MemberDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,11 +19,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @RequestMapping(value = "/api/study")
 public class StudyController {
     private final StudyService studyService;
     private final MemberService memberService;
+
+    public StudyController(StudyService studyService, MemberService memberService) {
+        this.studyService = studyService;
+        this.memberService = memberService;
+    }
 
     @PostMapping("")
     @Operation(summary = "스터디 생성", description = "스터디를 생성한다", responses = {
@@ -60,7 +64,14 @@ public class StudyController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "204", description = "존재하지 않음")})
     public ResponseEntity<? extends BasicResponseBody> readAllWithPaging(@Parameter int page, @Parameter int size, @Parameter(required = false) Sort sort) {
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable;
+
+        if (sort == null) {
+            pageable = PageRequest.of(page, size);
+        } else {
+            pageable = PageRequest.of(page, size, sort);
+        }
+
         Page<StudyDTO> list = studyService.findStudiesWithPaging(pageable);
         if (list == null) {
             return ResponseFactory.noContent();
@@ -81,7 +92,6 @@ public class StudyController {
         }
 
         return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "조회 성공", study.getId(), study.getCategory(), study.getName(), study.getDismantleFlag(), study.getDismantleDate()));
-        //return ResponseEntity.status(HttpStatus.CREATED).body(Study.InfoGetRes.of(200, "성공", study));
     }
 
     @PostMapping("/{studyId}/resign")

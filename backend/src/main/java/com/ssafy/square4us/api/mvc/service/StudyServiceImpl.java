@@ -8,7 +8,6 @@ import com.ssafy.square4us.api.mvc.model.entity.StudyMember;
 import com.ssafy.square4us.api.mvc.model.repository.StudyMemberRepository;
 import com.ssafy.square4us.api.mvc.model.repository.StudyRepository;
 import com.ssafy.square4us.api.mvc.model.repository.StudyRepositorySupport;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,13 +16,18 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class StudyServiceImpl implements StudyService {
 
     private final StudyRepository studyRepo;
     private final StudyRepositorySupport studyRepositorySupport;
     private final StudyMemberRepository studyMemberRepo;
+
+    public StudyServiceImpl(StudyRepository studyRepo, StudyRepositorySupport studyRepositorySupport, StudyMemberRepository studyMemberRepo) {
+        this.studyRepo = studyRepo;
+        this.studyRepositorySupport = studyRepositorySupport;
+        this.studyMemberRepo = studyMemberRepo;
+    }
 
     @Override
     @Transactional
@@ -35,7 +39,7 @@ public class StudyServiceImpl implements StudyService {
                         .name(studyInfo.getName())
                         .dismantleFlag('F')
                         .build());
-        StudyMember sm = new StudyMember('T', study, member);
+        StudyMember sm = new StudyMember('T', 'T', study, member);
 
         studyMemberRepo.save(sm);
 
@@ -71,6 +75,7 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    @Transactional
     public boolean resign(String email, Long studyId) {
         StudyMemberDTO sm = studyRepositorySupport.getStudyMemberByEmail(email, studyId);
         if (sm == null || sm.getLeader() != 'F') {

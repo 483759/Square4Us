@@ -60,8 +60,9 @@ public class StudyRepositorySupport extends QuerydslRepositorySupport {
         return jpaQueryFactory
                 .select(Projections.constructor(StudyMemberDTO.class, qStudyMember))
                 .from(qStudyMember)
-                .join(qMember).on(qStudyMember.member.id.eq(qMember.id))
-                .join(qStudy).on(qStudyMember.study.id.eq(qStudy.id))
+                .innerJoin(qStudyMember.member, qMember)//.where(qMember.email.eq(email))
+                //.join(qMember).on(qStudyMember.member.id.eq(qMember.id))
+                .innerJoin(qStudyMember.study, qStudy)//.on(qStudyMember.study.id.eq(qStudy.id))
                 .where(qMember.email.eq(email), qStudy.id.eq(studyId))
                 .fetchOne()
                 ;
