@@ -22,10 +22,11 @@
     <section v-else id='nav-list'>
       <router-link :to="{ name: 'StudyList' }">Study</router-link> 
       <Login/>
-      <SignUp/>
+      <router-link :to="{ name: 'SignUp' }">SignUp</router-link> 
     </section>
   </nav>
-  <router-view></router-view>
+  <router-view>
+  </router-view>
   <!-- <footer id="footer">
     <div>삼성청년 SW 아카테미</div> 
     <div>대전캠퍼스 5기 3반8팀</div>
@@ -34,7 +35,7 @@
 </template>
 
 <script>
-import SignUp from '@/components/home/SignUp'
+// import SignUp from '@/components/home/SignUp'
 import Login from '@/components/home/Login'
 import Logout from '@/components/home/Logout'
 import { computed } from '@vue/runtime-core'
@@ -43,8 +44,8 @@ export default {
   name : 'Header',
   components: {
     Login,
-    Logout,
-    SignUp,
+    Logout
+   
   },
   setup() {
     const isLogin = computed(()=> store.state.isLogin)
@@ -116,6 +117,8 @@ export default {
 #logo{
   width: 400px;
   padding: 0;
+  height: 60px;
+  margin: 0;
 }
 
 #logo-icon{
@@ -152,6 +155,7 @@ export default {
 }
 
 .slogan-box{
+  width: 100px;
   flex-wrap: wrap;
   padding-top: 1px;
   margin: 0 ;
@@ -161,7 +165,7 @@ export default {
   font-weight: bold;
 }
 .slogan{
-  font-size: 1px;
+  font-size: 10px;
   flex-direction: row;
   margin: 0px
 } 
