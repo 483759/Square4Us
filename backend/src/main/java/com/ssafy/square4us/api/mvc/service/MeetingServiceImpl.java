@@ -1,8 +1,10 @@
 package com.ssafy.square4us.api.mvc.service;
 
+import com.ssafy.square4us.api.mvc.model.dto.MeetingDTO;
 import com.ssafy.square4us.api.mvc.model.entity.Meeting;
 import com.ssafy.square4us.api.mvc.model.entity.Study;
 import com.ssafy.square4us.api.mvc.model.repository.MeetingRepository;
+import com.ssafy.square4us.api.mvc.model.repository.MeetingRepositorySupport;
 import com.ssafy.square4us.api.mvc.model.repository.StudyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,13 +19,14 @@ import java.util.Optional;
 public class MeetingServiceImpl implements MeetingService {
 
     private final MeetingRepository meetingRepo;
+    private final MeetingRepositorySupport meetingRepositorySupport;
     private final StudyRepository studyRepo;
 
     @Override
     @Transactional
-    public Meeting createMeeting(Long studyId, Meeting.CreatePostReq meetingInfo) {
+    public MeetingDTO createMeeting(Long studyId, MeetingDTO.CreatePostReq meetingInfo) {
         Optional<Study> study = studyRepo.findById(studyId);
-        if(!study.isPresent()){
+        if (!study.isPresent()) {
             return null;
         }
 
@@ -36,23 +39,23 @@ public class MeetingServiceImpl implements MeetingService {
                         .run_flag('T')
                         .build()
         );
-        return meeting;
+        return new MeetingDTO(meeting);
     }
 
     @Override
     @Transactional
-    public Meeting enterMeeting(Long meetingId){
+    public MeetingDTO enterMeeting(Long meetingId) {
         Optional<Meeting> meeting = meetingRepo.findById(meetingId);
-        if(!meeting.isPresent()){
+        if (!meeting.isPresent()) {
             return null;
         }
 
-        return meeting.get();
+        return new MeetingDTO(meeting.get());
     }
 
     @Override
     @Transactional
-    public List<Meeting> findAllMeetings() {
-        return meetingRepo.findAll();
+    public List<MeetingDTO> findAllMeetings() {
+        return meetingRepositorySupport.findAll();
     }
 }
