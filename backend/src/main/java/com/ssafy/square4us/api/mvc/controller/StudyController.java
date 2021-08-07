@@ -2,8 +2,8 @@ package com.ssafy.square4us.api.mvc.controller;
 
 import com.ssafy.square4us.api.mvc.model.dto.BasicResponseBody;
 import com.ssafy.square4us.api.mvc.model.dto.ResponseFactory;
+import com.ssafy.square4us.api.mvc.model.dto.StudyDTO;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
-import com.ssafy.square4us.api.mvc.model.entity.Study;
 import com.ssafy.square4us.api.mvc.service.MemberService;
 import com.ssafy.square4us.api.mvc.service.StudyService;
 import com.ssafy.square4us.common.auth.MemberDetails;
@@ -32,7 +32,7 @@ public class StudyController {
             @ApiResponse(responseCode = "401", description = "권한 없음"),
             @ApiResponse(responseCode = "403", description = "스터디 생성 실패")})
     public ResponseEntity<? extends BasicResponseBody> create(@Parameter(hidden = true) Authentication authentication,
-                                                              @RequestBody @Parameter(name = "스터디 생성 정보", required = true) Study.CreatePostReq studyInfo) {
+                                                              @RequestBody @Parameter(name = "스터디 생성 정보", required = true) StudyDTO.CreatePostReq studyInfo) {
         if (authentication == null) {
             return ResponseFactory.forbidden();
         }
@@ -46,27 +46,14 @@ public class StudyController {
             return ResponseFactory.unauthorized();
         }
 
-        Study newStudy = studyService.createStudy(studyInfo, member);
+        StudyDTO newStudy = studyService.createStudy(studyInfo, member);
 
         if (newStudy == null) {
             return ResponseFactory.forbidden();
         }
 
-        return ResponseEntity.ok(Study.InfoGetRes.of(200, "스터디 생성 완료", newStudy.getId(), newStudy.getCategory(), newStudy.getName(), newStudy.getDismantleFlag(), newStudy.getDismantleDate()));
+        return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "스터디 생성 완료", newStudy.getId(), newStudy.getCategory(), newStudy.getName(), newStudy.getDismantleFlag(), newStudy.getDismantleDate()));
     }
-
-//    @GetMapping("")
-//    @Operation(summary = "스터디 목록 조회", description = "현재 모든 스터디의 목록을 조회한다", responses = {
-//            @ApiResponse(responseCode = "200", description = "성공"),
-//            @ApiResponse(responseCode = "204", description = "존재하지 않음")})
-//    public ResponseEntity<? extends BasicResponseBody> readAll() {
-//        List<Study> list = studyService.findAllStudies();
-//        if (list == null) {
-//            return ResponseFactory.noContent();
-//        }
-//        return ResponseEntity.ok(Study.ListGetRes.of(200, "조회 성공", list));
-//        //return ResponseEntity.status(HttpStatus.CREATED).body(StudyListGetRes.of(200, "성공", list));
-//    }
 
     @GetMapping("")
     @Operation(summary = "스터디 목록 조회", description = "현재 모든 스터디의 목록을 조회한다", responses = {
@@ -74,12 +61,11 @@ public class StudyController {
             @ApiResponse(responseCode = "204", description = "존재하지 않음")})
     public ResponseEntity<? extends BasicResponseBody> readAllWithPaging(@Parameter int page, @Parameter int size, @Parameter(required = false) Sort sort) {
         Pageable pageable = PageRequest.of(page, size, sort);
-        Page<Study> list = studyService.findStudiesWithPaging(pageable);
+        Page<StudyDTO> list = studyService.findStudiesWithPaging(pageable);
         if (list == null) {
             return ResponseFactory.noContent();
         }
-        return ResponseEntity.ok(Study.ListGetRes.of(200, "조회 성공", list));
-        //return ResponseEntity.status(HttpStatus.CREATED).body(StudyListGetRes.of(200, "성공", list));
+        return ResponseEntity.ok(StudyDTO.ListGetRes.of(200, "조회 성공", list));
     }
 
 
@@ -88,13 +74,13 @@ public class StudyController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "204", description = "존재하지 않음")})
     public ResponseEntity<? extends BasicResponseBody> getStudyById(@PathVariable("studyId") Long studyId) {
-        Study study = studyService.findByStudyId(studyId);
+        StudyDTO study = studyService.findByStudyId(studyId);
 
         if (study == null) {
             return ResponseFactory.noContent();
         }
 
-        return ResponseEntity.ok(Study.InfoGetRes.of(200, "조회 성공", study.getId(), study.getCategory(), study.getName(), study.getDismantleFlag(), study.getDismantleDate()));
+        return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "조회 성공", study.getId(), study.getCategory(), study.getName(), study.getDismantleFlag(), study.getDismantleDate()));
         //return ResponseEntity.status(HttpStatus.CREATED).body(Study.InfoGetRes.of(200, "성공", study));
     }
 
@@ -138,7 +124,7 @@ public class StudyController {
             return ResponseFactory.unauthorized();
         }
         String email = memberDetails.getUsername();
-        Study study = studyService.findByStudyId(studyId);
+        StudyDTO study = studyService.findByStudyId(studyId);
 
         if (study == null) {
             return ResponseFactory.notFound();
