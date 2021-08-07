@@ -2,6 +2,8 @@ package com.ssafy.square4us.api.mvc.service;
 
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.model.entity.Study;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -18,4 +20,6 @@ public interface StudyService {
 
     @Transactional
     boolean resign(String email, Long studyId);
+
+    PageImpl<Study> findStudiesWithPaging(Pageable pageable);
 }

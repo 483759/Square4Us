@@ -11,11 +11,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -53,18 +55,33 @@ public class StudyController {
         return ResponseEntity.ok(Study.InfoGetRes.of(200, "스터디 생성 완료", newStudy.getId(), newStudy.getCategory(), newStudy.getName(), newStudy.getDismantleFlag(), newStudy.getDismantleDate()));
     }
 
+//    @GetMapping("")
+//    @Operation(summary = "스터디 목록 조회", description = "현재 모든 스터디의 목록을 조회한다", responses = {
+//            @ApiResponse(responseCode = "200", description = "성공"),
+//            @ApiResponse(responseCode = "204", description = "존재하지 않음")})
+//    public ResponseEntity<? extends BasicResponseBody> readAll() {
+//        List<Study> list = studyService.findAllStudies();
+//        if (list == null) {
+//            return ResponseFactory.noContent();
+//        }
+//        return ResponseEntity.ok(Study.ListGetRes.of(200, "조회 성공", list));
+//        //return ResponseEntity.status(HttpStatus.CREATED).body(StudyListGetRes.of(200, "성공", list));
+//    }
+
     @GetMapping("")
     @Operation(summary = "스터디 목록 조회", description = "현재 모든 스터디의 목록을 조회한다", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "204", description = "존재하지 않음")})
-    public ResponseEntity<? extends BasicResponseBody> readAll() {
-        List<Study> list = studyService.findAllStudies();
+    public ResponseEntity<? extends BasicResponseBody> readAllWithPaging(@Parameter int page, @Parameter int size, @Parameter(required = false) Sort sort) {
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Study> list = studyService.findStudiesWithPaging(pageable);
         if (list == null) {
             return ResponseFactory.noContent();
         }
         return ResponseEntity.ok(Study.ListGetRes.of(200, "조회 성공", list));
         //return ResponseEntity.status(HttpStatus.CREATED).body(StudyListGetRes.of(200, "성공", list));
     }
+
 
     @GetMapping("{studyId}")
     @Operation(summary = "스터디 정보 조회", description = "특정 스터디의 정보를 조회한다", responses = {

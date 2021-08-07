@@ -7,6 +7,8 @@ import com.ssafy.square4us.api.mvc.model.repository.StudyMemberRepository;
 import com.ssafy.square4us.api.mvc.model.repository.StudyRepository;
 import com.ssafy.square4us.api.mvc.model.repository.StudyRepositorySupport;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +52,11 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    public PageImpl<Study> findStudiesWithPaging(Pageable pageable) {
+        return studyRepositorySupport.findStudiesWithPaging(pageable);
+    }
+
+    @Override
     @Transactional
     public boolean deleteByStudyId(String email, Long studyId) {
         StudyMember sm = studyRepositorySupport.getStudyMemberByEmail(email, studyId);
@@ -67,8 +74,6 @@ public class StudyServiceImpl implements StudyService {
         if (sm == null || sm.getLeader() != 'F') {
             return false;
         }
-
-        //Long affectedRow =
         return true;
     }
 

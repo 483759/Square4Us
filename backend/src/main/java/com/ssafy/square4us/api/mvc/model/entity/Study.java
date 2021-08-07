@@ -3,10 +3,10 @@ package com.ssafy.square4us.api.mvc.model.entity;
 import com.ssafy.square4us.api.mvc.model.dto.BasicResponseBody;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import org.springframework.data.domain.Page;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Getter
@@ -80,13 +80,13 @@ public class Study extends BaseTimeEntity {
 
     @Getter
     public static class ListGetRes {
-        List<Study> studyList;
+        Page<Study> studyList;
 
-        public ListGetRes(List<Study> studyList) {
+        public ListGetRes(Page<Study> studyList) {
             this.studyList = studyList;
         }
 
-        public static BasicResponseBody<Study.ListGetRes> of(Integer statusCode, String message, List<Study> studyList) {
+        public static BasicResponseBody<Study.ListGetRes> of(Integer statusCode, String message, Page<Study> studyList) {
             return BasicResponseBody.of(statusCode, message, new Study.ListGetRes(studyList));
         }
     }

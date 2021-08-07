@@ -1,20 +1,27 @@
 package com.ssafy.square4us.api.mvc.model.repository;
 
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.square4us.api.mvc.model.entity.*;
-import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
 
 @Repository
-@RequiredArgsConstructor
-public class StudyRepositorySupport {
+public class StudyRepositorySupport extends QuerydslRepositorySupport {
     private final JPAQueryFactory jpaQueryFactory;
     QStudy qStudy = QStudy.study;
     QMember qMember = QMember.member;
     QStudyMember qStudyMember = QStudyMember.studyMember;
+
+    public StudyRepositorySupport(JPAQueryFactory jpaQueryFactory) {
+        super(Study.class);
+        this.jpaQueryFactory = jpaQueryFactory;
+    }
 
     public List<Study> findAllStudy() {
         return jpaQueryFactory
@@ -22,6 +29,17 @@ public class StudyRepositorySupport {
                 .from(qStudy)
                 .where(qStudy.dismantleFlag.ne('T'))
                 .fetch();
+    }
+
+    public PageImpl<Study> findStudiesWithPaging(Pageable pageable) {
+        JPAQuery query = jpaQueryFactory
+                .select(qStudy)
+                .from(qStudy)
+                .where(qStudy.dismantleFlag.ne('T'));
+
+        Long totalCount = query.fetchCount();
+        List<Study> results = getQuerydsl().applyPagination(pageable, query).fetch();
+        return new PageImpl<>(results, pageable, totalCount);
     }
 
     public Study findByStudyId(Long studyId) {
