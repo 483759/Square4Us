@@ -10,7 +10,7 @@
     </template>
 
     <template v-slot:section>
-      <header id='section-title'>{{menus[activeIndex]}} (스터디_ID  {{ studyId }})</header>
+      <header id='section-title'>{{menus[activeIndex]}}</header>
       <!-- 컴포넌트 파서 알맞은 위치의 div를 컴포넌트로 대체하면 됨 -->
       <div class='study-main' v-if="activeIndex === 0"> <!-- 스터디 메인 --> </div>
       <StudyMainMeeting v-else-if="activeIndex === 1" :studyId='studyId' />
@@ -74,7 +74,7 @@ export default {
   height: 60px;
   align-items: center;
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 1rem;
   display: flex;
   padding-left: 25px;
 }
