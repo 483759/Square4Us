@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberDTO {
@@ -19,6 +21,17 @@ public class MemberDTO {
     private String profile_name;
     private String profile_path;
     private int report;
+
+    public MemberDTO(Long id, String email, String password, MemberRole role, String nickname, String profile_name, String profile_path, int report) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.nickname = nickname;
+        this.profile_name = profile_name;
+        this.profile_path = profile_path;
+        this.report = report;
+    }
 
     public MemberDTO(Member member) {
         this.id = member.getId();
@@ -116,6 +129,19 @@ public class MemberDTO {
 
         public static BasicResponseBody<InfoGetRes> of(Integer statusCode, String message, String email, MemberRole role, String nickname, String profile_name, String profile_path, int report) {
             return BasicResponseBody.of(statusCode, message, new InfoGetRes(email, role, nickname, profile_name, profile_path, report));
+        }
+    }
+
+    @Getter
+    public static class InfosGetRes {
+        List<MemberDTO> memberList;
+
+        public InfosGetRes(List<MemberDTO> memberList) {
+            this.memberList = memberList;
+        }
+
+        public static BasicResponseBody<MemberDTO.InfosGetRes> of(Integer statusCode, String message, List<MemberDTO> memberList) {
+            return BasicResponseBody.of(statusCode, message, new InfosGetRes(memberList));
         }
     }
 }

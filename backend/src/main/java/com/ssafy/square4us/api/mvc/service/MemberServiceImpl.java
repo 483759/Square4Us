@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -42,6 +43,11 @@ public class MemberServiceImpl implements MemberService {
             return null;
 
         return new MemberDTO(member.get());
+    }
+
+    @Override
+    public List<MemberDTO> getMembersByStudy(Long studyId) {
+        return memberRepositorySupport.findMembersByStudy(studyId);
     }
 
     @Override

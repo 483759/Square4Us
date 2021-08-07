@@ -16,6 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 //@Tag(description = "멤버 API", name = "Member")
 @RestController
 @RequiredArgsConstructor
@@ -73,6 +75,20 @@ public class MemberController {
         return ResponseFactory.created();
     }
 
+    @GetMapping("{studyId}")
+    @Operation(summary = "회원 본인 정보 조회", description = "로그인한 회원 본인의 정보를 응답한다.", responses = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "401", description = "인증 실패"),
+            @ApiResponse(responseCode = "404", description = "사용자 없음"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")})
+    public ResponseEntity<? extends BasicResponseBody> getMembersByStudyId(@PathVariable Long studyId) {
+        List<MemberDTO> list = memberService.getMembersByStudy(studyId);
+        if (list == null) {
+            return ResponseFactory.noContent();
+        }
+        return ResponseEntity.ok(MemberDTO.InfosGetRes.of(200, "조회 성공", list));
+    }
+
     @GetMapping("/me")
     @Operation(summary = "회원 본인 정보 조회", description = "로그인한 회원 본인의 정보를 응답한다.", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
@@ -81,7 +97,7 @@ public class MemberController {
             @ApiResponse(responseCode = "500", description = "서버 오류")})
     public ResponseEntity<? extends BasicResponseBody> getUserInfo(
             @Parameter(hidden = true) Authentication authentication) {
-        if(authentication==null){
+        if (authentication == null) {
             return ResponseFactory.forbidden();
         }
 

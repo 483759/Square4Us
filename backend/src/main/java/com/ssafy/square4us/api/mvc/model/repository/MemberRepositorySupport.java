@@ -1,18 +1,27 @@
 package com.ssafy.square4us.api.mvc.model.repository;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.square4us.api.mvc.model.dto.MemberDTO;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.model.entity.QMember;
+import com.ssafy.square4us.api.mvc.model.entity.QStudy;
+import com.ssafy.square4us.api.mvc.model.entity.QStudyMember;
+import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
-public class MemberRepositorySupport {
+public class MemberRepositorySupport extends QuerydslRepositorySupport {
     private final JPAQueryFactory jpaQueryFactory;
     QMember qMember = QMember.member;
+    QStudyMember qStudyMember = QStudyMember.studyMember;
+    QStudy qStudy = QStudy.study;
 
     public MemberRepositorySupport(JPAQueryFactory jpaQueryFactory) {
+        super(Member.class);
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
@@ -25,5 +34,33 @@ public class MemberRepositorySupport {
                 .set(qMember.profile_name, member.getProfile_name())
                 .execute();
         return affectedRow;
+    }
+
+    public List<MemberDTO> findMembersByStudy(Long studyId) {
+        return jpaQueryFactory
+                .select(Projections.constructor(MemberDTO.class, qMember))
+                .from(qStudyMember)
+                .innerJoin(qStudyMember.member, qMember)
+                .leftJoin(qStudyMember.study, qStudy)
+                .where(qStudy.id.eq(studyId)).fetch();
+
+//        return jpaQueryFactory
+//                .select(Projections.constructor(MemberDTO.class), qMember)
+//                .from(qMember)
+//                .innerJoin(qStudyMember.member, qMember)
+//                .leftJoin(qStudyMember.study, qStudy)
+//                .where(qStudy.id.eq(studyId)).fetch();
+
+//        JPAQuery query = jpaQueryFactory
+//                .select(Projections.constructor(MemberDTO.class), qMember)
+//                .from(qMember)
+//                .join(qStudyMember.member, qMember)
+//                .join(qStudyMember.study, qStudy)
+//                .where(qStudy.id.eq(studyId));
+//
+//        Pageable pageable = PageRequest.of(0, 10);
+//        //Sort sort = new Sort();
+//        List<MemberDTO> results = getQuerydsl().applyPagination(pageable, query).fetch();
+//        return results;
     }
 }

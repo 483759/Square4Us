@@ -16,6 +16,14 @@ public class StudyMemberDTO {
     private Study study;
     private Member member;
 
+    public StudyMemberDTO(Long id, char leader, char accepted, Study study, Member member) {
+        this.id = id;
+        this.leader = leader;
+        this.accepted = accepted;
+        this.study = study;
+        this.member = member;
+    }
+
     public StudyMemberDTO(StudyMember studyMember) {
         this.id = studyMember.getId();
         this.leader = studyMember.getLeader();
