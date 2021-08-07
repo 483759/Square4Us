@@ -1,6 +1,7 @@
 package com.ssafy.square4us.api.mvc.controller;
 
 import com.ssafy.square4us.api.mvc.model.dto.BasicResponseBody;
+import com.ssafy.square4us.api.mvc.model.dto.MemberDTO;
 import com.ssafy.square4us.api.mvc.model.dto.ResponseFactory;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.service.MemberService;
@@ -29,7 +30,7 @@ public class MemberController {
             @ApiResponse(responseCode = "404", description = "존재하지 않는 계정"),
             @ApiResponse(responseCode = "500", description = "서버 오류"),})
     public ResponseEntity<? extends BasicResponseBody> login(
-            @Parameter(name = "로그인 정보", required = true) @RequestBody Member.LoginPostReq loginInfo) {
+            @Parameter(name = "로그인 정보", required = true) @RequestBody MemberDTO.LoginPostReq loginInfo) {
         String email = loginInfo.getEmail();
         String password = loginInfo.getPassword();
 
@@ -42,7 +43,7 @@ public class MemberController {
             if (new BCryptPasswordEncoder().matches(password, member.getPassword()) == false) {
                 return ResponseFactory.unauthorized();
             }
-            return ResponseEntity.ok(Member.LoginPostRes.of(200, "로그인 성공", JwtTokenProvider.generateToken(new MemberDetails(member))));
+            return ResponseEntity.ok(MemberDTO.LoginPostRes.of(200, "로그인 성공", JwtTokenProvider.generateToken(new MemberDetails(member))));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,14 +58,14 @@ public class MemberController {
             @ApiResponse(responseCode = "503", description = "회원가입 실패"),
             @ApiResponse(responseCode = "500", description = "서버 오류")})
     public ResponseEntity<? extends BasicResponseBody> register(
-            @RequestBody @Parameter(name = "회원가입 정보", required = true) Member.JoinPostReq joinInfo) {
+            @RequestBody @Parameter(name = "회원가입 정보", required = true) MemberDTO.JoinPostReq joinInfo) {
 
-        Member confirmMember = memberService.getMemberByEmail(joinInfo.getEmail());
+        MemberDTO confirmMember = memberService.getMemberDTOByEmail(joinInfo.getEmail());
         if (confirmMember != null) {
             return ResponseFactory.conflict();
         }
 
-        Member member = memberService.createMember(joinInfo);
+        MemberDTO member = memberService.createMember(joinInfo);
 
         if (member == null) {
             return ResponseFactory.serviceUnavailable();
@@ -91,10 +92,9 @@ public class MemberController {
         }
 
         String email = memberDetails.getUsername();
-        Member member = memberService.getMemberByEmail(email);
+        MemberDTO member = memberService.getMemberDTOByEmail(email);
 
-        return ResponseEntity.ok(Member.InfoGetRes.of(200, "회원 정보 조회 성공", member.getEmail(), member.getRole(), member.getNickname(), member.getProfile_name(), member.getProfile_path(), member.getReport()));
-        //return ResponseEntity.ok(MemberInfoGetRes.of(200, "성공", member));
+        return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "회원 정보 조회 성공", member.getEmail(), member.getRole(), member.getNickname(), member.getProfile_name(), member.getProfile_path(), member.getReport()));
     }
 
     @PatchMapping("/me")
@@ -104,7 +104,7 @@ public class MemberController {
             @ApiResponse(responseCode = "500", description = "서버 오류")})
     public ResponseEntity<? extends BasicResponseBody> modifyUserInfo(
             @Parameter(hidden = true) Authentication authentication,
-            @RequestBody @Parameter(name = "회원 정보 수정", required = true) Member.UpdatePatchReq updateInfo) {
+            @RequestBody @Parameter(name = "회원 정보 수정", required = true) MemberDTO.UpdatePatchReq updateInfo) {
         if (authentication == null) {
             return ResponseFactory.forbidden();
         }
@@ -118,8 +118,8 @@ public class MemberController {
         String email = memberDetails.getUsername();
         memberService.updateMemberByEmail(email, updateInfo);
 
-        Member modified = memberService.getMemberByEmail(email);
-        return ResponseEntity.ok(Member.InfoGetRes.of(200, "수정 성공", modified.getEmail(), modified.getRole(), modified.getNickname(), modified.getProfile_name(), modified.getProfile_path(), modified.getReport()));
+        MemberDTO modified = memberService.getMemberDTOByEmail(email);
+        return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "수정 성공", modified.getEmail(), modified.getRole(), modified.getNickname(), modified.getProfile_name(), modified.getProfile_path(), modified.getReport()));
     }
 
     @DeleteMapping("me")

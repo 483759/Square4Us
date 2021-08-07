@@ -1,13 +1,16 @@
 package com.ssafy.square4us.api.mvc.service;
 
+import com.ssafy.square4us.api.mvc.model.dto.MemberDTO;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 
 public interface MemberService {
     Member getMemberByEmail(String email);
 
-    Member createMember(Member.JoinPostReq joinInfo);
+    MemberDTO getMemberDTOByEmail(String email);
 
-    Long updateMemberByEmail(String email, Member.UpdatePatchReq updateInfo);
+    MemberDTO createMember(MemberDTO.JoinPostReq joinInfo);
+
+    Long updateMemberByEmail(String email, MemberDTO.UpdatePatchReq updateInfo);
 
     void deleteMemberByEmail(String email);
 }
