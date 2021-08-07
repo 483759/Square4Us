@@ -72,7 +72,7 @@ ul {
 
 :root[color-theme='light'] {
   --headerBackground : white;
-  --background: rgb(197, 197, 197);
+  --background: rgb(230, 230, 230);
   --boxColor: black;
   --textColor: #2c3e50;
 
