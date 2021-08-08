@@ -1,5 +1,6 @@
 package com.ssafy.square4us.api.mvc.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.model.entity.MemberRole;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,12 +16,13 @@ import java.util.List;
 public class MemberDTO {
     private Long id;
     private String email;
-    private String password;
     private MemberRole role;
     private String nickname;
     private String profile_name;
     private String profile_path;
     private int report;
+    @JsonIgnore
+    private String password;
 
     public MemberDTO(Long id, String email, String password, MemberRole role, String nickname, String profile_name, String profile_path, int report) {
         this.id = id;

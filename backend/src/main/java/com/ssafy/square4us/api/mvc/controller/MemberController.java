@@ -87,6 +87,19 @@ public class MemberController {
         return ResponseEntity.ok(MemberDTO.InfosGetRes.of(200, "조회 성공", list));
     }
 
+    @GetMapping("/study/{studyId}/wait")
+    @Operation(summary = "스터디 가입 대기 회원 목록 조회", description = "특정 스터디에 가입 신청한 회원의 목록을 조회한다.", responses = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "204", description = "존재하지 않음")})
+    public ResponseEntity<? extends BasicResponseBody> getMembersWaitJoin(@PathVariable Long studyId) {
+        List<MemberDTO> list = memberService.getMembersWaitJoin(studyId);
+        if (list == null) {
+            return ResponseFactory.noContent();
+        }
+        return ResponseEntity.ok(MemberDTO.InfosGetRes.of(200, "조회 성공", list));
+    }
+
+
     @GetMapping("/me")
     @Operation(summary = "회원 본인 정보 조회", description = "로그인한 회원 본인의 정보를 응답한다.", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),

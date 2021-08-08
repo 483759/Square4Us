@@ -44,4 +44,13 @@ public class MemberRepositorySupport extends QuerydslRepositorySupport {
                 .leftJoin(qStudyMember.study, qStudy)
                 .where(qStudy.id.eq(studyId)).fetch();
     }
+
+    public List<MemberDTO> findMembersToWaitingJoin(Long studyId) {
+        return jpaQueryFactory
+                .select(Projections.constructor(MemberDTO.class, qMember))
+                .from(qStudyMember)
+                .innerJoin(qStudyMember.member, qMember)
+                .leftJoin(qStudyMember.study, qStudy)
+                .where(qStudy.id.eq(studyId), qStudyMember.accepted.eq('F')).fetch();
+    }
 }

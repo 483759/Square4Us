@@ -51,6 +51,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public List<MemberDTO> getMembersWaitJoin(Long studyId) {
+        return memberRepositorySupport.findMembersToWaitingJoin(studyId);
+    }
+
+    @Override
     @Transactional
     public MemberDTO createMember(MemberDTO.JoinPostReq joinInfo) {
         Member member = Member.builder()
