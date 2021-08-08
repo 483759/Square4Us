@@ -9,8 +9,7 @@ COPY build.gradle .
 COPY settings.gradle .
 COPY src src
 RUN chmod +x gradlew
-
-RUN ["./gradlew", "clean", "build"]
+RUN ["./gradlew", "clean", "build", "--stacktrace", "--exclude-task", "test"]
 
 FROM openjdk:8-jre-slim
 # WORKDIR /app

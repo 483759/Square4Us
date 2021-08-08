@@ -12,7 +12,9 @@ export default {
   name: 'App',
   setup() {
     onMounted(async()=>{
-      axios.defaults.baseURL = 'http://localhost:8080/api'
+      axios.defaults.baseURL = process.env.VUE_APP_API_URL
+      console.log(process.env);
+      console.log(axios.defaults.baseURL);
       const jwt = localStorage.getItem('JWT')
       if (jwt) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`

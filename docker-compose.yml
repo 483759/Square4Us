@@ -6,6 +6,7 @@ services:
       context: ./frontend
     ports: 
       - 80:80
+      - 443:443
     networks:
       - square4us
     restart: unless-stopped
@@ -13,9 +14,9 @@ services:
       - backend
   backend:
     container_name: backend
-    image: wns312/java-test:square4us
-    # build: 
-    #   context: ./backend
+    # image: wns312/java-test:square4us
+    build: 
+      context: ./backend
     ports: 
       - 8080:8080
     networks:
