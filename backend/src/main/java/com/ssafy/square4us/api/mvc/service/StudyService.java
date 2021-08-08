@@ -11,6 +11,9 @@ import java.util.List;
 public interface StudyService {
     StudyDTO createStudy(StudyDTO.CreatePostReq studyInfo, Member member);
 
+    @Transactional
+    boolean joinStudy(Long studyId, Member member);
+
     StudyDTO findByStudyId(Long studyId);
 
     List<StudyDTO> findAllStudies();

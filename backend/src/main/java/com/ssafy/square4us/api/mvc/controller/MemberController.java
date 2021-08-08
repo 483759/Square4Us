@@ -75,12 +75,10 @@ public class MemberController {
         return ResponseFactory.created();
     }
 
-    @GetMapping("{studyId}")
-    @Operation(summary = "회원 본인 정보 조회", description = "로그인한 회원 본인의 정보를 응답한다.", responses = {
+    @GetMapping("/study/{studyId}")
+    @Operation(summary = "스터디 회원 목록 조회", description = "특정 스터디에 가입한 회원의 목록을 조회한다.", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "401", description = "인증 실패"),
-            @ApiResponse(responseCode = "404", description = "사용자 없음"),
-            @ApiResponse(responseCode = "500", description = "서버 오류")})
+            @ApiResponse(responseCode = "204", description = "존재하지 않음")})
     public ResponseEntity<? extends BasicResponseBody> getMembersByStudyId(@PathVariable Long studyId) {
         List<MemberDTO> list = memberService.getMembersByStudy(studyId);
         if (list == null) {

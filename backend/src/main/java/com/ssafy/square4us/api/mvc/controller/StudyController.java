@@ -19,7 +19,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-//@RequiredArgsConstructor
 @RequestMapping(value = "/api/study")
 public class StudyController {
     private final StudyService studyService;
@@ -57,6 +56,30 @@ public class StudyController {
         }
 
         return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "스터디 생성 완료", newStudy.getId(), newStudy.getCategory(), newStudy.getName(), newStudy.getDismantleFlag(), newStudy.getDismantleDate()));
+    }
+
+    @PostMapping("{studyId}")
+    @Operation(summary = "스터디 가입 신청")
+    public ResponseEntity<? extends BasicResponseBody> readAllWithPaging(@Parameter(hidden = true) Authentication authentication, @PathVariable Long studyId) {
+        if (authentication == null) {
+            return ResponseFactory.forbidden();
+        }
+
+        MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
+        String memberId = memberDetails.getUsername();
+
+        Member member = memberService.getMemberByEmail(memberId);
+
+        if (member == null) {
+            return ResponseFactory.unauthorized();
+        }
+
+        boolean result = studyService.joinStudy(studyId, member);
+
+        if (result) {
+            return ResponseFactory.ok();
+        }
+        return ResponseFactory.forbidden();
     }
 
     @GetMapping("")

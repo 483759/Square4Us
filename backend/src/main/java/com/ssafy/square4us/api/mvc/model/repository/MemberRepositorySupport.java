@@ -43,24 +43,5 @@ public class MemberRepositorySupport extends QuerydslRepositorySupport {
                 .innerJoin(qStudyMember.member, qMember)
                 .leftJoin(qStudyMember.study, qStudy)
                 .where(qStudy.id.eq(studyId)).fetch();
-
-//        return jpaQueryFactory
-//                .select(Projections.constructor(MemberDTO.class), qMember)
-//                .from(qMember)
-//                .innerJoin(qStudyMember.member, qMember)
-//                .leftJoin(qStudyMember.study, qStudy)
-//                .where(qStudy.id.eq(studyId)).fetch();
-
-//        JPAQuery query = jpaQueryFactory
-//                .select(Projections.constructor(MemberDTO.class), qMember)
-//                .from(qMember)
-//                .join(qStudyMember.member, qMember)
-//                .join(qStudyMember.study, qStudy)
-//                .where(qStudy.id.eq(studyId));
-//
-//        Pageable pageable = PageRequest.of(0, 10);
-//        //Sort sort = new Sort();
-//        List<MemberDTO> results = getQuerydsl().applyPagination(pageable, query).fetch();
-//        return results;
     }
 }

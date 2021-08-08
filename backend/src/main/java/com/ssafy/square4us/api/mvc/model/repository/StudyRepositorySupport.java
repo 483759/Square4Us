@@ -56,16 +56,6 @@ public class StudyRepositorySupport extends QuerydslRepositorySupport {
                 .fetchOne();
     }
 
-//    public List<MemberDTO> getMemberInStudy(Long studyId){
-//        return jpaQueryFactory
-//                .select(Projections.constructor(MemberDTO.class), qMember)
-//                .from(qMember)
-//                .innerJoin(qStudyMember.member, qMember)
-//                .innerJoin(qStudyMember.study, qStudy)
-//                .where(qStudy.id.eq(studyId))
-//                .fetch();
-//    }
-
     public StudyMemberDTO getStudyMemberByEmail(String email, Long studyId) {
         return jpaQueryFactory
                 .select(Projections.constructor(StudyMemberDTO.class, qStudyMember))
@@ -75,6 +65,14 @@ public class StudyRepositorySupport extends QuerydslRepositorySupport {
                 .where(qMember.email.eq(email), qStudy.id.eq(studyId))
                 .fetchOne()
                 ;
+    }
+
+    public Boolean existStudyMember(Long studyId, Long memberId) {
+        Integer result = jpaQueryFactory
+                .selectOne()
+                .from(qStudyMember)
+                .where(qStudyMember.study.id.eq(studyId), qStudyMember.member.id.eq(memberId)).fetchFirst();
+        return result != null;
     }
 
     public Long deleteStudyById(Long studyId) {

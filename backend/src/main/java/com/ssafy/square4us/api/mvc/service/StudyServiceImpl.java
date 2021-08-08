@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -44,6 +45,24 @@ public class StudyServiceImpl implements StudyService {
         studyMemberRepo.save(sm);
 
         return new StudyDTO(study);
+    }
+
+    @Override
+    @Transactional
+    public boolean joinStudy(Long studyId, Member member) {
+        boolean exists = studyRepositorySupport.existStudyMember(studyId, member.getId());
+        if (exists) {
+            return false;
+        }
+
+        Optional<Study> study = studyRepo.findById(studyId);
+        if (!study.isPresent()) {
+            return false;
+        }
+
+        studyMemberRepo.save(new StudyMember('F', 'F', study.get(), member));
+
+        return true;
     }
 
     @Override
