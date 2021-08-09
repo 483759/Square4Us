@@ -7,6 +7,9 @@ services:
     ports: 
       - 80:80
       - 443:443
+    volumes: 
+      - /etc/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+      - /etc/letsencrypt:/etc/letsencrypt
     networks:
       - square4us
     restart: unless-stopped
@@ -14,7 +17,6 @@ services:
       - backend
   backend:
     container_name: backend
-    # image: wns312/java-test:square4us
     build: 
       context: ./backend
     ports: 
