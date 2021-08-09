@@ -17,7 +17,7 @@ server:
 
 trust:
   store: classpath:keystore/ssafy.p12
-    password: ssafy123
+  store-password: ssafy123
 
 spring:
   devtools:
