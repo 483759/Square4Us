@@ -65,8 +65,10 @@ public class MemberDTO {
 
     @Getter
     public static class AcceptPostReq {
+        @Schema(name = "id")
         Long id;
 
+        @Builder
         public AcceptPostReq(Long id) {
             this.id = id;
         }

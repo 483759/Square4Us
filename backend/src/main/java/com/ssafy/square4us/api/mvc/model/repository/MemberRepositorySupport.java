@@ -42,7 +42,7 @@ public class MemberRepositorySupport extends QuerydslRepositorySupport {
                 .from(qStudyMember)
                 .innerJoin(qStudyMember.member, qMember)
                 .leftJoin(qStudyMember.study, qStudy)
-                .where(qStudy.id.eq(studyId)).fetch();
+                .where(qStudy.id.eq(studyId), qStudyMember.accepted.eq('T')).fetch();
     }
 
     public List<MemberDTO> findMembersToWaitingJoin(Long studyId) {

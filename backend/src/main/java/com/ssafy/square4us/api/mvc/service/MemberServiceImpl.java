@@ -2,6 +2,7 @@ package com.ssafy.square4us.api.mvc.service;
 
 import com.ssafy.square4us.api.mvc.model.dto.MemberDTO;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
+import com.ssafy.square4us.api.mvc.model.entity.MemberRole;
 import com.ssafy.square4us.api.mvc.model.repository.MemberRepository;
 import com.ssafy.square4us.api.mvc.model.repository.MemberRepositorySupport;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -61,6 +62,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = Member.builder()
                 .email(joinInfo.getEmail())
                 .nickname(joinInfo.getNickname())
+                .role(MemberRole.USER)
                 .password(new BCryptPasswordEncoder().encode(joinInfo.getPassword()))
                 .build();
         return new MemberDTO(memberRepository.save(member));

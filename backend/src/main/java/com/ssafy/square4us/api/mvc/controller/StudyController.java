@@ -1,7 +1,6 @@
 package com.ssafy.square4us.api.mvc.controller;
 
 import com.ssafy.square4us.api.mvc.model.dto.BasicResponseBody;
-import com.ssafy.square4us.api.mvc.model.dto.MemberDTO;
 import com.ssafy.square4us.api.mvc.model.dto.ResponseFactory;
 import com.ssafy.square4us.api.mvc.model.dto.StudyDTO;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
@@ -83,24 +82,23 @@ public class StudyController {
         return ResponseFactory.forbidden();
     }
 
-    @PostMapping("{studyId}/accept")
+    @PostMapping("{studyId}/accept/{memberId}")
     @Operation(summary = "스터디 가입 승인")
-    public ResponseEntity<? extends BasicResponseBody> acceptJoinRequest(@Parameter(hidden = true) Authentication authentication, @PathVariable Long studyId
-            , @RequestBody @Parameter(name = "스터디 생성 정보", required = true) MemberDTO.AcceptPostReq acceptInfo) {
+    public ResponseEntity<? extends BasicResponseBody> acceptJoinRequest(@Parameter(hidden = true) Authentication authentication, @PathVariable Long studyId, @PathVariable Long memberId) {
         if (authentication == null) {
             return ResponseFactory.forbidden();
         }
 
         MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
-        String memberId = memberDetails.getUsername();
+        String email = memberDetails.getUsername();
 
-        Member member = memberService.getMemberByEmail(memberId);
+        Member member = memberService.getMemberByEmail(email);
 
         if (member == null) {
             return ResponseFactory.unauthorized();
         }
 
-        boolean result = studyService.joinStudy(studyId, member);
+        boolean result = studyService.acceptStudyJoin(studyId, memberId, member);
 
         if (result) {
             return ResponseFactory.ok();

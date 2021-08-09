@@ -72,13 +72,18 @@ public class StudyServiceImpl implements StudyService {
         if (!study.isPresent()) {
             return false;
         }
+        if (study.get().getDismantleFlag() == 'T') {      //이미 해체한 스터디이면
+            return true;
+        }
 
         StudyMember leaderMember = studyMemberRepo.findByStudy_IdAndMember_Id(studyId, leader.getId());
+        System.out.println(leaderMember);
         if (leaderMember == null || leaderMember.getLeader() != 'T') {
             return false;
         }
 
         StudyMember newMember = studyMemberRepo.findByStudy_IdAndMember_Id(studyId, memberId);
+        System.out.println(newMember);
         if (newMember == null) {
             return false;
         }
