@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { reactive, ref } from '@vue/reactivity'
+import { reactive } from '@vue/reactivity'
 import { useStore } from 'vuex'
 export default {
   name: 'Signup',
@@ -44,8 +44,6 @@ export default {
       store.dispatch('signup', credentials)
     }
     return {
-      isShow,
-      switchModal,
       credentials,
       signUp,
     }
