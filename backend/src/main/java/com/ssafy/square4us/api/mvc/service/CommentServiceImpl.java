@@ -7,6 +7,8 @@ import com.ssafy.square4us.api.mvc.model.entity.Comment;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.model.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,11 +20,13 @@ import java.util.Optional;
 public class CommentServiceImpl implements CommentService {
 
     private final ArticleRepository articleRepo;
+    private final CommentRepositorySupport commentRepositorySupport;
     private final CommentRepository commentRepo;
     private final MemberRepository memberRepo;
 
     @Override
-    public CommentDTO createComment(Long articleId, Long memberId, CommentDTO.CreatePostReq req) {
+    @Transactional
+    public CommentDTO createComment(Long articleId, Long memberId, CommentDTO.CommentCreatePostReq req) {
         Optional<Article> article = articleRepo.findById(articleId);
         Optional<Member> member = memberRepo.findById(memberId);
         if(!article.isPresent() || !member.isPresent()) {
@@ -38,5 +42,37 @@ public class CommentServiceImpl implements CommentService {
         );
 
         return new CommentDTO(comment);
+    }
+
+    @Override
+    @Transactional
+    public Page<CommentDTO> findCommentsWithPaging(Pageable pageable, Long articleId) {
+        return commentRepositorySupport.findArticlesWithPaging(pageable, articleId);
+    }
+
+    @Override
+    public CommentDTO readComment(Long commentId) {
+        Comment comment = commentRepo.findById(commentId).get();
+        if(comment == null) {
+            return null;
+        }
+        return new CommentDTO(comment);
+    }
+
+    @Override
+    @Transactional
+    public void deleteByCommentId(Long commentId) {
+        commentRepo.deleteById(commentId);
+    }
+
+    @Override
+    @Transactional
+    public void updateComment(Long commentId, CommentDTO.CommentCreatePostReq req) {
+        Optional<Comment> comment = commentRepo.findById(commentId);
+        if(!comment.isPresent()) {
+            return;
+        }
+        Comment com = comment.get();
+        com.setContent(req.getContent());
     }
 }
