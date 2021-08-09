@@ -11,22 +11,18 @@
     <section v-if='isLogin' id='nav-list'>
       <router-link :to="{ name: 'Tutorial' }">Tutorial</router-link> 
       <router-link :to="{ name: 'NewStudyList' }">Study</router-link> 
-      <!-- <router-link :to="{ name: 'StudyList' }">Study</router-link>  -->
+      <router-link :to="{ name: 'StudyList' }">Study</router-link> 
       <router-link :to="{path: `/study/${1}`}">MyStudy</router-link> 
       <router-link :to="{ name: 'User' }">User</router-link> 
-      <!-- <router-link :to="{ path: `/study/${1}` }">1번 스터디메인</router-link> 
-      <router-link :to="{ path: `/study/${2}` }">2번 스터디메인</router-link>  -->
-      <!-- <router-link :to="{ name: 'StudyReport' }">StudyReport</router-link> -->
+      <router-link :to="{ name: 'StudyReport' }">StudyReport</router-link>
       <Logout/>
     </section>
     <section v-else id='nav-list'>
-      <router-link :to="{ name: 'StudyList' }">Study</router-link> 
       <Login/>
       <router-link :to="{ name: 'SignUp' }">SignUp</router-link> 
     </section>
   </nav>
-  <router-view>
-  </router-view>
+  <router-view></router-view>
   <!-- <footer id="footer">
     <div>삼성청년 SW 아카테미</div> 
     <div>대전캠퍼스 5기 3반8팀</div>
@@ -35,7 +31,6 @@
 </template>
 
 <script>
-// import SignUp from '@/components/home/SignUp'
 import Login from '@/components/home/Login'
 import Logout from '@/components/home/Logout'
 import { computed } from '@vue/runtime-core'
@@ -45,7 +40,6 @@ export default {
   components: {
     Login,
     Logout
-   
   },
   setup() {
     const isLogin = computed(()=> store.state.isLogin)
@@ -103,22 +97,17 @@ export default {
   background-color: rgb(255, 255, 255, 0);
   color: var(--textColor);
   font-weight: bolder;
-  padding: 20px;
 }
 
 #logo, #nav-list {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin: 7px;
-  
 }
 
 #logo{
   width: 400px;
   padding: 0;
-  height: 60px;
-  margin: 0;
 }
 
 #logo-icon{
@@ -155,17 +144,15 @@ export default {
 }
 
 .slogan-box{
-  width: 100px;
   flex-wrap: wrap;
-  padding-top: 1px;
-  margin: 0 ;
+  margin: 0 auto
 }
 .square{
   font: 40px;
   font-weight: bold;
 }
 .slogan{
-  font-size: 10px;
+  font-size: 1px;
   flex-direction: row;
   margin: 0px
 } 
