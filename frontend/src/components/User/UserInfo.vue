@@ -146,7 +146,7 @@ template {
 .profileFrame {
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 
   width: 20rem;
@@ -194,7 +194,7 @@ template {
 }
 .buttonsection{
     display: flex;
-    justify-content: center ;
+    justify-content: center;
     flex-wrap: wrap;
     }
 </style>
