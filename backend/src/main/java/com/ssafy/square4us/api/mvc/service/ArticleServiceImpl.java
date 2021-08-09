@@ -36,12 +36,6 @@ public class ArticleServiceImpl implements ArticleService {
             return null;
         }
 
-        System.out.println(member.get().getId());
-        System.out.println(study.get().getId());
-        System.out.println(req.getCategory());
-        System.out.println(req.getTitle());
-        System.out.println(req.getContent());
-
         Article article = articleRepo.save(
                 Article.builder()
                         .category(req.getCategory())
@@ -61,16 +55,57 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional
     public ArticleDTO readArticle(Long articleId) {
-        Optional<Article> article = articleRepo.findById(articleId);
-        if(!article.isPresent()) {
+        Article article = articleRepo.findById(articleId).get();
+        if(article == null) {
             return null;
         }
-        return new ArticleDTO(article.get());
+        article.setHit(article.getHit() + 1);
+        return new ArticleDTO(article);
     }
 
     @Override
+    @Transactional
+    public ArticleDTO getArticle(Long articleId) {
+        Article article = articleRepo.findById(articleId).get();
+        if(article == null) {
+            return null;
+        }
+        return new ArticleDTO(article);
+    }
+
+    @Override
+    @Transactional
     public void deleteByArticleId(Long articleId) {
         articleRepo.deleteById(articleId);
+    }
+
+    @Override
+    @Transactional
+    public void evalArticle(Long articleId, String what) {
+        Optional<Article> article = articleRepo.findById(articleId);
+        if(!article.isPresent()) {
+            return;
+        }
+        Article art = article.get();
+        if(what.equals("like")) {
+            art.setGood(art.getGood() + 1);
+        } else {
+            art.setDislike(art.getDislike() + 1);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updateArticle(Long articleId, ArticleDTO.CreatePostReq req) {
+        Optional<Article> article = articleRepo.findById(articleId);
+        if(!article.isPresent()) {
+            return;
+        }
+        Article art = article.get();
+        art.setCategory(req.getCategory());
+        art.setTitle(req.getTitle());
+        art.setContent(req.getContent());
     }
 }
