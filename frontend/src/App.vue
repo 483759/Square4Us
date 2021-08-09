@@ -62,6 +62,7 @@ html, body, #app {
   height: 100%;
   width: 100%;
   background-color: var(--background);
+  margin: 0;
 }
 #app {
   display: flex;

@@ -103,10 +103,11 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  
 }
 
 #logo{
-  width: 400px;
+  width: 200px;
   padding: 0;
 }
 
