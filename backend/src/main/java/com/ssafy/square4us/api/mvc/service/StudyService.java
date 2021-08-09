@@ -12,17 +12,20 @@ public interface StudyService {
     StudyDTO createStudy(StudyDTO.CreatePostReq studyInfo, Member member);
 
     @Transactional
-    boolean joinStudy(Long studyId, Member member);
+    Boolean joinStudy(Long studyId, Member member);
+
+    @Transactional
+    Boolean acceptStudyJoin(Long studyId, Long memberId, Member leader);
 
     StudyDTO findByStudyId(Long studyId);
 
     List<StudyDTO> findAllStudies();
 
     @Transactional
-    boolean deleteByStudyId(String email, Long studyId);
+    Boolean deleteByStudyId(String email, Long studyId);
 
     @Transactional
-    boolean resign(String email, Long studyId);
+    Boolean resign(String email, Long studyId);
 
     PageImpl<StudyDTO> findStudiesWithPaging(Pageable pageable);
 }

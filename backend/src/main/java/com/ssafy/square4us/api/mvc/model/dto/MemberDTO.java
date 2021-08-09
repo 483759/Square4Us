@@ -47,7 +47,6 @@ public class MemberDTO {
     }
 
     @Getter
-    //@Schema(description = "MemberJoinPostRequest")
     public static class JoinPostReq {
         @Schema(name = "email", example = "ssafy@naver.com")
         String email;
@@ -61,6 +60,15 @@ public class MemberDTO {
             this.email = email;
             this.password = password;
             this.nickname = nickname;
+        }
+    }
+
+    @Getter
+    public static class AcceptPostReq {
+        Long id;
+
+        public AcceptPostReq(Long id) {
+            this.id = id;
         }
     }
 
@@ -91,7 +99,6 @@ public class MemberDTO {
     }
 
     @Getter
-    //@Schema(description = "MemberLoginPostResponse")
     public static class LoginPostRes {
         @Schema(name = "JWT Authentication Token")
         private String accessToken;

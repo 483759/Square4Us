@@ -1,6 +1,7 @@
 package com.ssafy.square4us.api.mvc.controller;
 
 import com.ssafy.square4us.api.mvc.model.dto.BasicResponseBody;
+import com.ssafy.square4us.api.mvc.model.dto.MemberDTO;
 import com.ssafy.square4us.api.mvc.model.dto.ResponseFactory;
 import com.ssafy.square4us.api.mvc.model.dto.StudyDTO;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
@@ -60,7 +61,32 @@ public class StudyController {
 
     @PostMapping("{studyId}")
     @Operation(summary = "스터디 가입 신청")
-    public ResponseEntity<? extends BasicResponseBody> readAllWithPaging(@Parameter(hidden = true) Authentication authentication, @PathVariable Long studyId) {
+    public ResponseEntity<? extends BasicResponseBody> joinStudy(@Parameter(hidden = true) Authentication authentication, @PathVariable Long studyId) {
+        if (authentication == null) {
+            return ResponseFactory.forbidden();
+        }
+
+        MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
+        String memberId = memberDetails.getUsername();
+
+        Member member = memberService.getMemberByEmail(memberId);
+
+        if (member == null) {
+            return ResponseFactory.unauthorized();
+        }
+
+        boolean result = studyService.joinStudy(studyId, member);
+
+        if (result) {
+            return ResponseFactory.ok();
+        }
+        return ResponseFactory.forbidden();
+    }
+
+    @PostMapping("{studyId}/accept")
+    @Operation(summary = "스터디 가입 승인")
+    public ResponseEntity<? extends BasicResponseBody> acceptJoinRequest(@Parameter(hidden = true) Authentication authentication, @PathVariable Long studyId
+            , @RequestBody @Parameter(name = "스터디 생성 정보", required = true) MemberDTO.AcceptPostReq acceptInfo) {
         if (authentication == null) {
             return ResponseFactory.forbidden();
         }

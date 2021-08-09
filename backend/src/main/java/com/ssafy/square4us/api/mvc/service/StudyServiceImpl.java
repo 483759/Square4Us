@@ -49,7 +49,7 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional
-    public boolean joinStudy(Long studyId, Member member) {
+    public Boolean joinStudy(Long studyId, Member member) {
         boolean exists = studyRepositorySupport.existStudyMember(studyId, member.getId());
         if (exists) {
             return false;
@@ -66,12 +66,34 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    @Transactional
+    public Boolean acceptStudyJoin(Long studyId, Long memberId, Member leader) {
+        Optional<Study> study = studyRepo.findById(studyId);    //존재하는 스터디인지 확인
+        if (!study.isPresent()) {
+            return false;
+        }
+
+        StudyMember leaderMember = studyMemberRepo.findByStudy_IdAndMember_Id(studyId, leader.getId());
+        if (leaderMember == null || leaderMember.getLeader() != 'T') {
+            return false;
+        }
+
+        StudyMember newMember = studyMemberRepo.findByStudy_IdAndMember_Id(studyId, memberId);
+        if (newMember == null) {
+            return false;
+        }
+
+        newMember.setAccepted('T');
+        studyMemberRepo.save(newMember);
+        return true;
+    }
+
+    @Override
     public StudyDTO findByStudyId(Long studyId) {
         return studyRepositorySupport.findByStudyId(studyId);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<StudyDTO> findAllStudies() {
         return studyRepositorySupport.findAllStudy();
     }
@@ -83,7 +105,7 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional
-    public boolean deleteByStudyId(String email, Long studyId) {
+    public Boolean deleteByStudyId(String email, Long studyId) {
         StudyMemberDTO sm = studyRepositorySupport.getStudyMemberByEmail(email, studyId);
         if (sm == null || sm.getLeader() != 'T') {
             return false;
@@ -95,7 +117,7 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional
-    public boolean resign(String email, Long studyId) {
+    public Boolean resign(String email, Long studyId) {
         StudyMemberDTO sm = studyRepositorySupport.getStudyMemberByEmail(email, studyId);
         if (sm == null || sm.getLeader() != 'F') {
             return false;
