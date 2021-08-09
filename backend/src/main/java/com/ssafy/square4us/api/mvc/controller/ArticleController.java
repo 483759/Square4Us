@@ -108,7 +108,7 @@ public class ArticleController {
     }
 
     @DeleteMapping("{articleId}")
-    @Operation(summary = "게시물 삭제", description = "memberId에 해당하는 게시물을 삭제한다.", responses = {
+    @Operation(summary = "게시물 삭제", description = "articleId에 해당하는 게시물을 삭제한다.", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "401", description = "권한 없음"),
             @ApiResponse(responseCode = "403", description = "게시물이 존재하지 않음")})
@@ -135,8 +135,72 @@ public class ArticleController {
         if(!article.getMember().getEmail().equals(email)) {
             return ResponseFactory.conflict();
         }
-        System.out.println("삭제 한다?");
+
         articleService.deleteByArticleId(articleId);
+
+        return ResponseFactory.ok();
+    }
+
+    @PatchMapping("{articleId}/{what}")
+    @Operation(summary = "게시물 평가", description = "articleId에 해당하는 게시물을 평가한다.", responses = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "401", description = "권한 없음"),
+            @ApiResponse(responseCode = "403", description = "게시물이 존재하지 않음"),
+            @ApiResponse(responseCode = "503", description = "없는 처리 방식")})
+    public ResponseEntity<? extends BasicResponseBody> evalArticle(@Parameter(hidden = true) Authentication authentication,
+                                                                   @PathVariable("studyId") Long studyId,
+                                                                   @PathVariable("articleId") Long articleId,
+                                                                   @PathVariable("what") String what) {
+        if(authentication == null) {
+            return ResponseFactory.unauthorized();
+        }
+
+        MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
+
+        if(memberDetails == null) {
+            return ResponseFactory.unauthorized();
+        }
+
+        if(!what.equals("like") && !what.equals("dislike")) {
+            return ResponseFactory.serviceUnavailable();
+        }
+        articleService.evalArticle(articleId, what);
+
+        return ResponseFactory.ok();
+    }
+
+
+    @PutMapping("{articleId}")
+    @Operation(summary = "게시물 수정", description = "articleId에 해당하는 게시물을 수정한다.", responses = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "401", description = "권한 없음"),
+            @ApiResponse(responseCode = "403", description = "게시물이 존재하지 않음")})
+    public ResponseEntity<? extends BasicResponseBody> updateArticle(@Parameter(hidden = true) Authentication authentication,
+                                                                     @PathVariable("studyId") Long studyId,
+                                                                     @PathVariable("articleId") Long articleId,
+                                                                     @RequestBody @Parameter(name = "게시글 수정 정보", required = true) ArticleDTO.CreatePostReq req) {
+        if (authentication == null) {
+            return ResponseFactory.forbidden();
+        }
+
+        MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
+        String memberId = memberDetails.getUsername();
+
+        Member member = memberService.getMemberByEmail(memberId);
+        if (member == null) {
+            return ResponseFactory.unauthorized();
+        }
+
+        ArticleDTO article = articleService.getArticle(articleId);
+        if(article == null) {
+            return ResponseFactory.forbidden();
+        }
+
+        if(!article.getMember().getEmail().equals(memberId)) {
+            return ResponseFactory.conflict();
+        }
+
+        articleService.updateArticle(articleId, req);
 
         return ResponseFactory.ok();
     }

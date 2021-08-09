@@ -21,6 +21,9 @@ public class StudyMember extends BaseTimeEntity {
     @Column(name = "leader_flag")
     private char leader;
 
+    @Column(name = "accepted_flag")
+    private char accepted;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_id", referencedColumnName = "study_id")
@@ -32,9 +35,10 @@ public class StudyMember extends BaseTimeEntity {
     private Member member;
 
     @Builder
-    public StudyMember(char leader, Study study, Member member) {
+    public StudyMember(char leader, char accepted, Study study, Member member) {
         super();
         this.leader = leader;
+        this.accepted = accepted;
         this.study = study;
         this.member = member;
     }

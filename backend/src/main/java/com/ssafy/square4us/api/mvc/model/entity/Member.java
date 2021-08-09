@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @ToString
 public class Member {
     @Id
@@ -40,12 +39,14 @@ public class Member {
     private int report;
 
     @Builder
-    public Member(String email, String password, String nickname, String profile_name, String profile_path) {
+    public Member(Long id, String email, String password, MemberRole role, String nickname, String profile_name, String profile_path, int report) {
+        this.id = id;
         this.email = email;
         this.password = password;
+        this.role = role;
         this.nickname = nickname;
         this.profile_name = profile_name;
         this.profile_path = profile_path;
+        this.report = report;
     }
-
 }

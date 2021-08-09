@@ -60,11 +60,19 @@ public class StudyRepositorySupport extends QuerydslRepositorySupport {
         return jpaQueryFactory
                 .select(Projections.constructor(StudyMemberDTO.class, qStudyMember))
                 .from(qStudyMember)
-                .join(qMember).on(qStudyMember.member.id.eq(qMember.id))
-                .join(qStudy).on(qStudyMember.study.id.eq(qStudy.id))
+                .innerJoin(qStudyMember.member, qMember)
+                .innerJoin(qStudyMember.study, qStudy)
                 .where(qMember.email.eq(email), qStudy.id.eq(studyId))
                 .fetchOne()
                 ;
+    }
+
+    public Boolean existStudyMember(Long studyId, Long memberId) {
+        Integer result = jpaQueryFactory
+                .selectOne()
+                .from(qStudyMember)
+                .where(qStudyMember.study.id.eq(studyId), qStudyMember.member.id.eq(memberId)).fetchFirst();
+        return result != null;
     }
 
     public Long deleteStudyById(Long studyId) {

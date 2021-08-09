@@ -10,7 +10,6 @@ import com.ssafy.square4us.common.auth.MemberDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,11 +19,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(value = "/api/study")
 public class StudyController {
     private final StudyService studyService;
     private final MemberService memberService;
+
+    public StudyController(StudyService studyService, MemberService memberService) {
+        this.studyService = studyService;
+        this.memberService = memberService;
+    }
 
     @PostMapping("")
     @Operation(summary = "스터디 생성", description = "스터디를 생성한다", responses = {
@@ -55,12 +58,67 @@ public class StudyController {
         return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "스터디 생성 완료", newStudy.getId(), newStudy.getCategory(), newStudy.getName(), newStudy.getDismantleFlag(), newStudy.getDismantleDate()));
     }
 
+    @PostMapping("{studyId}")
+    @Operation(summary = "스터디 가입 신청")
+    public ResponseEntity<? extends BasicResponseBody> joinStudy(@Parameter(hidden = true) Authentication authentication, @PathVariable Long studyId) {
+        if (authentication == null) {
+            return ResponseFactory.forbidden();
+        }
+
+        MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
+        String memberId = memberDetails.getUsername();
+
+        Member member = memberService.getMemberByEmail(memberId);
+
+        if (member == null) {
+            return ResponseFactory.unauthorized();
+        }
+
+        boolean result = studyService.joinStudy(studyId, member);
+
+        if (result) {
+            return ResponseFactory.ok();
+        }
+        return ResponseFactory.forbidden();
+    }
+
+    @PostMapping("{studyId}/accept/{memberId}")
+    @Operation(summary = "스터디 가입 승인")
+    public ResponseEntity<? extends BasicResponseBody> acceptJoinRequest(@Parameter(hidden = true) Authentication authentication, @PathVariable Long studyId, @PathVariable Long memberId) {
+        if (authentication == null) {
+            return ResponseFactory.forbidden();
+        }
+
+        MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
+        String email = memberDetails.getUsername();
+
+        Member member = memberService.getMemberByEmail(email);
+
+        if (member == null) {
+            return ResponseFactory.unauthorized();
+        }
+
+        boolean result = studyService.acceptStudyJoin(studyId, memberId, member);
+
+        if (result) {
+            return ResponseFactory.ok();
+        }
+        return ResponseFactory.forbidden();
+    }
+
     @GetMapping("")
     @Operation(summary = "스터디 목록 조회", description = "현재 모든 스터디의 목록을 조회한다", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "204", description = "존재하지 않음")})
     public ResponseEntity<? extends BasicResponseBody> readAllWithPaging(@Parameter int page, @Parameter int size, @Parameter(required = false) Sort sort) {
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable;
+
+        if (sort == null) {
+            pageable = PageRequest.of(page, size);
+        } else {
+            pageable = PageRequest.of(page, size, sort);
+        }
+
         Page<StudyDTO> list = studyService.findStudiesWithPaging(pageable);
         if (list == null) {
             return ResponseFactory.noContent();
@@ -81,7 +139,6 @@ public class StudyController {
         }
 
         return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "조회 성공", study.getId(), study.getCategory(), study.getName(), study.getDismantleFlag(), study.getDismantleDate()));
-        //return ResponseEntity.status(HttpStatus.CREATED).body(Study.InfoGetRes.of(200, "성공", study));
     }
 
     @PostMapping("/{studyId}/resign")
