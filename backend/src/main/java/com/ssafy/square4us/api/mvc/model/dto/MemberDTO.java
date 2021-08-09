@@ -1,5 +1,6 @@
 package com.ssafy.square4us.api.mvc.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.model.entity.MemberRole;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -8,17 +9,31 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberDTO {
     private Long id;
     private String email;
-    private String password;
     private MemberRole role;
     private String nickname;
     private String profile_name;
     private String profile_path;
     private int report;
+    @JsonIgnore
+    private String password;
+
+    public MemberDTO(Long id, String email, String password, MemberRole role, String nickname, String profile_name, String profile_path, int report) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.nickname = nickname;
+        this.profile_name = profile_name;
+        this.profile_path = profile_path;
+        this.report = report;
+    }
 
     public MemberDTO(Member member) {
         this.id = member.getId();
@@ -32,7 +47,6 @@ public class MemberDTO {
     }
 
     @Getter
-    //@Schema(description = "MemberJoinPostRequest")
     public static class JoinPostReq {
         @Schema(name = "email", example = "ssafy@naver.com")
         String email;
@@ -46,6 +60,17 @@ public class MemberDTO {
             this.email = email;
             this.password = password;
             this.nickname = nickname;
+        }
+    }
+
+    @Getter
+    public static class AcceptPostReq {
+        @Schema(name = "id")
+        Long id;
+
+        @Builder
+        public AcceptPostReq(Long id) {
+            this.id = id;
         }
     }
 
@@ -76,7 +101,6 @@ public class MemberDTO {
     }
 
     @Getter
-    //@Schema(description = "MemberLoginPostResponse")
     public static class LoginPostRes {
         @Schema(name = "JWT Authentication Token")
         private String accessToken;
@@ -116,6 +140,19 @@ public class MemberDTO {
 
         public static BasicResponseBody<InfoGetRes> of(Integer statusCode, String message, String email, MemberRole role, String nickname, String profile_name, String profile_path, int report) {
             return BasicResponseBody.of(statusCode, message, new InfoGetRes(email, role, nickname, profile_name, profile_path, report));
+        }
+    }
+
+    @Getter
+    public static class InfosGetRes {
+        List<MemberDTO> memberList;
+
+        public InfosGetRes(List<MemberDTO> memberList) {
+            this.memberList = memberList;
+        }
+
+        public static BasicResponseBody<MemberDTO.InfosGetRes> of(Integer statusCode, String message, List<MemberDTO> memberList) {
+            return BasicResponseBody.of(statusCode, message, new InfosGetRes(memberList));
         }
     }
 }
