@@ -5,20 +5,17 @@
       <div class="sloganbox_signup">
         
         <div>
-          <div>
-            <span class="welcome_signup">Welcome to </span>
-          </div>
-          
+          <span class="welcome_signup">Welcome to</span>
           <span class="slogan_signup">Square4us</span>
         </div>
         <img class="logo_signup" src="/square4us.png" alt="">
       </div>
-      <form id='signup-form' method="POST" @submit.prevent="signup">
+      <form id='signup-form' method="POST" @submit.prevent="signUp">
         <p><input class="input_signup" type="email" id="signup_email" name="email" placeholder="이메일 입력" v-model="credentials.email"></p>
         <p><input class="input_signup" type="nickname" id="signup_nickname" name="nickname" placeholder="닉네임" v-model="credentials.nickname"></p>
         <p><input class="input_signup" type="password"  id="signup_password" name="password" placeholder="비밀번호" v-model="credentials.password"></p>
         <p><input class="input_signup" type="password_confirmation"  id="signup_password_confirmation" name="password_confirmation" placeholder="비밀번호확인" v-model="credentials.password_confirmation"></p>
-        <button class="button_signup" id="signup_button">signup</button>
+        <button class="button_signup" id="signup_button">Signup</button>
       </form>
     </section>
     <section id="signupsection2" class="section2">
@@ -32,16 +29,8 @@
 import { reactive, ref } from '@vue/reactivity'
 import { useStore } from 'vuex'
 export default {
-  name: 'Login',
-  components : {
-   
-  },
+  name: 'Signup',
   setup() {
-    // 모달 여닫기 관련
-    const isShow = ref(false)
-    const switchModal = ()=>{
-      isShow.value = !isShow.value
-    }
     //로그인 객체
     const credentials = reactive({
       email : "",
@@ -51,14 +40,14 @@ export default {
     })
     // 로그인 함수
     const store = useStore();
-    const login = ()=>{
-      store.dispatch('login', credentials)
+    const signUp = ()=>{
+      store.dispatch('signup', credentials)
     }
     return {
       isShow,
       switchModal,
       credentials,
-      login,
+      signUp,
     }
   }
 }

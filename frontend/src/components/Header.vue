@@ -10,11 +10,10 @@
     
     <section v-if='isLogin' id='nav-list'>
       <router-link :to="{ name: 'Tutorial' }">Tutorial</router-link> 
-      <router-link :to="{ name: 'NewStudyList' }">Study</router-link> 
       <router-link :to="{ name: 'StudyList' }">Study</router-link> 
       <router-link :to="{path: `/study/${1}`}">MyStudy</router-link> 
       <router-link :to="{ name: 'User' }">User</router-link> 
-      <router-link :to="{ name: 'StudyReport' }">StudyReport</router-link>
+      <router-link :to="{ name: 'StudyReport' }">Report</router-link>
       <Logout/>
     </section>
     <section v-else id='nav-list'>

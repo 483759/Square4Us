@@ -12,6 +12,7 @@ export default {
       store.commit('LOGOUT')
       localStorage.removeItem('JWT')
       router.push({name: 'Main'})
+      console.log("로그아웃 성공 : ", localStorage);
     }
     return {
       logout
