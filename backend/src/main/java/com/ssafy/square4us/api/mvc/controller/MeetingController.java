@@ -33,14 +33,14 @@ public class MeetingController {
         return memberService.getMemberByEmail(memberId);
     }
 
-    @PostMapping("")
+    @PostMapping("/{maximum}")
     @Operation(summary = "미팅 생성", description = "미팅 생성한다", responses = {
             @ApiResponse(responseCode = "201", description = "미팅 생성 성공"),
             @ApiResponse(responseCode = "401", description = "권한 없음"),
             @ApiResponse(responseCode = "403", description = "미팅 생성 실패")})
     public ResponseEntity<? extends BasicResponseBody> create(@Parameter(hidden = true) Authentication authentication,
-                                                              @PathVariable("studyId") Long studyId,
-                                                              @RequestBody @Parameter(name = "미팅 생성 정보", required = true) MeetingDTO.CreatePostReq meetingInfo) {
+                                                              @PathVariable("studyId") Long studyId, @PathVariable("maximum") int maximum) {
+                                                              //@RequestBody @Parameter(name = "미팅 생성 정보", required = true) MeetingDTO.GeneratePostReq meetingInfo) {
         if (authentication == null) {
             return ResponseFactory.forbidden();
         }
@@ -54,7 +54,7 @@ public class MeetingController {
             return ResponseFactory.unauthorized();
         }
 
-        MeetingDTO newMeeting = meetingService.createMeeting(studyId, meetingInfo);
+        MeetingDTO newMeeting = meetingService.createMeeting(studyId, maximum);
 
         if (newMeeting == null) {
             return ResponseFactory.forbidden();
