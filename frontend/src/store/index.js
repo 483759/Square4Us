@@ -5,7 +5,8 @@ import { createStore } from "vuex";
 export default createStore({
   state: {
     isLogin: false,
-    user: {}
+    user: {},
+    myStudies: []
   },
   mutations: {
     LOGIN : function (state) {
@@ -17,6 +18,9 @@ export default createStore({
     },
     SET_USER: function (state, payload) {
       state.user = payload
+    },
+    SET_STUDIES: function (state, payload) {
+      state.myStudies = payload
     }
   },
   actions: {
@@ -85,6 +89,19 @@ export default createStore({
       // context.commit('SET_USER', response.data)
       console.log("유저 정보 받아옴", response);
       return true
+    },
+    getMyStudies: async function (context) {
+      const response = await axios({
+        method: "GET",
+        url: "/study/me/list",
+      }).catch((err)=>{
+        console.log(err.response);
+      })
+      if (!response) {
+        alert("내 스터디 목록을 받아오지 못했습니다")
+        return
+      }
+      context.commit('SET_STUDIES', response.data.data.studyList)
     }
   },
   modules: {},

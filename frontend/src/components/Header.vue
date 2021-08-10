@@ -11,7 +11,7 @@
     <section v-if='isLogin' id='nav-list'>
       <router-link :to="{ name: 'Tutorial' }">Tutorial</router-link> 
       <router-link :to="{ name: 'StudyList' }">Study</router-link> 
-      <router-link :to="{path: `/study/${1}`}">MyStudy</router-link> 
+      <MyStudy v-if='myStudies.length' :myStudies='myStudies'/>
       <router-link :to="{ name: 'User' }">User</router-link> 
       <router-link :to="{ name: 'StudyReport' }">Report</router-link>
       <Logout/>
@@ -32,18 +32,25 @@
 <script>
 import Login from '@/components/home/Login'
 import Logout from '@/components/home/Logout'
-import { computed } from '@vue/runtime-core'
+import MyStudy from '@/components/study/list/MyStudy'
+import { computed, onMounted } from '@vue/runtime-core'
 import store from '@/store'
 export default {
   name : 'Header',
   components: {
     Login,
-    Logout
+    Logout,
+    MyStudy 
   },
   setup() {
     const isLogin = computed(()=> store.state.isLogin)
+    const myStudies = computed(()=> store.state.myStudies)
+    onMounted(()=>{
+      store.dispatch('getMyStudies')
+    })
     return {
-      isLogin
+      isLogin,
+      myStudies
     }
   }
 }
