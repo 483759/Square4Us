@@ -24,7 +24,7 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     @Transactional
-    public MeetingDTO createMeeting(Long studyId, MeetingDTO.CreatePostReq meetingInfo) {
+    public MeetingDTO createMeeting(Long studyId, MeetingDTO.GeneratePostReq meetingInfo) {
         Optional<Study> study = studyRepo.findById(studyId);
         if (!study.isPresent()) {
             return null;

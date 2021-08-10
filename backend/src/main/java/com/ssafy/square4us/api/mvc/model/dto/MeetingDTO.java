@@ -26,12 +26,12 @@ public class MeetingDTO {
 
     @Getter
     @Schema(description = "Meeting Create Post Request")
-    public static class CreatePostReq {
+    public static class GeneratePostReq {
         @Schema(name = "maximum", example = "15")
         int maximum;
 
         @Builder
-        public CreatePostReq(int maximum) {
+        public GeneratePostReq(int maximum) {
             this.maximum = maximum;
         }
     }

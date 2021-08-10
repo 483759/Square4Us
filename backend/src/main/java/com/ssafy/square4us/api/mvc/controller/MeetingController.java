@@ -40,7 +40,7 @@ public class MeetingController {
             @ApiResponse(responseCode = "403", description = "미팅 생성 실패")})
     public ResponseEntity<? extends BasicResponseBody> create(@Parameter(hidden = true) Authentication authentication,
                                                               @PathVariable("studyId") Long studyId,
-                                                              @RequestBody @Parameter(name = "미팅 생성 정보", required = true) MeetingDTO.CreatePostReq meetingInfo) {
+                                                              @RequestBody @Parameter(name = "미팅 생성 정보", required = true) MeetingDTO.GeneratePostReq meetingInfo) {
         if (authentication == null) {
             return ResponseFactory.forbidden();
         }
