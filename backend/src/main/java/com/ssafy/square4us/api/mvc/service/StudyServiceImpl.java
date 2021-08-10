@@ -94,6 +94,11 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    public List<StudyDTO> findStudiesByMember(Long memberId) {
+        return studyRepositorySupport.findStudiesByMember(memberId);
+    }
+
+    @Override
     public StudyDTO findByStudyId(Long studyId) {
         return studyRepositorySupport.findByStudyId(studyId);
     }
