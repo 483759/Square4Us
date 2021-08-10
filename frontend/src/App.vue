@@ -12,20 +12,19 @@ export default {
   name: 'App',
   setup() {
     onMounted(async()=>{
-      axios.defaults.baseURL = 'http://localhost:8080/api'
+      axios.defaults.baseURL = process.env.VUE_APP_API_URL
+      console.log("환경변수 정보 ", process.env);
+      
       const jwt = localStorage.getItem('JWT')
       if (jwt) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`
         const response = await store.dispatch('getUser')
         if (response) {
-          console.log('토큰유효함');
           router.push({name: 'StudyList'})
         }else{
-          console.log('토큰유효하지않음');
           router.push({name: 'Main'})
         }
       }else{
-        console.log('토큰이 없습니다');
         router.push({name: 'Main'})
       }
     })
@@ -60,6 +59,7 @@ html, body, #app {
   height: 100%;
   width: 100%;
   background-color: var(--background);
+  margin: 0;
 }
 #app {
   display: flex;
@@ -72,7 +72,7 @@ ul {
 
 :root[color-theme='light'] {
   --headerBackground : white;
-  --background: rgb(197, 197, 197);
+  --background: rgb(230, 230, 230);
   --boxColor: black;
   --textColor: #2c3e50;
 

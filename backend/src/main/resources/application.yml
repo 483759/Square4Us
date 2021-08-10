@@ -1,6 +1,7 @@
 server:
-  address: localhost
   port: 8080
+  http:
+    port: 8443
   servlet:
     context-path: /
     encoding:
@@ -12,6 +13,13 @@ spring:
   devtools:
     livereload:
       enabled: true
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+    # 기본 저장 위치
+      # location: C:\\Temp\\upload
+      max-request-size: 50MB
 
   data:
     web:

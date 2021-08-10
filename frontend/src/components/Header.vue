@@ -11,45 +11,46 @@
     <section v-if='isLogin' id='nav-list'>
       <router-link :to="{ name: 'Tutorial' }">Tutorial</router-link> 
       <router-link :to="{ name: 'StudyList' }">Study</router-link> 
-      <router-link :to="{path: `/study/${1}`}">내 스터디</router-link> 
+      <MyStudy v-if='myStudies.length' :myStudies='myStudies'/>
       <router-link :to="{ name: 'User' }">User</router-link> 
-      <!-- <router-link :to="{ path: `/study/${1}` }">1번 스터디메인</router-link> 
-      <router-link :to="{ path: `/study/${2}` }">2번 스터디메인</router-link>  -->
-      <!-- <router-link :to="{ name: 'StudyReport' }">StudyReport</router-link> -->
+      <router-link :to="{ name: 'StudyReport' }">Report</router-link>
       <Logout/>
     </section>
     <section v-else id='nav-list'>
       <Login/>
-      <SignUp/>
+      <router-link :to="{ name: 'SignUp' }">SignUp</router-link> 
     </section>
   </nav>
   <router-view></router-view>
-  <footer id="footer">
+  <!-- <footer id="footer">
     <div>삼성청년 SW 아카테미</div> 
     <div>대전캠퍼스 5기 3반8팀</div>
     <div >2학기 공통 프로젝트</div> 
-  </footer>
-
-
+  </footer> -->
 </template>
 
 <script>
-import SignUp from '@/components/home/SignUp'
 import Login from '@/components/home/Login'
 import Logout from '@/components/home/Logout'
-import { computed } from '@vue/runtime-core'
+import MyStudy from '@/components/study/list/MyStudy'
+import { computed, onMounted } from '@vue/runtime-core'
 import store from '@/store'
 export default {
   name : 'Header',
   components: {
     Login,
     Logout,
-    SignUp,
+    MyStudy 
   },
   setup() {
     const isLogin = computed(()=> store.state.isLogin)
+    const myStudies = computed(()=> store.state.myStudies)
+    onMounted(()=>{
+      store.dispatch('getMyStudies')
+    })
     return {
-      isLogin
+      isLogin,
+      myStudies
     }
   }
 }
@@ -108,12 +109,11 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin: 7px;
   
 }
 
 #logo{
-  width: 400px;
+  width: 200px;
   padding: 0;
 }
 
