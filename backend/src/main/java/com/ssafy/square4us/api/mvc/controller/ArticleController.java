@@ -3,10 +3,10 @@ package com.ssafy.square4us.api.mvc.controller;
 import com.ssafy.square4us.api.mvc.model.dto.ArticleDTO;
 import com.ssafy.square4us.api.mvc.model.dto.BasicResponseBody;
 import com.ssafy.square4us.api.mvc.model.dto.ResponseFactory;
-import com.ssafy.square4us.api.mvc.model.dto.StudyDTO;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.service.ArticleService;
 import com.ssafy.square4us.api.mvc.service.MemberService;
+import com.ssafy.square4us.common.auth.MemberDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -18,9 +18,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import com.ssafy.square4us.common.auth.MemberDetails;
-
-import javax.xml.ws.Response;
 
 @RestController
 @RequiredArgsConstructor
