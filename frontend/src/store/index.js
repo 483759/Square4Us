@@ -76,6 +76,25 @@ export default createStore({
       const studyId = response.data.data.id
       router.push({path: `/study/${studyId}`})
     },
+    createMeeting: async function (context, data) {
+      console.log(data.personnel);
+      const response = await axios({
+        method: 'POST',
+        url: `/study/${data.studyId}/meeting/${data.maximum}`,
+      }).catch((err)=>{
+        console.log(err.response);
+      })
+      if (!response) {
+        alert('생성 실패')
+        console.log(response);
+        return
+      }
+      console.log(response);
+      // 생성 성공했다면 새로 미팅 목록을 불러온다
+    },
+    getMeetings: function () {
+      
+    },
     getUser : async function (context) {
       const response = await axios({
         method: "GET",
