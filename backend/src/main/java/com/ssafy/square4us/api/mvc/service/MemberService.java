@@ -16,7 +16,7 @@ public interface MemberService {
 
     List<MemberDTO> getMembersWaitJoin(Long studyId);
 
-    MemberDTO createMember(MemberDTO.JoinPostReq joinInfo, MultipartFile profile);
+    MemberDTO createMember(MemberDTO.JoinPostReq joinInfo);
 
     Long updateMemberByEmail(String email, MemberDTO.UpdatePatchReq updateInfo);
 

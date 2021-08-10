@@ -68,7 +68,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(rollbackFor = IOException.class)
-    public MemberDTO createMember(MemberDTO.JoinPostReq joinInfo, MultipartFile profile) {
+    public MemberDTO createMember(MemberDTO.JoinPostReq joinInfo) {
         Member member = Member.builder()
                 .email(joinInfo.getEmail())
                 .nickname(joinInfo.getNickname())
@@ -76,13 +76,6 @@ public class MemberServiceImpl implements MemberService {
                 .password(new BCryptPasswordEncoder().encode(joinInfo.getPassword()))
                 .build();
         member = memberRepository.save(member);
-        if(profile != null) {
-
-            int code = uploadProfile(member, profile);
-            if(code == 1) {
-                return null;
-            }
-        }
 
         return new MemberDTO(member);
     }

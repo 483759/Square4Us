@@ -64,14 +64,14 @@ public class MemberController {
             @ApiResponse(responseCode = "409", description = "중복된 계정 오류"),
             @ApiResponse(responseCode = "503", description = "회원가입 실패"),
             @ApiResponse(responseCode = "500", description = "서버 오류")})
-    public ResponseEntity<? extends BasicResponseBody> register(@Parameter(name = "회원가입 정보", required = true) MemberDTO.JoinPostReq req, @Parameter(name = "프로필 사진", required = false) MultipartFile profile) throws IOException {
+    public ResponseEntity<? extends BasicResponseBody> register(@RequestBody @Parameter(name = "회원가입 정보", required = true) MemberDTO.JoinPostReq req){
 
         MemberDTO confirmMember = memberService.getMemberDTOByEmail(req.getEmail());
         if (confirmMember != null) {
             return ResponseFactory.conflict();
         }
 
-        MemberDTO member = memberService.createMember(req, profile);
+        MemberDTO member = memberService.createMember(req);
 
         if (member == null) {
             return ResponseFactory.serviceUnavailable();
