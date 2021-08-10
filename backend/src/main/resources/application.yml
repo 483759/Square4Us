@@ -8,16 +8,6 @@ server:
       charset: UTF-8
       enabled: true
       force: true
-  ssl:
-    enabled: true
-    key-store-type: PKCS12
-    key-store: classpath:keystore/ssafy.p12
-    key-store-password: ssafy123
-    key-alias: ssafy
-
-trust:
-  store: classpath:keystore/ssafy.p12
-  store-password: ssafy123
 
 spring:
   devtools:
