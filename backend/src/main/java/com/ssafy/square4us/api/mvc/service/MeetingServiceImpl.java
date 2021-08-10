@@ -33,8 +33,6 @@ public class MeetingServiceImpl implements MeetingService {
         Meeting meeting = meetingRepo.save(
                 Meeting.builder()
                         .study(study.get())
-                        .thumbnailName(meetingInfo.getThumbnailName())
-                        .thumbnailPath(meetingInfo.getThumbnailPath())
                         .maximum(meetingInfo.getMaximum())
                         .run_flag('T')
                         .build()

@@ -13,21 +13,17 @@ export default {
   setup() {
     onMounted(async()=>{
       axios.defaults.baseURL = process.env.VUE_APP_API_URL
-      console.log(process.env);
-      console.log(axios.defaults.baseURL);
+      console.log("환경변수 정보 ", process.env);
       const jwt = localStorage.getItem('JWT')
       if (jwt) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`
         const response = await store.dispatch('getUser')
         if (response) {
-          console.log('토큰유효함');
           router.push({name: 'StudyList'})
         }else{
-          console.log('토큰유효하지않음');
           router.push({name: 'Main'})
         }
       }else{
-        console.log('토큰이 없습니다');
         router.push({name: 'Main'})
       }
     })

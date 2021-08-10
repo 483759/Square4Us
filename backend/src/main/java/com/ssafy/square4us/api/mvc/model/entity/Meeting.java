@@ -15,12 +15,6 @@ public class Meeting extends BaseTimeEntity {
     @Column(name = "meeting_id")
     private Long id;
 
-    @Column(name = "thumbnail_name")
-    private String thumbnailName;
-
-    @Column(name = "thumbnail_path")
-    private String thumbnailPath;
-
     @Column(name = "maximum")
     private int maximum = 4;
 
@@ -31,13 +25,15 @@ public class Meeting extends BaseTimeEntity {
     @JoinColumn(name = "study_id", referencedColumnName = "study_id")
     private Study study;
 
+    @OneToOne(mappedBy = "meeting")
+    private FileEntity thumbnail;
+
     @Builder
-    public Meeting(String thumbnailName, String thumbnailPath, int maximum, char run_flag, Study study) {
-        this.thumbnailName = thumbnailName;
-        this.thumbnailPath = thumbnailPath;
+    public Meeting(int maximum, char run_flag, Study study, FileEntity thumbnail) {
         this.maximum = maximum;
         this.run_flag = run_flag;
         this.study = study;
+        this.thumbnail = thumbnail;
     }
 
 }

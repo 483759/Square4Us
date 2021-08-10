@@ -13,16 +13,12 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MeetingDTO {
     private Long id;
-    private String thumbnailName;
-    private String thumbnailPath;
     private int maximum = 4;
     private char run_flag = 'T';
     private StudyDTO study;
 
     @Builder
     public MeetingDTO(Meeting meeting) {
-        this.thumbnailName = meeting.getThumbnailName();
-        this.thumbnailPath = meeting.getThumbnailPath();
         this.maximum = meeting.getMaximum();
         this.run_flag = meeting.getRun_flag();
         this.study = new StudyDTO(meeting.getStudy());
@@ -34,17 +30,9 @@ public class MeetingDTO {
         @Schema(name = "maximum", example = "15")
         int maximum;
 
-        @Schema(name = "thumbnailname", example = "sample.jpg")
-        String thumbnailName;
-
-        @Schema(name = "thumbnailpath", example = "/test/sample")
-        String thumbnailPath;
-
         @Builder
-        public CreatePostReq(int maximum, String thumbnailName, String thumbnailPath) {
+        public CreatePostReq(int maximum) {
             this.maximum = maximum;
-            this.thumbnailName = thumbnailName;
-            this.thumbnailPath = thumbnailPath;
         }
     }
 
@@ -67,28 +55,20 @@ public class MeetingDTO {
         @Schema(description = "미팅 아이디", example = "2")
         private Long id;
 
-        @Schema(description = "썸네일 사진 파일명", example = "sample.jpg")
-        private String thumbnailName;
-
-        @Schema(description = "썸네일 사진 파일", example = "/test/sample")
-        private String thumbnailPath;
-
         @Schema(description = "maximum", example = "15")
         private int maximum = 4;
 
         @Schema(description = "run_flag", example = "T")
         private char run_flag = 'T';
 
-        public EnterGetRes(Long id, String thumbnailName, String thumbnailPath, int maximum, char run_flag) {
+        public EnterGetRes(Long id, int maximum, char run_flag) {
             this.id = id;
-            this.thumbnailName = thumbnailName;
-            this.thumbnailPath = thumbnailPath;
             this.maximum = maximum;
             this.run_flag = run_flag;
         }
 
         public static BasicResponseBody<EnterGetRes> of(Integer statusCode, String message, MeetingDTO meeting) {
-            return BasicResponseBody.of(statusCode, message, new EnterGetRes(meeting.getId(), meeting.getThumbnailName(), meeting.getThumbnailPath(), meeting.getMaximum(), meeting.getRun_flag()));
+            return BasicResponseBody.of(statusCode, message, new EnterGetRes(meeting.getId(), meeting.getMaximum(), meeting.getRun_flag()));
         }
     }
 

@@ -8,22 +8,27 @@ import com.ssafy.square4us.api.mvc.model.entity.StudyMember;
 import com.ssafy.square4us.api.mvc.model.repository.StudyMemberRepository;
 import com.ssafy.square4us.api.mvc.model.repository.StudyRepository;
 import com.ssafy.square4us.api.mvc.model.repository.StudyRepositorySupport;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class StudyServiceImpl implements StudyService {
 
     private final StudyRepository studyRepo;
     private final StudyRepositorySupport studyRepositorySupport;
     private final StudyMemberRepository studyMemberRepo;
+
+    public StudyServiceImpl(StudyRepository studyRepo, StudyRepositorySupport studyRepositorySupport, StudyMemberRepository studyMemberRepo) {
+        this.studyRepo = studyRepo;
+        this.studyRepositorySupport = studyRepositorySupport;
+        this.studyMemberRepo = studyMemberRepo;
+    }
 
     @Override
     @Transactional
@@ -35,11 +40,57 @@ public class StudyServiceImpl implements StudyService {
                         .name(studyInfo.getName())
                         .dismantleFlag('F')
                         .build());
-        StudyMember sm = new StudyMember('T', study, member);
+        StudyMember sm = new StudyMember('T', 'T', study, member);
 
         studyMemberRepo.save(sm);
 
         return new StudyDTO(study);
+    }
+
+    @Override
+    @Transactional
+    public Boolean joinStudy(Long studyId, Member member) {
+        boolean exists = studyRepositorySupport.existStudyMember(studyId, member.getId());
+        if (exists) {
+            return false;
+        }
+
+        Optional<Study> study = studyRepo.findById(studyId);
+        if (!study.isPresent()) {
+            return false;
+        }
+
+        studyMemberRepo.save(new StudyMember('F', 'F', study.get(), member));
+
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public Boolean acceptStudyJoin(Long studyId, Long memberId, Member leader) {
+        Optional<Study> study = studyRepo.findById(studyId);    //존재하는 스터디인지 확인
+        if (!study.isPresent()) {
+            return false;
+        }
+        if (study.get().getDismantleFlag() == 'T') {      //이미 해체한 스터디이면
+            return true;
+        }
+
+        StudyMember leaderMember = studyMemberRepo.findByStudy_IdAndMember_Id(studyId, leader.getId());
+        System.out.println(leaderMember);
+        if (leaderMember == null || leaderMember.getLeader() != 'T') {
+            return false;
+        }
+
+        StudyMember newMember = studyMemberRepo.findByStudy_IdAndMember_Id(studyId, memberId);
+        System.out.println(newMember);
+        if (newMember == null) {
+            return false;
+        }
+
+        newMember.setAccepted('T');
+        studyMemberRepo.save(newMember);
+        return true;
     }
 
     @Override
@@ -48,7 +99,6 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<StudyDTO> findAllStudies() {
         return studyRepositorySupport.findAllStudy();
     }
@@ -60,7 +110,7 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional
-    public boolean deleteByStudyId(String email, Long studyId) {
+    public Boolean deleteByStudyId(String email, Long studyId) {
         StudyMemberDTO sm = studyRepositorySupport.getStudyMemberByEmail(email, studyId);
         if (sm == null || sm.getLeader() != 'T') {
             return false;
@@ -71,7 +121,8 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public boolean resign(String email, Long studyId) {
+    @Transactional
+    public Boolean resign(String email, Long studyId) {
         StudyMemberDTO sm = studyRepositorySupport.getStudyMemberByEmail(email, studyId);
         if (sm == null || sm.getLeader() != 'F') {
             return false;

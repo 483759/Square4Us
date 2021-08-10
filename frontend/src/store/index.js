@@ -3,7 +3,7 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
-    isLogin: false,
+    isLogin: true,
     user: {}
   },
   mutations: {
@@ -31,9 +31,8 @@ export default createStore({
         localStorage.removeItem('JWT');
       })
       if (!response) return false
-      console.log(response.data);
-
       localStorage.setItem('JWT', response.data.data.accessToken)
+      console.log("로그인 성공", localStorage);
       context.commit('LOGIN')
       return true
     },
@@ -48,7 +47,7 @@ export default createStore({
       if (!response) return false
       context.commit('LOGIN')
       // context.commit('SET_USER', response.data)
-      console.log(context);
+      console.log("유저 정보 받아옴", response);
       return true
     }
   },

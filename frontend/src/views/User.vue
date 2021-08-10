@@ -1,8 +1,5 @@
 <template>
-  
-<header class="userheader">
-  <p>UserInfo</p>
-</header>
+
 <section class="userbody">
  
   <div name="menu" class="menubar  display=flex ml-0">
@@ -134,19 +131,19 @@ export default {
 </script>
 
 <style>
-.userheader{
+/* .userheader{
   margin-top: 100px;
   margin-bottom: 100px;
   background-color: white;
   font-size: 50px;
   background-color: #F2F2F2;
   color: #195C77;
-}
+} */
 .userbody{
-  /* display: flex; */
-  /* flex-direction: row; */
-  height: 100%;
+  display: flex;
+  justify-content: center;
   background-color: #F2F2F2; 
+  margin: 0 0 0 0;
 
 }
 /* .container {
@@ -155,55 +152,59 @@ export default {
   flex-wrap: wrap;
 } */
 .menubar{
-  position: fixed;
+  display: flex;
+  flex-direction: column;
+
   padding: 0;
-  margin-left: 0%;
-  margin-left: 150px;
+  margin: 100px 50px 0 50px;
+  width: ;
   /* background-color: white; */
   color: #195C77;
-  height: 70%;
+  height: 50%;
   border: 0.5px transparent;
   border-bottom: 0.5px black ;
   
 }
 .menubutton {
   /* margin-left: 100px; */
-  height: 70px;
-  width: 300px;
+  height: 3.5rem;
+  width: 12rem;
   background-color: #195C77;
   color: white;
-  font: 20px sans-serif;
+  font: 15px sans-serif;
   padding-bottom: 5px;
   border: 1px transparent;
   border-bottom: 1px black ;
   /* box-shadow: 1px 1px 10px 5px #13475c inset; */
 }
 .clickedbutton {
-  height: 70px;
-  width: 300px;
+  height: 3.5rem;
+  width: 12rem;
   background-color: white;
   color: #195C77;
-  font: 20px sans-serif;
+  font: 15px sans-serif;
   box-shadow: 2px 5px 5px 3px #103b4d ;
 }
-.xbutton {
+/* .xbutton {
   height: 300px;
-  width: 300px;
+  width: 150px;
   background-color: #195C77;
   color: white;
   font: 20px sans-serif;
-}
+} */
 
 
 .page {
-  position: absolute;
-  width: 60%;
+  display: flex;
+  width: 50rem;
   /* height: 100%; */
   right: 10%;
-  margin-left: 100px;
+  margin: 100px 100px 0 50px;
   /* margin-bottom: 1000px; */
   background-color: white;
   float: right;
+  margin: 100px 0 100px 0;
+
 }
 </style>
 
