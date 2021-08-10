@@ -16,9 +16,9 @@
         </div>
            <form id='login-form' method="POST" @submit.prevent="login">
           <!-- <p><label for="email">Email</label></p> -->
-          <p><input class="input_login" type="email" id="login_email" name="email" placeholder="이메일 입력" v-model="credentials.email"></p>
+          <p><input class="input_login" type="email" id="email" name="email" placeholder="이메일 입력" v-model="credentials.email"></p>
           <!-- <p><label for="password">Password</label></p> -->
-          <p><input class="input_login" type="password"  id="login_password" name="password" placeholder="비밀번호" v-model="credentials.password"></p>
+          <p><input class="input_login" type="password"  id="password" name="password" placeholder="비밀번호" v-model="credentials.password"></p>
           
           <button class="button_login">Login</button>
           

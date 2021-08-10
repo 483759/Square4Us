@@ -23,10 +23,10 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
   #frame {
     box-sizing: border-box;
-    min-height: 600px;
+    min-height: 650px;
     min-width: 900px;
     flex-grow: 1;
     display: flex;

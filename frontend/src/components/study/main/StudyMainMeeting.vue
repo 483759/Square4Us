@@ -1,14 +1,5 @@
 <template>
 <article>
-  <header id='section-title'>
-    <div>미팅</div>
-    <div>
-      <select name="" id="" v-model='data.maximum'>
-        <option v-for='option in options' :value="option" :key="option">{{ option }}</option>
-      </select>
-      <button @click='createMeeting'>미팅 생성</button>
-    </div>
-  </header>
   <ul class='meeting-item'>
     <!-- <h3>스터디 메인 미팅리스트 : 여기 들어오면 axios요청을 보내 목록을 갱신함</h3> -->
     <StudyMainMeetingItem 
@@ -25,7 +16,6 @@
 import { reactive } from '@vue/reactivity'
 import StudyMainMeetingItem from '@/components/study/main/StudyMainMeetingItem.vue'
 import router from '@/router'
-import { useStore } from 'vuex'
 export default {
   name: 'StudyMainMeeting',
   props: {
@@ -38,18 +28,6 @@ export default {
     StudyMainMeetingItem
   },
   setup(props) {
-    const store = useStore()
-    const options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] // 미팅 인원 배열
-    const data = reactive({
-      studyId: props.studyId,
-      maximum : 5 
-    })
-
-    const createMeeting = ()=>{ // 미팅 인원 정해서 생성
-      store.dispatch('createMeeting', data)
-    }
-
-
     const state = reactive({
       meetings : [
         {
@@ -83,12 +61,8 @@ export default {
       router.push({path: `/study/${props.studyId}/meeting/${meetingId}`})
     }
     return {
-      data,
       state,
-      options,
-      onEnter,
-      // selectMax,
-      createMeeting
+      onEnter
     }
   }
 }
@@ -103,7 +77,7 @@ export default {
 }
 .meeting-item > li {
   display: flex;
-  height: 80px;
+  height: 90px;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid #195C77;

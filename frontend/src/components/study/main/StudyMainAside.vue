@@ -30,12 +30,9 @@ export default {
   margin-top:20px;
   cursor: pointer;
   box-sizing: border-box;
-  /* border-top: 1px solid #195C77; */
+  border-top: 1px solid #195C77;
 }
 
-#aside-list:nth-child(1){
-  box-shadow: 0 0 0 1px #195C77 inset;
-}
 
 #aside-list > li{
   display: flex;
@@ -45,7 +42,7 @@ export default {
   padding-left: 25px;
   align-items: center;
   font-weight: bold;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: #195C77;
 }
 

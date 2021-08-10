@@ -5,10 +5,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class EmptyDTO {
+public class EmptyDto {
     private boolean isEmpty;
 
-    public EmptyDTO(boolean isEmpty) {
+    public EmptyDto(boolean isEmpty) {
         this.isEmpty = isEmpty;
     }
 }

@@ -1,33 +1,21 @@
 package com.ssafy.square4us.api.mvc.service;
 
-import com.ssafy.square4us.api.mvc.model.dto.StudyDTO;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import com.ssafy.square4us.api.mvc.model.entity.Study;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 public interface StudyService {
-    StudyDTO createStudy(StudyDTO.CreatePostReq studyInfo, Member member);
+    Study createStudy(Study.CreatePostReq studyInfo, Member member);
+
+    Study findByStudyId(Long studyId);
+
+    List<Study> findAllStudies();
 
     @Transactional
-    Boolean joinStudy(Long studyId, Member member);
+    boolean deleteByStudyId(String email, Long studyId);
 
     @Transactional
-    Boolean acceptStudyJoin(Long studyId, Long memberId, Member leader);
-
-    StudyDTO findByStudyId(Long studyId);
-
-    List<StudyDTO> findAllStudies();
-
-    List<StudyDTO> findStudiesByMember(Long memberId);
-
-    @Transactional
-    Boolean deleteByStudyId(String email, Long studyId);
-
-    @Transactional
-    Boolean resign(String email, Long studyId);
-
-    PageImpl<StudyDTO> findStudiesWithPaging(Pageable pageable);
+    boolean resign(String email, Long studyId);
 }

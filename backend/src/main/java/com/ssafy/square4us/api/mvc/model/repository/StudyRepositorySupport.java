@@ -1,88 +1,46 @@
 package com.ssafy.square4us.api.mvc.model.repository;
 
-import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.square4us.api.mvc.model.dto.StudyDTO;
-import com.ssafy.square4us.api.mvc.model.dto.StudyMemberDTO;
-import com.ssafy.square4us.api.mvc.model.entity.QMember;
-import com.ssafy.square4us.api.mvc.model.entity.QStudy;
-import com.ssafy.square4us.api.mvc.model.entity.QStudyMember;
-import com.ssafy.square4us.api.mvc.model.entity.Study;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
+import com.ssafy.square4us.api.mvc.model.entity.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
 
 @Repository
-public class StudyRepositorySupport extends QuerydslRepositorySupport {
+@RequiredArgsConstructor
+public class StudyRepositorySupport {
     private final JPAQueryFactory jpaQueryFactory;
     QStudy qStudy = QStudy.study;
     QMember qMember = QMember.member;
     QStudyMember qStudyMember = QStudyMember.studyMember;
 
-    public StudyRepositorySupport(JPAQueryFactory jpaQueryFactory) {
-        super(Study.class);
-        this.jpaQueryFactory = jpaQueryFactory;
-    }
-
-    public List<StudyDTO> findAllStudy() {
+    public List<Study> findAllStudy() {
         return jpaQueryFactory
-                .select(Projections.constructor(StudyDTO.class, qStudy))
+                .select(qStudy)
                 .from(qStudy)
                 .where(qStudy.dismantleFlag.ne('T'))
                 .fetch();
     }
 
-    public List<StudyDTO> findStudiesByMember(Long memberId) {
+    public Study findByStudyId(Long studyId) {
         return jpaQueryFactory
-                .select(Projections.constructor(StudyDTO.class, qStudy))
-                .from(qStudyMember)
-                .innerJoin(qStudyMember.member, qMember)
-                .leftJoin(qStudyMember.study, qStudy)
-                .where(qMember.id.eq(memberId), qStudy.dismantleFlag.ne('T'))
-                .fetch();
-    }
-
-    public PageImpl<StudyDTO> findStudiesWithPaging(Pageable pageable) {
-        JPAQuery query = jpaQueryFactory
-                .select(Projections.constructor(StudyDTO.class, qStudy))
-                .from(qStudy)
-                .where(qStudy.dismantleFlag.ne('T'));
-
-        Long totalCount = query.fetchCount();
-        List<StudyDTO> results = getQuerydsl().applyPagination(pageable, query).fetch();
-        return new PageImpl<>(results, pageable, totalCount);
-    }
-
-    public StudyDTO findByStudyId(Long studyId) {
-        return jpaQueryFactory
-                .select(Projections.constructor(StudyDTO.class, qStudy))
+                .select(qStudy)
                 .from(qStudy)
                 .where(qStudy.id.eq(studyId), qStudy.dismantleFlag.ne('T'))
                 .fetchOne();
     }
 
-    public StudyMemberDTO getStudyMemberByEmail(String email, Long studyId) {
+    public StudyMember getStudyMemberByEmail(String email, Long studyId) {
         return jpaQueryFactory
-                .select(Projections.constructor(StudyMemberDTO.class, qStudyMember))
+                .select(qStudyMember)
                 .from(qStudyMember)
-                .innerJoin(qStudyMember.member, qMember)
-                .innerJoin(qStudyMember.study, qStudy)
+                .join(qMember).on(qStudyMember.member.id.eq(qMember.id))
+                .join(qStudy).on(qStudyMember.study.id.eq(qStudy.id))
                 .where(qMember.email.eq(email), qStudy.id.eq(studyId))
                 .fetchOne()
                 ;
-    }
-
-    public Boolean existStudyMember(Long studyId, Long memberId) {
-        Integer result = jpaQueryFactory
-                .selectOne()
-                .from(qStudyMember)
-                .where(qStudyMember.study.id.eq(studyId), qStudyMember.member.id.eq(memberId)).fetchFirst();
-        return result != null;
     }
 
     public Long deleteStudyById(Long studyId) {

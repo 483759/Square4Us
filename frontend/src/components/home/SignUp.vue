@@ -20,12 +20,11 @@
             </div>
           
           </div>
-          <form id='signup-form' method="POST" @submit.prevent="signup" enctype="multipart/form-data">
-            <p><input class="input_signup" type="email" id="signup_email" name="email" placeholder="이메일 입력" v-model="credentials.email"></p>
-            <p><input class="input_signup" type="nickname" id="signup_nickname" name="nickname" placeholder="닉네임" v-model="credentials.nickname"></p>
-            <p><input class="input_signup" type="password"  id="signup_password" name="password" placeholder="비밀번호" v-model="credentials.password"></p>
-            <p><input class="input_signup" type="password_confirmation"  id="signup_password_confirmation" name="password_confirmation" placeholder="비밀번호확인" v-model="credentials.password_confirmation"></p>
-            <p><input type="file" name="profile"></p>
+          <form id='signup-form' method="POST" @submit.prevent="signup">
+            <p><input class="input_signup" type="email" id="email" name="email" placeholder="이메일 입력" v-model="credentials.email"></p>
+            <p><input class="input_signup" type="nickname" id="nickname" name="nickname" placeholder="닉네임" v-model="credentials.nickname"></p>
+            <p><input class="input_signup" type="password"  id="password" name="password" placeholder="비밀번호" v-model="credentials.password"></p>
+            <p><input class="input_signup" type="password_confirmation"  id="password_confirmation" name="password_confirmation" placeholder="비밀번호확인" v-model="credentials.password_confirmation"></p>
             <button class="button_signup">signup</button>
           </form>
         </section>
@@ -51,7 +50,7 @@ import { reactive, ref } from '@vue/reactivity'
 import { useStore } from 'vuex'
 export default {
   name: 'Login',
-  components : { 
+  components : {
     Modal
   },
   setup() {
