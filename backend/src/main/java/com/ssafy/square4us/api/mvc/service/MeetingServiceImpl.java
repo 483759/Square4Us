@@ -56,4 +56,9 @@ public class MeetingServiceImpl implements MeetingService {
     public List<MeetingDTO> findAllMeetings() {
         return meetingRepositorySupport.findAll();
     }
+
+    @Override
+    public List<MeetingDTO> findMeetingsByStudy(Long studyId) {
+        return meetingRepositorySupport.findMeetingByStudy(studyId);
+    }
 }

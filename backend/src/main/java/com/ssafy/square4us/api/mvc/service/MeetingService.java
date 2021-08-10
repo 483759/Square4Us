@@ -10,4 +10,6 @@ public interface MeetingService {
     MeetingDTO enterMeeting(Long meetingId);
 
     List<MeetingDTO> findAllMeetings();
+
+    List<MeetingDTO> findMeetingsByStudy(Long studyId);
 }

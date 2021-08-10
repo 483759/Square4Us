@@ -1,5 +1,6 @@
 package com.ssafy.square4us.api.mvc.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.square4us.api.mvc.model.entity.Meeting;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
@@ -15,10 +16,20 @@ public class MeetingDTO {
     private Long id;
     private int maximum = 4;
     private char run_flag = 'T';
+    @JsonIgnore
     private StudyDTO study;
 
     @Builder
+    public MeetingDTO(Long id, int maximum, char run_flag, StudyDTO study) {
+        this.id = id;
+        this.maximum = maximum;
+        this.run_flag = run_flag;
+        this.study = study;
+    }
+
+    @Builder
     public MeetingDTO(Meeting meeting) {
+        this.id = meeting.getId();
         this.maximum = meeting.getMaximum();
         this.run_flag = meeting.getRun_flag();
         this.study = new StudyDTO(meeting.getStudy());
