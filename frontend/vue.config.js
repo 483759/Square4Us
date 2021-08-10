@@ -1,6 +1,13 @@
 module.exports = {
     devServer: {
-        https: false,
-        port: 80
+        // https: true,
+        port: 80,
+        // port: 8083,
+        // open: true,
+        // proxy: {
+        //     '/api': {
+        //         target: 'https://localhost:8443/'
+        //     },
+        // }
     }
 }

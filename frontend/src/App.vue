@@ -14,6 +14,7 @@ export default {
     onMounted(async()=>{
       axios.defaults.baseURL = process.env.VUE_APP_API_URL
       console.log("환경변수 정보 ", process.env);
+      
       const jwt = localStorage.getItem('JWT')
       if (jwt) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`
