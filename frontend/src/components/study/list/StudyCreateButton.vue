@@ -6,13 +6,27 @@
     <template v-slot:default>
       <section id='section'>
         <p>스터디이름</p>
-        <p>스터디모시기</p>
-        <p>스터디저기시</p>
-        <p>스터디종류</p>
+          <input class="study_create_input" type="text" name="" id="study_name" v-model="createInfo.name">
+        <p>카테고리</p>
+          <select  class="study_create_input" name="" id="" v-model="createInfo.category">
+            <option value="coding">코딩</option>
+            <option value="cert">자격증</option>
+            <option value="official">공시</option>
+            <option value="just">모각코</option>
+          </select>
+        <!-- <p>스터디인원</p>
+          <select  class="study_create_input" name="" id="" >
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        <p>스터디소개</p>
+          <input class="study_create_input" type="text" name="" id="study_"> -->
       </section>
     </template>
     <template v-slot:footer>
-      <button>생성</button>
+      <button @click="create_study">생성</button>
     </template>
     <template v-slot:button>
       <button class='white-button' @click='switchModal'>
@@ -25,7 +39,8 @@
 
 <script>
 import Modal from '@/components/home/Modal.vue'
-import { ref } from '@vue/reactivity'
+import axios from 'axios'
+import { ref, reactive } from '@vue/reactivity'
 export default {
   name: 'StudyCreateButton',
   components: {
@@ -33,13 +48,35 @@ export default {
   },
   setup(){
     // 모달 여닫기 관련
+    const SERVER_URL = "http://localhost:8080/api/"
     const isShow = ref(false)
     const switchModal = ()=>{
       isShow.value = !isShow.value
     }
+    // 스터디 데이터
+    const createInfo = reactive({
+      name: "",
+      category: "",
+      // c: "",
+      // intro: "",
+    })
+    // 스터디 생성함수
+    const create_study = ()=> {
+      console.log(createInfo)
+      axios({
+        method: 'post',
+        url: SERVER_URL + 'study/',
+        data: createInfo,
+      })
+    }
+
     return {
       isShow,
-      switchModal
+      switchModal,
+      createInfo,
+      create_study,
+      SERVER_URL,
+      axios
     }
   }
 }
@@ -98,5 +135,11 @@ export default {
   justify-content: center;
   width: 25px;
   padding-right: 1.5px;
+}
+
+.study_create_input {
+  width: 200px;
+  height: 30px;
+  box-sizing: border-box;
 }
 </style>
