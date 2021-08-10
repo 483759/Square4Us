@@ -20,8 +20,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import com.ssafy.square4us.common.auth.MemberDetails;
 
-import javax.xml.ws.Response;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/study/{studyId}/article")

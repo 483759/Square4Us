@@ -30,8 +30,7 @@ public class MemberRepositorySupport extends QuerydslRepositorySupport {
         Long affectedRow = jpaQueryFactory.update(qMember)
                 .where(qMember.email.eq(member.getEmail()))
                 .set(qMember.nickname, member.getNickname())
-                .set(qMember.profile_path, member.getProfile_path())
-                .set(qMember.profile_name, member.getProfile_name())
+                .set(qMember.profile, member.getProfile())
                 .execute();
         return affectedRow;
     }

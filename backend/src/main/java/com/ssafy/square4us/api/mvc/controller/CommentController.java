@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/api/{articleId}/comment")
+@RequestMapping(value = "/api/comment/{articleId}")
 public class CommentController {
 
     private final MemberService memberService;

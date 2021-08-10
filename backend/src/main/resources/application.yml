@@ -24,6 +24,13 @@ spring:
     livereload:
       enabled: true
 
+  servlet:
+    multipart:
+      max-file-size: 10MB
+    # 기본 저장 위치
+      # location: C:\\Temp\\upload
+      max-request-size: 50MB
+
   data:
     web:
       pageable:

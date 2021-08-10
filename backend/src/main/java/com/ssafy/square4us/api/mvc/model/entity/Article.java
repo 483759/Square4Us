@@ -3,6 +3,8 @@ package com.ssafy.square4us.api.mvc.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -42,12 +44,16 @@ public class Article extends BaseTimeEntity {
     @Column(name = "dislike")
     private Integer dislike = 0;
 
+    @OneToMany(mappedBy = "article")
+    private List<FileEntity> files = new ArrayList<>();
+
     @Builder
-    public Article(Member member, Study study, String category, String title, String content) {
+    public Article(Member member, Study study, String category, String title, String content, List<FileEntity> files) {
         this.member = member;
         this.study = study;
         this.category = category;
         this.title = title;
         this.content = content;
+        this.files = files;
     }
 }

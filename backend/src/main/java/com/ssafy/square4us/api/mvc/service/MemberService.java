@@ -2,7 +2,9 @@ package com.ssafy.square4us.api.mvc.service;
 
 import com.ssafy.square4us.api.mvc.model.dto.MemberDTO;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface MemberService {
@@ -14,9 +16,13 @@ public interface MemberService {
 
     List<MemberDTO> getMembersWaitJoin(Long studyId);
 
-    MemberDTO createMember(MemberDTO.JoinPostReq joinInfo);
+    MemberDTO createMember(MemberDTO.JoinPostReq joinInfo, MultipartFile profile);
 
     Long updateMemberByEmail(String email, MemberDTO.UpdatePatchReq updateInfo);
+
+    MemberDTO updateProfileByEmail(String email, MultipartFile profile);
+
+    MemberDTO deleteProfileByEmail(String email);
 
     void deleteMemberByEmail(String email);
 }

@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,20 +19,18 @@ public class MemberDTO {
     private String email;
     private MemberRole role;
     private String nickname;
-    private String profile_name;
-    private String profile_path;
+    private FileDTO profile;
     private int report;
     @JsonIgnore
     private String password;
 
-    public MemberDTO(Long id, String email, String password, MemberRole role, String nickname, String profile_name, String profile_path, int report) {
+    public MemberDTO(Long id, String email, String password, MemberRole role, String nickname, FileDTO profile, int report) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.role = role;
         this.nickname = nickname;
-        this.profile_name = profile_name;
-        this.profile_path = profile_path;
+        this.profile = profile;
         this.report = report;
     }
 
@@ -41,8 +40,11 @@ public class MemberDTO {
         this.password = member.getPassword();
         this.role = member.getRole();
         this.nickname = member.getNickname();
-        this.profile_name = member.getProfile_name();
-        this.profile_path = member.getProfile_path();
+        if(member.getProfile() == null) {
+            this.profile = null;
+        } else {
+            this.profile = new FileDTO(member.getProfile());
+        }
         this.report = member.getReport();
     }
 
@@ -90,13 +92,9 @@ public class MemberDTO {
     @Getter
     public static class UpdatePatchReq {
         private String nickname;
-        private String profile_name;
-        private String profile_path;
 
-        public UpdatePatchReq(String nickname, String profile_name, String profile_path) {
+        public UpdatePatchReq(String nickname) {
             this.nickname = nickname;
-            this.profile_name = profile_name;
-            this.profile_path = profile_path;
         }
     }
 
@@ -122,24 +120,21 @@ public class MemberDTO {
         MemberRole role;
         @Schema(name = "회원 닉네임")
         String nickname;
-        @Schema(name = "회원의 프로필 사진명")
-        String profile_name;
-        @Schema(name = "회원의 프로필 사진 경로")
-        String profile_path;
+        @Schema(name = "회원의 프로필 사진")
+        FileDTO profile;
         @Schema(name = "신고 누적 회수")
         int report;
 
-        public InfoGetRes(String email, MemberRole role, String nickname, String profile_name, String profile_path, int report) {
+        public InfoGetRes(String email, MemberRole role, String nickname, FileDTO profile, int report) {
             this.email = email;
             this.role = role;
             this.nickname = nickname;
-            this.profile_name = profile_name;
-            this.profile_path = profile_path;
+            this.profile = profile;
             this.report = report;
         }
 
-        public static BasicResponseBody<InfoGetRes> of(Integer statusCode, String message, String email, MemberRole role, String nickname, String profile_name, String profile_path, int report) {
-            return BasicResponseBody.of(statusCode, message, new InfoGetRes(email, role, nickname, profile_name, profile_path, report));
+        public static BasicResponseBody<InfoGetRes> of(Integer statusCode, String message, String email, MemberRole role, String nickname, FileDTO profile, int report) {
+            return BasicResponseBody.of(statusCode, message, new InfoGetRes(email, role, nickname, profile, report));
         }
     }
 
