@@ -7,9 +7,6 @@ services:
     ports: 
       - 80:80
       - 443:443
-    volumes: 
-      - /etc/nginx/conf.d:/etc/nginx/conf.d
-      - /etc/letsencrypt:/etc/letsencrypt
     networks:
       - square4us
     restart: unless-stopped
