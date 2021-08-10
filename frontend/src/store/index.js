@@ -1,9 +1,10 @@
+import router from "@/router";
 import axios from "axios";
 import { createStore } from "vuex";
 
 export default createStore({
   state: {
-    isLogin: true,
+    isLogin: false,
     user: {}
   },
   mutations: {
@@ -23,18 +24,36 @@ export default createStore({
       const response = await axios({
         method: "POST",
         url: "/member/login",
-        data: {
-          ...credentials,
-        },
+        data: credentials
       }).catch((err)=>{
         console.log(err.response);
         localStorage.removeItem('JWT');
       })
-      if (!response) return false
+      if (!response) {
+        console.log("로그인 실패");
+        console.log(response);
+        return
+      }
       localStorage.setItem('JWT', response.data.data.accessToken)
       console.log("로그인 성공", localStorage);
       context.commit('LOGIN')
-      return true
+      router.push({name: 'StudyList'})
+    },
+    signup: async function (context, credentials) {
+      const response = await axios({
+        method: "POST",
+        url: "/member/join",
+        data: credentials        
+      }).catch((err)=>{
+        console.log(err.response);
+      })
+
+      if (!response) return
+      const loginCredentials = {
+        email: credentials.email,
+        password: credentials.password
+      }
+      context.dispatch('login', loginCredentials)
     },
     getUser : async function (context) {
       const response = await axios({

@@ -14,7 +14,7 @@
         <p><input class="input_signup" type="email" id="signup_email" name="email" placeholder="이메일 입력" v-model="credentials.email"></p>
         <p><input class="input_signup" type="nickname" id="signup_nickname" name="nickname" placeholder="닉네임" v-model="credentials.nickname"></p>
         <p><input class="input_signup" type="password"  id="signup_password" name="password" placeholder="비밀번호" v-model="credentials.password"></p>
-        <p><input class="input_signup" type="password_confirmation"  id="signup_password_confirmation" name="password_confirmation" placeholder="비밀번호확인" v-model="credentials.password_confirmation"></p>
+        <p><input class="input_signup" type="password_confirmation"  id="signup_password_confirmation" name="password_confirmation" placeholder="비밀번호확인" v-model="password_confirmation"></p>
         <button class="button_signup" id="signup_button">Signup</button>
       </form>
     </section>
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { reactive } from '@vue/reactivity'
+import { reactive, ref } from '@vue/reactivity'
 import { useStore } from 'vuex'
 export default {
   name: 'Signup',
@@ -34,17 +34,22 @@ export default {
     //로그인 객체
     const credentials = reactive({
       email : "",
-      nickname : "",
       password : "",
-      password_confirmation : "",
+      nickname : "",
     })
-    // 로그인 함수
+    const password_confirmation = ref("");
+    // 회원가입 함수
     const store = useStore();
     const signUp = ()=>{
+      if (password_confirmation.value !== credentials.password) {
+        alert("비밀번호가 비밀번호 확인과 일치하지 않습니다")
+        return
+      }
       store.dispatch('signup', credentials)
     }
     return {
       credentials,
+      password_confirmation,
       signUp,
     }
   }
