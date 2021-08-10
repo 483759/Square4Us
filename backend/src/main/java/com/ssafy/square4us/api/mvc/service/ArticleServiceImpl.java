@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -72,6 +73,7 @@ public class ArticleServiceImpl implements ArticleService {
         if(!path.exists()) {
             path.mkdir();
         }
+        List<FileEntity> list = new ArrayList<>();
         for(MultipartFile file: files) {
             String originName = file.getOriginalFilename();
             String contentType = file.getContentType();
@@ -90,13 +92,14 @@ public class ArticleServiceImpl implements ArticleService {
                     .build();
 
             fe = fileRepo.save(fe);
-
+            list.add(fe);
             try {
                 file.transferTo(new File(realPath, saveName));
             } catch(IOException e) {
                 return 1;
             }
         }
+        article.setFiles(list);
         return 2;
     }
 
