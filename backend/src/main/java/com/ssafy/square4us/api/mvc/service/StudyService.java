@@ -21,6 +21,8 @@ public interface StudyService {
 
     List<StudyDTO> findAllStudies();
 
+    List<StudyDTO> findStudiesByMember(Long memberId);
+
     @Transactional
     Boolean deleteByStudyId(String email, Long studyId);
 
