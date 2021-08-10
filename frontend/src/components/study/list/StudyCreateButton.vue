@@ -6,9 +6,9 @@
     <template v-slot:default>
       <section id='section'>
         <p>스터디이름</p>
-          <input class="study_create_input" type="text" name="" id="study_name" v-model="createInfo.name">
+          <input class="study_create_input" type="text" name="" id="study_name" v-model="data.name">
         <p>카테고리</p>
-          <select  class="study_create_input" name="" id="" v-model="createInfo.category">
+          <select  class="study_create_input" name="" id="" v-model="data.category">
             <option value="coding">코딩</option>
             <option value="cert">자격증</option>
             <option value="official">공시</option>
@@ -26,7 +26,7 @@
       </section>
     </template>
     <template v-slot:footer>
-      <button @click="create_study">생성</button>
+      <button @click="createStudy">생성</button>
     </template>
     <template v-slot:button>
       <button class='white-button' @click='switchModal'>
@@ -39,8 +39,8 @@
 
 <script>
 import Modal from '@/components/home/Modal.vue'
-import axios from 'axios'
 import { ref, reactive } from '@vue/reactivity'
+import { useStore } from 'vuex'
 export default {
   name: 'StudyCreateButton',
   components: {
@@ -48,35 +48,25 @@ export default {
   },
   setup(){
     // 모달 여닫기 관련
-    const SERVER_URL = "http://localhost:8080/api/"
     const isShow = ref(false)
     const switchModal = ()=>{
       isShow.value = !isShow.value
     }
     // 스터디 데이터
-    const createInfo = reactive({
+    const data = reactive({
       name: "",
       category: "",
-      // c: "",
-      // intro: "",
     })
-    // 스터디 생성함수
-    const create_study = ()=> {
-      console.log(createInfo)
-      axios({
-        method: 'post',
-        url: SERVER_URL + 'study/',
-        data: createInfo,
-      })
+    const store = useStore();
+    const createStudy = async ()=> {
+      store.dispatch('createStudy', data)
     }
 
     return {
       isShow,
       switchModal,
-      createInfo,
-      create_study,
-      SERVER_URL,
-      axios
+      data,
+      createStudy,
     }
   }
 }
