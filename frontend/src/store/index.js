@@ -55,6 +55,23 @@ export default createStore({
       }
       context.dispatch('login', loginCredentials)
     },
+    createStudy : async function(context, data) {
+      console.log(data)
+      const response = await axios({
+        method: 'POST',
+        url: '/study',
+        data: data,
+      }).catch((err)=>{
+        console.log(err.response);
+      })
+      if (!response) {
+        alert('생성 실패')
+        console.log(response);
+        return
+      }
+      const studyId = response.data.data.id
+      router.push({path: `/study/${studyId}`})
+    },
     getUser : async function (context) {
       const response = await axios({
         method: "GET",
