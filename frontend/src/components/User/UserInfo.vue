@@ -7,14 +7,14 @@
   <div class="usersection_left">
     <!-- 왼쪽블럭 -->
     <div>
-      <input type="text" name="nickname" id="nickname" class="inputbox" placeholder="{{credentials.nickname}}" v-model="credentials.nickname">
+      <input type="text" name="nickname" id="nickname" class="inputbox" :placeholder="user.nickname" v-model="credentials.nickname">
     </div>
     <div>
       <textarea type="textarea" name="introduction" class="inputbox" style="height:250px" id="" cols="30" rows="10" placeholder="{{credentials.introduction}}" v-model="credentials.introduction">
       </textarea>
     </div>
     <div>
-      <input type="text" name="email" class="inputbox" placeholder="{{credentials.email}}" v-model="credentials.email">
+      <input type="text" name="email" class="inputbox" :placeholder="user.email" v-model="credentials.email">
     </div>
     <div>
       <div class="badgeBox"></div>
@@ -55,14 +55,18 @@
 
 <script>
 import axios from 'axios'
+import { useStore } from 'vuex'
 import { reactive } from '@vue/reactivity'
+import { computed} from '@vue/runtime-core'
 export default {
     name: "UserInfo",
     setup(){
+        const store = useStore()
+        const user = computed(()=>store.state.user)
         const credentials = reactive({
-            nickname: 'your nickname',
+          nickname: user.nickname,
+          email: user.email,
             introduction: 'introduction',
-            email: 'your email',
             profile_path: 'profile path'
 
         })
@@ -91,17 +95,7 @@ export default {
         }
         // 프로필 수정 함수
         const putUserInfo = () => {
-            const API_URL = "#"
-
-            axios({
-                method: 'PUT',
-                url: API_URL,
-                data: {
-                    credentials
-                }
-            }).then(response => {
-                this.credentials = response.data
-            })
+            store.dispatch('updateMemberInfo', {nickname: credentials.nickname});
         }
 
         const updateProfilePhoto = () => {
@@ -133,7 +127,8 @@ export default {
         data,
         imgchangebutton,
         updateProfilePhoto,
-        deleteProfilePhoto
+        deleteProfilePhoto,
+        user
         }
     }
 
