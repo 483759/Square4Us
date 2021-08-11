@@ -12,8 +12,8 @@
   <ul class='meeting-item'>
     <!-- <h3>스터디 메인 미팅리스트 : 여기 들어오면 axios요청을 보내 목록을 갱신함</h3> -->
     <StudyMainMeetingItem 
-      v-for='meeting in state.meetings' 
-      :key='meeting.meeting_id' 
+      v-for='meeting in meetings' 
+      :key='meeting.id' 
       :meeting='meeting'
       @onEnter='onEnter'
       />
@@ -26,6 +26,7 @@ import { reactive } from '@vue/reactivity'
 import StudyMainMeetingItem from '@/components/study/main/StudyMainMeetingItem.vue'
 import router from '@/router'
 import { useStore } from 'vuex'
+import { computed, onMounted, onUnmounted } from '@vue/runtime-core'
 export default {
   name: 'StudyMainMeeting',
   props: {
@@ -48,44 +49,27 @@ export default {
     const createMeeting = ()=>{ // 미팅 인원 정해서 생성
       store.dispatch('createMeeting', data)
     }
-
-
-    const state = reactive({
-      meetings : [
-        {
-        meeting_id: 1,
-        thumnail_name: '썸네일이름',
-        thumnail_path: '/meeting-thumbnail.jpg',
-        run_flag: true,
-        maximum: 6 
-        },
-        {
-        meeting_id: 2,
-        thumnail_name: '썸네일이름',
-        thumnail_path: '/meeting-thumbnail.jpg',
-        run_flag: false,
-        maximum: 5 
-        },
-        {
-        meeting_id: 3,
-        thumnail_name: '썸네일이름',
-        thumnail_path: '/meeting-thumbnail.jpg',
-        run_flag: true,
-        maximum: 4
-        },
-      ]
-
-    })
+    const meetings = computed(()=>store.state.myMeetings)
 
 
     const onEnter = (meetingId)=>{ // 채팅방 입장
       console.log(`${props.studyId}번 스터디, ${meetingId}번 방 입장!`);
       router.push({path: `/study/${props.studyId}/meeting/${meetingId}`})
     }
+
+    onMounted(()=>{
+      store.dispatch('getMeetings', props.studyId)
+    })
+
+    onUnmounted(()=>{
+      store.commit('SET_MEETINGS', [])
+    })
+
+
     return {
       data,
-      state,
       options,
+      meetings,
       onEnter,
       // selectMax,
       createMeeting

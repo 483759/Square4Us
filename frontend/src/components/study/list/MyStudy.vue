@@ -8,6 +8,7 @@
 <script>
 import { ref } from '@vue/reactivity';
 import router from '../../../router';
+import { useStore } from 'vuex';
 export default {
   name: 'MyStudy',
   props: {
@@ -16,10 +17,13 @@ export default {
     }
   },
   setup(props) {
+    const store = useStore()
     console.log(props.myStudies);
     const selectedStudy = ref('default')
     const selectStudy = ()=>{
       router.push({path: `/study/${selectedStudy.value}`})
+      selectedStudy.value = 'default'
+      store.commit('SET_STUDY_ACTIVE', 0)
     }
     return {
       selectedStudy,

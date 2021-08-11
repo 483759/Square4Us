@@ -6,18 +6,18 @@
     </template>
 
     <template v-slot:aside-body>
-      <StudyMainAside :menus='menus' :activeIndex='activeIndex' @onClickMenu='(idx)=>{activeIndex = idx}'/>
+      <StudyMainAside :menus='menus' :activeIndex='activeStudyNav' @onClickMenu='(idx)=>{$store.commit("SET_STUDY_ACTIVE", idx)}'/>
     </template>
 
     <template v-slot:section>
       <!-- <header id='section-title'>{{menus[activeIndex]}}</header> -->
       <!-- 컴포넌트 파서 알맞은 위치의 div를 컴포넌트로 대체하면 됨 -->
-      <div class='study-main' v-if="activeIndex === 0"> <!-- 스터디 메인 --> </div>
-      <StudyMainMeeting v-else-if="activeIndex === 1" :studyId='studyId' />
-      <div v-else-if="activeIndex === 2"> 게시글 </div>
-      <div v-else-if="activeIndex === 3"> 스터디 학습 자료 </div>
-      <div v-else-if="activeIndex === 4"> 통계 </div>
-      <div v-else-if="activeIndex === 5"> 스터디 설정 </div>
+      <StudyMainPage v-if="activeStudyNav === 0"/>
+      <StudyMainMeeting v-else-if="activeStudyNav === 1" :studyId='studyId' />
+      <StudyArticle v-else-if="activeStudyNav === 2"/> 
+      <StudyDataPage v-else-if="activeStudyNav === 3"/>
+      <StudyStatistic v-else-if="activeStudyNav === 4"/> 
+      <StudyConfig v-else-if="activeStudyNav === 5"/>
       <div v-else> 아무것에도 포함 안됨 </div>
     </template>
     
@@ -27,8 +27,14 @@
 <script>
 import AsideFrame from '@/components/AsideFrame.vue'
 import StudyMainAside from '@/components/study/main/StudyMainAside.vue'
+import StudyMainPage from '@/components/study/main/StudyMainPage.vue'
 import StudyMainMeeting from '@/components/study/main/StudyMainMeeting.vue'
-import { ref } from '@vue/reactivity'
+import StudyArticle from '@/components/study/main/StudyArticle.vue'
+import StudyDataPage from '@/components/study/main/StudyDataPage.vue'
+import StudyStatistic from '@/components/study/main/StudyStatistic.vue'
+import StudyConfig from '@/components/study/main/StudyConfig.vue'
+import { useStore } from 'vuex'
+import { computed } from '@vue/runtime-core'
 export default {
   name: 'StudyMain',
   props: {
@@ -40,9 +46,16 @@ export default {
   components :{
     AsideFrame,
     StudyMainAside,
-    StudyMainMeeting
+    StudyMainPage,
+    StudyMainMeeting,
+    StudyArticle,
+    StudyDataPage,
+    StudyStatistic,
+    StudyConfig,
   },
   setup() {
+    const store = useStore()
+    const activeStudyNav = computed(()=>store.state.activeStudyNav)
     const menus = [
       '스터디 메인', 
       '미팅', 
@@ -51,10 +64,9 @@ export default {
       '통계', 
       '스터디 설정'
     ]
-    const activeIndex = ref(0)
     return {
       menus,
-      activeIndex,
+      activeStudyNav,
     }
   }
 }

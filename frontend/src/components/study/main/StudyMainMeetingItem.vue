@@ -1,8 +1,8 @@
 <template>
 <li>
   <img class='meeting-thumbnail' :src="meeting.thumnail_path" :alt="meeting.thumnail_name">
-  <div class='meeting-title' style="width=400px">미팅{{ meeting.meeting_id }} </div> 
-  <button class='meeting-button' @click="$emit('onEnter', meeting.meeting_id)">입장</button>
+  <div class='meeting-title' style="width=400px">미팅{{ meeting.id }} </div> 
+  <button class='meeting-button' @click="$emit('onEnter', meeting.id)">입장</button>
 </li>
 </template>
 
