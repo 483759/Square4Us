@@ -66,14 +66,6 @@ dependencies {
 
     runtimeOnly 'com.h2database:h2'
 
-    //JUnit Test
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude module: 'junit'
-    }
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testCompile("org.junit.jupiter:junit-jupiter-params")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine")
-
     implementation('commons-io:commons-io:2.6')
     implementation("org.apache.commons:commons-collections4:4.4")
     implementation("org.apache.commons:commons-lang3:3.9")
