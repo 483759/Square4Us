@@ -100,6 +100,22 @@ export default createStore({
       }
       console.log(response);
     },
+    updateMemberInfo: async function (context, data) {
+      const response = await axios({
+        method: 'PATCH',
+        url: '/member/me',
+        data: data
+      }).catch((err)=>{
+        console.log(err.response)
+      })
+      if(!response) {
+        alert('수정 실패')
+        console.log(response)
+        return
+      }
+      console.log(response);
+    }
+    ,
     getMeetings: async function (context, studyId) {
       const response = await axios({
         method: 'GET',
