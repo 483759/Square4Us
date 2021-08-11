@@ -46,10 +46,26 @@ export default {
       maximum : 5 
     })
 
-    const createMeeting = ()=>{ // 미팅 인원 정해서 생성
-      store.dispatch('createMeeting', data)
+    const createMeeting = async()=>{ // 미팅 인원 정해서 생성
+      await store.dispatch('createMeeting', data)
+      store.dispatch('getMeetings',props.studyId)
     }
-    const meetings = computed(()=>store.state.myMeetings)
+
+    onMounted(()=>{
+      store.dispatch('getMeetings',props.studyId)
+    })
+
+    onUnmounted(()=>{
+      store.commit('SET_MEETINGS', [])
+    })
+    const meetings  = computed(()=>{
+        return store.state.myMeetings
+      })
+    // const state = reactive({
+    //   meetings : computed(()=>{
+    //     return store.state.myMeetings
+    //   })
+    // })
 
 
     const onEnter = (meetingId)=>{ // 채팅방 입장
@@ -68,6 +84,8 @@ export default {
 
     return {
       data,
+      // state,
+      meetings,
       options,
       meetings,
       onEnter,
