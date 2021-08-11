@@ -143,6 +143,4 @@ public class MeetingServiceImpl implements MeetingService {
         }
         fileRepo.delete(prevThumbnail);
     }
-=======
->>>>>>> feature_study
 }
