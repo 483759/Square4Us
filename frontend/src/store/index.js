@@ -6,7 +6,8 @@ export default createStore({
   state: {
     isLogin: false,
     user: {},
-    myStudies: [],
+    studies: [], // 전체스터디 목록
+    myStudies: [], // 내 스터디 목록
     myMeetings: [],
     activeStudyNav : 0
   },
@@ -22,7 +23,10 @@ export default createStore({
     SET_USER: function (state, payload) {
       state.user = payload
     },
-    SET_MY_STUDIES: function (state, payload) {
+    SET_STUDIES : function (state, payload) { // 전체목록
+      state.studies = payload
+    },
+    SET_MY_STUDIES: function (state, payload) { // 내 스터디목록
       state.myStudies = payload
     },
     SET_MEETINGS: function (state, payload) {
@@ -155,6 +159,19 @@ export default createStore({
       }
       alert('가입 신청 성공')
       console.log(response.data.data);
+    },
+    getStudies : async function(context){ // 전체 스터디 목록
+      const response = await axios({
+        method: "GET",
+        url: `/study?page=0&size=20&sorted=true&unsorted=true&empty=true`,
+      }).catch((err)=>{
+        console.log(err.response);
+      })
+      if (!response) {
+        alert("스터디 목록을 받아오지 못했습니다")
+        return
+      }
+      context.commit('SET_STUDIES', response.data.data.studyList.content)
     }
   },
   modules: {},
