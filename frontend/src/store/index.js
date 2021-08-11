@@ -7,7 +7,8 @@ export default createStore({
     isLogin: false,
     user: {},
     myStudies: [],
-    myMeetings: []
+    myMeetings: [],
+    activeStudyNav : 0
   },
   mutations: {
     LOGIN : function (state) {
@@ -26,6 +27,9 @@ export default createStore({
     },
     SET_MEETINGS: function (state, payload) {
       state.myMeetings = payload
+    },
+    SET_STUDY_ACTIVE : function (state, payload) {
+      state.activeStudyNav = payload
     }
   },
   actions: {
