@@ -14,7 +14,7 @@
       <!-- 컴포넌트 파서 알맞은 위치의 div를 컴포넌트로 대체하면 됨 -->
       <StudyMainPage v-if="activeStudyNav === 0"/>
       <StudyMainMeeting v-else-if="activeStudyNav === 1" :studyId='studyId' />
-      <StudyArticle v-else-if="activeStudyNav === 2"/> 
+      <StudyArticle v-else-if="activeStudyNav === 2" :studyId="studyId" /> 
       <StudyDataPage v-else-if="activeStudyNav === 3"/>
       <StudyStatistic v-else-if="activeStudyNav === 4"/> 
       <StudyConfig v-else-if="activeStudyNav === 5" />

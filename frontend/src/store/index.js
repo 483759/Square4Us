@@ -9,6 +9,7 @@ export default createStore({
     studies: [], // 전체스터디 목록
     myStudies: [], // 내 스터디 목록
     myMeetings: [],
+    studyArticles: [],
     activeStudyNav : 0
   },
   mutations: {
@@ -31,6 +32,9 @@ export default createStore({
     },
     SET_MEETINGS: function (state, payload) {
       state.myMeetings = payload
+    },
+    SET_STUDY_ARTICLES: function (state, payload) {
+      state.studyArticles = payload
     },
     SET_STUDY_ACTIVE : function (state, payload) {
       state.activeStudyNav = payload
@@ -134,6 +138,20 @@ export default createStore({
         return
       }
       context.commit('SET_MEETINGS', response.data.data.meetings)
+    },
+    getArticles: async function(context, studyId) {
+      const response = await axios({
+        method: 'GET',
+        url: `/study/${studyId}/article?page=0&size=5&sorted=true&unsorted=true&empty=true`,
+      }).catch((err)=>{
+        console.log(err.response)
+      })
+      if (!response) {
+        alert('게시글 조회 실패')
+        console.log(response);
+        return
+      }
+      context.commit('SET_STUDY_ARTICLES', response.data.data.articleList)
     },
     getUser : async function (context) {
       const response = await axios({
