@@ -154,7 +154,7 @@ export default createStore({
         console.log(err.response);
       })
       if (!response) {
-        alert("내 스터디 목록을 받아오지 못했습니다")
+        alert("이미 가입되었거나 승인 대기중입니다 (또는 서버터짐)")
         return
       }
       alert('가입 신청 성공')
