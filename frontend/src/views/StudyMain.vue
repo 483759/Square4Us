@@ -17,7 +17,9 @@
       <StudyArticle v-else-if="activeStudyNav === 2"/> 
       <StudyDataPage v-else-if="activeStudyNav === 3"/>
       <StudyStatistic v-else-if="activeStudyNav === 4"/> 
-      <StudyConfig v-else-if="activeStudyNav === 5"/>
+      <StudyConfig v-else-if="activeStudyNav === 5" />
+      <!-- 회원 관리 목록 만들기 -->
+      <StudyMemberConfig v-else-if="activeStudyNav === 6" :studyId='studyId'/>
       <div v-else> 아무것에도 포함 안됨 </div>
     </template>
     
@@ -33,6 +35,7 @@ import StudyArticle from '@/components/study/main/StudyArticle.vue'
 import StudyDataPage from '@/components/study/main/StudyDataPage.vue'
 import StudyStatistic from '@/components/study/main/StudyStatistic.vue'
 import StudyConfig from '@/components/study/main/StudyConfig.vue'
+import StudyMemberConfig from '@/components/study/main/StudyMemberConfig.vue'
 import { useStore } from 'vuex'
 import { computed } from '@vue/runtime-core'
 export default {
@@ -52,6 +55,7 @@ export default {
     StudyDataPage,
     StudyStatistic,
     StudyConfig,
+    StudyMemberConfig
   },
   setup() {
     const store = useStore()
@@ -62,7 +66,8 @@ export default {
       '게시글', 
       '스터디 학습 자료', 
       '통계', 
-      '스터디 설정'
+      '스터디 설정',
+      '멤버 관리'
     ]
     return {
       menus,
