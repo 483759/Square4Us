@@ -84,6 +84,7 @@ export default createStore({
         return
       }
       const studyId = response.data.data.id
+      context.dispatch('getMyStudies')
       router.push({path: `/study/${studyId}`})
     },
     createMeeting: async function (context, data) {
