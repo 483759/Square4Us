@@ -157,7 +157,7 @@ export default {
 
   padding: 0;
   margin: 100px 50px 0 50px;
-  width: ;
+  width: auto;
   /* background-color: white; */
   color: #195C77;
   height: 50%;
