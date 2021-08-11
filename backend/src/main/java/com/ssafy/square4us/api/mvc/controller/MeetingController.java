@@ -2,6 +2,7 @@ package com.ssafy.square4us.api.mvc.controller;
 
 import com.ssafy.square4us.api.mvc.model.dto.BasicResponseBody;
 import com.ssafy.square4us.api.mvc.model.dto.MeetingDTO;
+import com.ssafy.square4us.api.mvc.model.dto.MemberDTO;
 import com.ssafy.square4us.api.mvc.model.dto.ResponseFactory;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.service.MeetingService;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -33,14 +35,15 @@ public class MeetingController {
         return memberService.getMemberByEmail(memberId);
     }
 
-    @PostMapping("")
+    @PostMapping("/{maximum}")
     @Operation(summary = "미팅 생성", description = "미팅 생성한다", responses = {
             @ApiResponse(responseCode = "201", description = "미팅 생성 성공"),
             @ApiResponse(responseCode = "401", description = "권한 없음"),
             @ApiResponse(responseCode = "403", description = "미팅 생성 실패")})
     public ResponseEntity<? extends BasicResponseBody> create(@Parameter(hidden = true) Authentication authentication,
-                                                              @PathVariable("studyId") Long studyId,
-                                                              @RequestBody @Parameter(name = "미팅 생성 정보", required = true) MeetingDTO.CreatePostReq meetingInfo) {
+                                                              @PathVariable("studyId") Long studyId, @PathVariable("maximum") int maximum,
+                                                              MultipartFile thumbnail) {
+                                                              //@RequestBody @Parameter(name = "미팅 생성 정보", required = true) MeetingDTO.GeneratePostReq meetingInfo) {
         if (authentication == null) {
             return ResponseFactory.forbidden();
         }
@@ -54,7 +57,7 @@ public class MeetingController {
             return ResponseFactory.unauthorized();
         }
 
-        MeetingDTO newMeeting = meetingService.createMeeting(studyId, meetingInfo);
+        MeetingDTO newMeeting = meetingService.createMeeting(studyId, maximum, thumbnail);
 
         if (newMeeting == null) {
             return ResponseFactory.forbidden();
@@ -101,4 +104,54 @@ public class MeetingController {
         return ResponseEntity.ok(MeetingDTO.ListGetRes.of(200, "조회 성공", list));
     }
 
+    @PatchMapping("{meetingId}/thumbnail")
+    @Operation(summary = "미팅 썸네일 변경", description = "meetingId에 해당하는 미팅의 썸네일을 변경한다", responses = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "401", description = "권한 없음"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")})
+    public ResponseEntity<? extends BasicResponseBody> updateThumbnail(@Parameter(hidden = true) Authentication authentication,
+                                                                       @PathVariable("studyId") Long studyId,
+                                                                       @PathVariable("meetingId") Long meetingId,
+                                                                       MultipartFile thumbnail) {
+        if (authentication == null) {
+            return ResponseFactory.forbidden();
+        }
+
+        MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
+
+        if (memberDetails == null) {
+            return ResponseFactory.unauthorized();
+        }
+
+        if(thumbnail == null) {
+            return ResponseFactory.forbidden();
+        }
+
+        meetingService.updateThumbnail(meetingId, thumbnail);
+
+        return ResponseFactory.ok();
+    }
+
+    @DeleteMapping("{meetingId}/thumbnail")
+    @Operation(summary = "썸네일 삭제", description = "미팅의 썸네일을 삭제한다.", responses = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "401", description = "인증 실패"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")})
+    public ResponseEntity<? extends BasicResponseBody> deleteThumbnail(@Parameter(hidden = true) Authentication authentication,
+                                                                       @PathVariable("studyId") Long studyId,
+                                                                       @PathVariable("meetingId") Long meetingId) {
+        if (authentication == null) {
+            return ResponseFactory.forbidden();
+        }
+
+        MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
+
+        if (memberDetails == null) {
+            return ResponseFactory.unauthorized();
+        }
+
+        meetingService.deleteThumbnailById(meetingId);
+
+        return ResponseFactory.ok();
+    }
 }

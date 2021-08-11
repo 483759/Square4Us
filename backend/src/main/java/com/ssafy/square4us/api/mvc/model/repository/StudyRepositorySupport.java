@@ -37,6 +37,16 @@ public class StudyRepositorySupport extends QuerydslRepositorySupport {
                 .fetch();
     }
 
+    public List<StudyDTO> findStudiesByMember(Long memberId) {
+        return jpaQueryFactory
+                .select(Projections.constructor(StudyDTO.class, qStudy))
+                .from(qStudyMember)
+                .innerJoin(qStudyMember.member, qMember)
+                .leftJoin(qStudyMember.study, qStudy)
+                .where(qMember.id.eq(memberId), qStudy.dismantleFlag.ne('T'))
+                .fetch();
+    }
+
     public PageImpl<StudyDTO> findStudiesWithPaging(Pageable pageable) {
         JPAQuery query = jpaQueryFactory
                 .select(Projections.constructor(StudyDTO.class, qStudy))

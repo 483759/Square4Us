@@ -1,6 +1,7 @@
 package com.ssafy.square4us.api.mvc.model.dto;
 
 import com.ssafy.square4us.api.mvc.model.entity.Article;
+import com.ssafy.square4us.api.mvc.model.entity.FileEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,6 +27,7 @@ public class ArticleDTO {
     private Integer hit;
     private Integer good;
     private Integer dislike;
+    private List<FileDTO> files;
 
     @Builder
     public ArticleDTO(Article article) {
@@ -38,6 +42,14 @@ public class ArticleDTO {
         this.hit = article.getHit();
         this.good = article.getGood();
         this.dislike = article.getDislike();
+        if(article.getFiles() != null) {
+            this.files = new ArrayList<>();
+            for(FileEntity fe: article.getFiles()) {
+                this.files.add(new FileDTO(fe));
+            }
+        } else {
+            this.files = null;
+        }
     }
 
     @Getter
@@ -117,7 +129,10 @@ public class ArticleDTO {
         @Schema(description = "싫어요", example = "3")
         private Integer dislike;
 
-        public ArticleGetRes(Long id, String email, String category, String title, String content, LocalDateTime createdDate, LocalDateTime modifiedDate, Integer hit, Integer good, Integer dislike) {
+        @Schema(description = "첨부파일")
+        private List<FileDTO> files;
+
+        public ArticleGetRes(Long id, String email, String category, String title, String content, LocalDateTime createdDate, LocalDateTime modifiedDate, Integer hit, Integer good, Integer dislike, List<FileDTO> files) {
             this.id = id;
             this.email = email;
             this.category = category;
@@ -128,12 +143,13 @@ public class ArticleDTO {
             this.hit = hit;
             this.good = good;
             this.dislike = dislike;
+            this.files = files;
         }
 
         public static BasicResponseBody<ArticleDTO.ArticleGetRes> of(Integer statusCode, String message, ArticleDTO article) {
             ArticleDTO.ArticleGetRes result = new ArticleDTO.ArticleGetRes(article.getId(), article.getMember().getEmail(), article.getCategory(),
                                                                            article.getTitle(), article.getContent(), article.getCreatedDate(),
-                                                                           article.getModifiedDate(), article.getHit(), article.getGood(), article.getDislike());
+                                                                           article.getModifiedDate(), article.getHit(), article.getGood(), article.getDislike(), article.getFiles());
             return BasicResponseBody.of(statusCode, message, result);
         }
     }

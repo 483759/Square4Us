@@ -16,22 +16,29 @@ public class MeetingDTO {
     private int maximum = 4;
     private char run_flag = 'T';
     private StudyDTO study;
+    private FileDTO thumbnail;
 
     @Builder
     public MeetingDTO(Meeting meeting) {
+        this.id = meeting.getId();
         this.maximum = meeting.getMaximum();
         this.run_flag = meeting.getRun_flag();
         this.study = new StudyDTO(meeting.getStudy());
+        if(meeting.getThumbnail() != null) {
+            this.thumbnail = new FileDTO(meeting.getThumbnail());
+        } else {
+            this.thumbnail = null;
+        }
     }
 
     @Getter
     @Schema(description = "Meeting Create Post Request")
-    public static class CreatePostReq {
+    public static class GeneratePostReq {
         @Schema(name = "maximum", example = "15")
         int maximum;
 
         @Builder
-        public CreatePostReq(int maximum) {
+        public GeneratePostReq(int maximum) {
             this.maximum = maximum;
         }
     }

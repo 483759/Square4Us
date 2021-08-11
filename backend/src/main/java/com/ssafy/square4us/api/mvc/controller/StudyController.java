@@ -1,8 +1,10 @@
 package com.ssafy.square4us.api.mvc.controller;
 
 import com.ssafy.square4us.api.mvc.model.dto.BasicResponseBody;
+import com.ssafy.square4us.api.mvc.model.dto.FileDTO;
 import com.ssafy.square4us.api.mvc.model.dto.ResponseFactory;
 import com.ssafy.square4us.api.mvc.model.dto.StudyDTO;
+import com.ssafy.square4us.api.mvc.model.entity.FileEntity;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.service.MemberService;
 import com.ssafy.square4us.api.mvc.service.StudyService;
@@ -17,6 +19,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/study")
@@ -55,7 +60,7 @@ public class StudyController {
             return ResponseFactory.forbidden();
         }
 
-        return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "스터디 생성 완료", newStudy.getId(), newStudy.getCategory(), newStudy.getName(), newStudy.getDismantleFlag(), newStudy.getDismantleDate()));
+        return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "스터디 생성 완료", newStudy.getId(), newStudy.getCategory(), newStudy.getName(), newStudy.getFiles()));
     }
 
     @PostMapping("{studyId}")
@@ -106,6 +111,29 @@ public class StudyController {
         return ResponseFactory.forbidden();
     }
 
+    @GetMapping("/me/list")
+    @Operation(summary = "내 스터디 조회", description = "내가 가입한 스터디의 목록을 조회한다", responses = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "204", description = "존재하지 않음")})
+    public ResponseEntity<? extends BasicResponseBody> getStudyList(@Parameter(hidden = true) Authentication authentication) {
+        if (authentication == null) {
+            return ResponseFactory.forbidden();
+        }
+
+        MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
+        String email = memberDetails.getUsername();
+
+        Member member = memberService.getMemberByEmail(email);
+
+        if (member == null) {
+            return ResponseFactory.unauthorized();
+        }
+
+        List<StudyDTO> list = studyService.findStudiesByMember(member.getId());
+
+        return ResponseEntity.ok(StudyDTO.ListGetRes.of(200, "조회 성공", list));
+    }
+
     @GetMapping("")
     @Operation(summary = "스터디 목록 조회", description = "현재 모든 스터디의 목록을 조회한다", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
@@ -123,7 +151,7 @@ public class StudyController {
         if (list == null) {
             return ResponseFactory.noContent();
         }
-        return ResponseEntity.ok(StudyDTO.ListGetRes.of(200, "조회 성공", list));
+        return ResponseEntity.ok(StudyDTO.PabeableListGetRes.of(200, "조회 성공", list));
     }
 
 
@@ -138,7 +166,7 @@ public class StudyController {
             return ResponseFactory.noContent();
         }
 
-        return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "조회 성공", study.getId(), study.getCategory(), study.getName(), study.getDismantleFlag(), study.getDismantleDate()));
+        return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "조회 성공", study.getId(), study.getCategory(), study.getName(), study.getFiles()));
     }
 
     @PostMapping("/{studyId}/resign")
