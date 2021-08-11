@@ -93,16 +93,17 @@ public class MeetingController {
     }
 
     @GetMapping("")
-    @Operation(summary = "미팅 목록 조회", description = "현재 모든 미팅의 목록을 조회한다", responses = {
+    @Operation(summary = "스터디 미팅 조회", description = "특정 스터디의 모든 미팅의 목록을 조회한다", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "204", description = "존재하지 않음")})
-    public ResponseEntity<? extends BasicResponseBody> readAll() {
-        List<MeetingDTO> list = meetingService.findAllMeetings();
+    public ResponseEntity<? extends BasicResponseBody> readMeetingByStudy(@PathVariable("studyId") Long studyId) {
+        List<MeetingDTO> list = meetingService.findMeetingsByStudy(studyId);
         if (list == null) {
             return ResponseFactory.noContent();
         }
         return ResponseEntity.ok(MeetingDTO.ListGetRes.of(200, "조회 성공", list));
     }
+
 
     @PatchMapping("{meetingId}/thumbnail")
     @Operation(summary = "미팅 썸네일 변경", description = "meetingId에 해당하는 미팅의 썸네일을 변경한다", responses = {

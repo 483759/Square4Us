@@ -75,6 +75,11 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
+    public List<MeetingDTO> findMeetingsByStudy(Long studyId) {
+        return meetingRepositorySupport.findMeetingByStudy(studyId);
+    }
+
+    @Override
     public void updateThumbnail(Long meetingId, MultipartFile thumbnail) {
         Optional<Meeting> find = meetingRepo.findById(meetingId);
         if(!find.isPresent()) {

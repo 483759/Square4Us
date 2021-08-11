@@ -12,6 +12,8 @@ public interface MeetingService {
 
     List<MeetingDTO> findAllMeetings();
 
+    List<MeetingDTO> findMeetingsByStudy(Long studyId);
+
     void updateThumbnail(Long meetingId, MultipartFile thumbnail);
 
     void deleteThumbnailById(Long meetingId);
