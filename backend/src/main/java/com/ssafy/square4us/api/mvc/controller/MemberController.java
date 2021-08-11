@@ -153,13 +153,14 @@ public class MemberController {
         return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "수정 성공", modified.getEmail(), modified.getRole(), modified.getNickname(), modified.getProfile(), modified.getReport()));
     }
 
-    @PatchMapping("/me/profile")
+    @PostMapping("/me/profile")
     @Operation(summary = "프로필 사진 변경", description = "회원의 프로필 사진을 변경한다.", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "401", description = "인증 실패"),
             @ApiResponse(responseCode = "500", description = "서버 오류")})
     public ResponseEntity<? extends BasicResponseBody> modifyProfile(@Parameter(hidden = true) Authentication authentication,
                                                                      @Parameter(name = "프로필 사진", required = true) MultipartFile profile) {
+
 
         if (authentication == null) {
             return ResponseFactory.forbidden();

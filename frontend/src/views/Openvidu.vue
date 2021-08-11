@@ -1,7 +1,6 @@
 <template>
   <div id="main-container" class="container">
     <div id="join" v-if="!session">
-      <div id="img-div"><img src="resources/images/openvidu_grey_bg_transp_cropped.png" /></div>
       <div id="join-dialog" class="jumbotron vertical-center">
         <h1>Join a video session</h1>
         <div class="form-group">
@@ -20,34 +19,42 @@
       </div>
     </div>
 
-    <div id="session" v-if="session">
-      <div id="session-header">
-        <h1 id="session-title">{{ mySessionId }}</h1>
-        <input
-          class="btn btn-large btn-danger"
-          type="button"
-          id="buttonLeaveSession"
-          @click="leaveSession"
-          value="Leave session"
-        />
+    <div style="width: 70%; display: inline-block;">
+      <div id="session" v-if="session">
+        <div id="session-header">
+          <h1 id="session-title">{{ mySessionId }}</h1>
+          <input
+            class="btn btn-large btn-danger"
+            type="button"
+            id="buttonLeaveSession"
+            @click="leaveSession"
+            value="Leave session"
+          />
+        </div>
+        <div id="main-video" class="col-md-6">
+          <user-video :stream-manager="mainStreamManager" />
+        </div>
+        <div id="video-container" class="col-md-6">
+          <user-video
+            :stream-manager="publisher"
+            @click="updateMainVideoStreamManager(publisher)"
+          />
+          <user-video
+            v-for="sub in subscribers"
+            :key="sub.stream.connection.connectionId"
+            :stream-manager="sub"
+            @click="updateMainVideoStreamManager(sub)"
+          />
+        </div>
+        <button type="button" @click="videoOnAndOff()">video</button>
+        <button type="button" @click="audioOnAndOff()">audio</button>
+        
+        <input type="text" v-model="message" />
+        <button type="button" @click="sendChat()">입력</button>
       </div>
-      <div id="main-video" class="col-md-6">
-        <user-video :stream-manager="mainStreamManager" />
-      </div>
-      <div id="video-container" class="col-md-6">
-        <user-video
-          :stream-manager="publisher"
-          @click="updateMainVideoStreamManager(publisher)"
-        />
-        <user-video
-          v-for="sub in subscribers"
-          :key="sub.stream.connection.connectionId"
-          :stream-manager="sub"
-          @click="updateMainVideoStreamManager(sub)"
-        />
-      </div>
-      <button type="button" @click="videoOnAndOff()">video</button>
-      <button type="button" @click="audioOnAndOff()">audio</button>
+    </div>
+    <div id="chatting-content" style="width: 30%; display: inline-block;">
+      
     </div>
   </div>
 </template>
@@ -81,7 +88,9 @@ export default {
       myUserName: "Participant" + Math.floor(Math.random() * 100),
 
       videoEnabled: true,
-      audioEnabled: true
+      audioEnabled: true,
+
+      message: ""
     };
   },
 
@@ -112,6 +121,18 @@ export default {
       // On every asynchronous exception...
       this.session.on("exception", ({ exception }) => {
         console.warn(exception);
+      });
+
+      this.session.on("signal:my-chat", (event) => {
+        console.log(event.data);
+        console.log(event.from);
+        console.log(event.type);
+        console.log("메시지 왔음~");
+        let receive = event.data.split("/");
+        let userName = receive[0];
+        let message = receive[1];
+        document.getElementById("chatting-content").innerHTML += `<p>${userName}:</p>`;
+        document.getElementById("chatting-content").innerHTML += `<p>${message}</p>`;
       });
 
       // --- Connect to the session with a valid user token ---
@@ -250,6 +271,26 @@ export default {
     audioOnAndOff() {
       this.audioEnabled = !this.audioEnabled;
       this.publisher.publishAudio(this.audioEnabled);
+    },
+
+    sendChat() {
+      let t = this;
+      t.session.signal({
+        data: t.myUserName + "/" + t.message,
+        to: [],
+        type: 'my-chat'
+      })
+      .then(
+        () => {
+          console.log("Message successfully sent");
+        }
+      )
+      .catch(
+        error => {
+          console.error(error);
+        }
+      );
+      t.message = "";
     }
   },
 };

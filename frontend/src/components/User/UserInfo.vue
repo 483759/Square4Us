@@ -25,17 +25,23 @@
   <!-- 오른쪽 블럭 -->
   <div class="profileFrame">
     <div class="profile">
-      <img style="height: 360px; width: 300px;" src= "" alt="없음">
+      <img style="height: 360px; width: 300px;" :src="credentials.profile_path" alt="없음">
     </div>
       <button class="menuButton" v-show="!data.imgChange" @click="imgchangebutton">사진 수정</button>
       <div class="buttonsection" v-if="data.imgChange">
-          <input type="text" placeholder="{{credentials.profile_path}}" v-model="credentials.profile_path" class="profilePath" >
-          <div>
-            <button class="cancelButton" @click="imgchangebutton">취소</button>
-            <!-- 사진저장 버튼을 누를 때 따로 보내야할지 모르겠음 -->
-            <button class="cancelButton" @click="putimage">사진 저장</button>
-          </div>
-        </div>
+        <!-- <input type="text" placeholder="{{credentials.profile_path}}" v-model="credentials.profile_path" class="profilePath" /> -->
+        <!-- <div> -->
+          <!-- <button class="cancelButton" @click="imgchangebutton">취소</button> -->
+          <!-- 사진저장 버튼을 누를 때 따로 보내야할지 모르겠음 -->
+          <!-- <button class="cancelButton" @click="putimage">사진 저장</button> -->
+        <!-- </div> -->
+        <form id="profileForm" role="form" method="post" enctype="multupart/form-data" action="/api/member/me/profile">
+          <input type="file" name="profile">
+          <button type="button" class="menuButton" @click="updateProfilePhoto">사진 변경</button>
+          <button type="button" class="menuButton" @click="deleteProfilePhoto">사진 삭제</button>
+          <button type="button" class="menuButton" @click="imgchangebutton">취소</button>
+        </form>
+      </div>
    
   </div>
 </section>
@@ -92,13 +98,37 @@ export default {
             store.dispatch('updateMemberInfo', {nickname: credentials.nickname});
         }
 
+        const updateProfilePhoto = () => {
+          axios({
+            method: 'POST',
+            url: 'member/me/profile',
+            data: new FormData(document.getElementById("profileForm")),
+            cache: false,
+            contentType: false,
+            processType: false,
+          }).then(response => {
+            console.log(response.data.data.profile);
+            credentials.profile_path = response.data.data.profile.filePath + '\\' + response.data.data.profile.fileName;
+            console.log(credentials.profile_path);
+          })
+        }
+
+        const deleteProfilePhoto = () => {
+          axios({
+            method: 'DELETE',
+            url: 'member/me/profile'
+          })
+        }
+
     return {
         getUserInfo,
         putUserInfo,
         credentials,
         data,
         imgchangebutton,
-        user,
+        updateProfilePhoto,
+        deleteProfilePhoto,
+        user
         }
     }
 
