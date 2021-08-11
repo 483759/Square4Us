@@ -15,6 +15,7 @@
     "vue": "^3.1.5",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0",
+    "openvidu-browser": "2.19.0",
     "webstomp-client": "^1.2.6"
   },
   "devDependencies": {
