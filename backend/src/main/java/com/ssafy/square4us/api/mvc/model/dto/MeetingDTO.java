@@ -20,13 +20,6 @@ public class MeetingDTO {
     @JsonIgnore
     private StudyDTO study;
 
-    @Builder
-    public MeetingDTO(Long id, int maximum, char run_flag, StudyDTO study) {
-        this.id = id;
-        this.maximum = maximum;
-        this.run_flag = run_flag;
-        this.study = study;
-    }
 
     @Builder
     public MeetingDTO(Meeting meeting) {

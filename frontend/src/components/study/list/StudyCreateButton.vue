@@ -60,6 +60,7 @@ export default {
     const store = useStore();
     const createStudy = async ()=> {
       store.dispatch('createStudy', data)
+      
       store.commit('SET_STUDY_ACTIVE', 0)
     }
 
