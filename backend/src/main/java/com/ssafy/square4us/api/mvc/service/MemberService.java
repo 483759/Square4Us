@@ -18,7 +18,7 @@ public interface MemberService {
 
     MemberDTO createMember(MemberDTO.JoinPostReq joinInfo);
 
-    Long updateMemberByEmail(String email, MemberDTO.UpdatePatchReq updateInfo);
+    Long updateMemberByEmail(Long memberId, MemberDTO.UpdatePatchReq updateInfo);
 
     MemberDTO updateProfileByEmail(String email, MultipartFile profile);
 

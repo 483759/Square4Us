@@ -24,16 +24,6 @@ public class MemberDTO {
     @JsonIgnore
     private String password;
 
-    public MemberDTO(Long id, String email, String password, MemberRole role, String nickname, FileDTO profile, int report) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.nickname = nickname;
-        this.profile = profile;
-        this.report = report;
-    }
-
     public MemberDTO(Member member) {
         this.id = member.getId();
         this.email = member.getEmail();
@@ -92,6 +82,9 @@ public class MemberDTO {
     @Getter
     public static class UpdatePatchReq {
         private String nickname;
+
+        public UpdatePatchReq() {
+        }
 
         public UpdatePatchReq(String nickname) {
             this.nickname = nickname;

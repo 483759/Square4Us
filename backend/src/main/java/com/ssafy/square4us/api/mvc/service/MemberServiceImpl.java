@@ -82,11 +82,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public Long updateMemberByEmail(String email, MemberDTO.UpdatePatchReq updateInfo) {
-        Member member = Member.builder().email(email)
-                .nickname(updateInfo.getNickname())
-                .build();
-        return memberRepositorySupport.updateByMemberEmail(member);
+    public Long updateMemberByEmail(Long memberId, MemberDTO.UpdatePatchReq updateInfo) {
+//        Member member = Member.builder().id(memberId)
+//                .nickname(updateInfo.getNickname())
+//                .build();
+//        System.out.println(member);
+        return memberRepositorySupport.updateByMemberEmail(memberId, updateInfo);
     }
 
     @Override
