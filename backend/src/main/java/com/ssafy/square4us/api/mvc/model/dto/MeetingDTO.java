@@ -1,5 +1,6 @@
 package com.ssafy.square4us.api.mvc.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.square4us.api.mvc.model.entity.Meeting;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
@@ -15,8 +16,9 @@ public class MeetingDTO {
     private Long id;
     private int maximum = 4;
     private char run_flag = 'T';
-    private StudyDTO study;
     private FileDTO thumbnail;
+    @JsonIgnore
+    private StudyDTO study;
 
     @Builder
     public MeetingDTO(Meeting meeting) {
