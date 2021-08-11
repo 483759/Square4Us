@@ -87,7 +87,6 @@ export default {
       // state,
       meetings,
       options,
-      meetings,
       onEnter,
       // selectMax,
       createMeeting

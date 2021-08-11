@@ -64,10 +64,6 @@ export default {
       '통계', 
       '스터디 설정'
     ]
-    const store = useStore()
-    const activeStudyNav = computed(()=>{
-      return store.state.activeStudyNav
-    })
     return {
       menus,
       activeStudyNav
