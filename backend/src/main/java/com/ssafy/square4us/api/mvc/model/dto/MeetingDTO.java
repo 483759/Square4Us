@@ -16,12 +16,19 @@ public class MeetingDTO {
     private int maximum = 4;
     private char run_flag = 'T';
     private StudyDTO study;
+    private FileDTO thumbnail;
 
     @Builder
     public MeetingDTO(Meeting meeting) {
+        this.id = meeting.getId();
         this.maximum = meeting.getMaximum();
         this.run_flag = meeting.getRun_flag();
         this.study = new StudyDTO(meeting.getStudy());
+        if(meeting.getThumbnail() != null) {
+            this.thumbnail = new FileDTO(meeting.getThumbnail());
+        } else {
+            this.thumbnail = null;
+        }
     }
 
     @Getter
