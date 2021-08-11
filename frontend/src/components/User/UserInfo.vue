@@ -78,7 +78,6 @@ export default {
                 this.credentials = response.data
             })
         }
-        console.log(data.imgUrl)
 
         // 버튼 변경 함수
         const imgchangebutton = () => {

@@ -33,7 +33,7 @@
 import Login from '@/components/home/Login'
 import Logout from '@/components/home/Logout'
 import MyStudy from '@/components/study/list/MyStudy'
-import { computed, onMounted } from '@vue/runtime-core'
+import { computed } from '@vue/runtime-core'
 import store from '@/store'
 export default {
   name : 'Header',
@@ -45,9 +45,6 @@ export default {
   setup() {
     const isLogin = computed(()=> store.state.isLogin)
     const myStudies = computed(()=> store.state.myStudies)
-    onMounted(()=>{
-      store.dispatch('getMyStudies')
-    })
     return {
       isLogin,
       myStudies

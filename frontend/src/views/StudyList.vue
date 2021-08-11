@@ -15,11 +15,23 @@
 <script>
 import StudyListFrame from '@/components/StudyListFrame.vue'
 import StudyCreateButton from '@/components/study/list/StudyCreateButton.vue'
+import { useStore } from 'vuex'
+import { onMounted } from '@vue/runtime-core'
 export default {
   name: 'StudyList',
   components: {
     StudyListFrame,
     StudyCreateButton
+  },
+  setup(){
+    const store = useStore()
+    onMounted( ()=>{
+      store.dispatch('getMyStudies')
+      if (Object.keys(store.state.user).length == 0) {
+        store.dispatch('getUser')
+      }
+    })
+
   }
 }
 </script>
