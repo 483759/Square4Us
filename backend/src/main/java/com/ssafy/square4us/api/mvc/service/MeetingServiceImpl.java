@@ -78,6 +78,7 @@ public class MeetingServiceImpl implements MeetingService {
     public List<MeetingDTO> findMeetingsByStudy(Long studyId) {
         return meetingRepositorySupport.findMeetingByStudy(studyId);
     }
+<<<<<<< HEAD
 
     @Override
     public void updateThumbnail(Long meetingId, MultipartFile thumbnail) {
@@ -144,4 +145,6 @@ public class MeetingServiceImpl implements MeetingService {
         }
         fileRepo.delete(prevThumbnail);
     }
+=======
+>>>>>>> feature_study
 }

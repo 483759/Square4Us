@@ -22,7 +22,7 @@ export default createStore({
     SET_USER: function (state, payload) {
       state.user = payload
     },
-    SET_STUDIES: function (state, payload) {
+    SET_MY_STUDIES: function (state, payload) {
       state.myStudies = payload
     },
     SET_MEETINGS: function (state, payload) {
@@ -138,7 +138,22 @@ export default createStore({
         alert("내 스터디 목록을 받아오지 못했습니다")
         return
       }
-      context.commit('SET_STUDIES', response.data.data.studyList)
+      context.commit('SET_MY_STUDIES', response.data.data.studyList)
+    },
+    joinStudy: async function (context, studyId) {
+      ///api/study/{studyId}
+      const response = await axios({
+        method: "POST",
+        url: `/study/${studyId}`,
+      }).catch((err)=>{
+        console.log(err.response);
+      })
+      if (!response) {
+        alert("내 스터디 목록을 받아오지 못했습니다")
+        return
+      }
+      alert('가입 신청 성공')
+      console.log(response.data.data);
     }
   },
   modules: {},
