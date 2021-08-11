@@ -26,6 +26,7 @@ import { reactive } from '@vue/reactivity'
 import StudyMainMeetingItem from '@/components/study/main/StudyMainMeetingItem.vue'
 import router from '@/router'
 import { useStore } from 'vuex'
+import { onMounted } from '@vue/runtime-core'
 export default {
   name: 'StudyMainMeeting',
   props: {
@@ -49,6 +50,9 @@ export default {
       store.dispatch('createMeeting', data)
     }
 
+    onMounted(()=>{
+      store.dispatch('getMeetings',props.studyId)
+    })
 
     const state = reactive({
       meetings : [

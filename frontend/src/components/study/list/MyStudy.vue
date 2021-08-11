@@ -15,11 +15,11 @@ export default {
       type: Array
     }
   },
-  setup(props) {
-    console.log(props.myStudies);
+  setup() {
     const selectedStudy = ref('default')
     const selectStudy = ()=>{
       router.push({path: `/study/${selectedStudy.value}`})
+      selectedStudy.value = 'default'
     }
     return {
       selectedStudy,
