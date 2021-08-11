@@ -6,7 +6,8 @@ export default createStore({
   state: {
     isLogin: false,
     user: {},
-    myStudies: []
+    myStudies: [],
+    myMeetings: []
   },
   mutations: {
     LOGIN : function (state) {
@@ -22,6 +23,9 @@ export default createStore({
     },
     SET_STUDIES: function (state, payload) {
       state.myStudies = payload
+    },
+    SET_MEETINGS: function (state, payload) {
+      state.myMeetings = payload
     }
   },
   actions: {
@@ -91,7 +95,6 @@ export default createStore({
         return
       }
       console.log(response);
-      // 생성 성공했다면 새로 미팅 목록을 불러온다
     },
     getMeetings: async function (context, studyId) {
       const response = await axios({
@@ -105,6 +108,7 @@ export default createStore({
         console.log(response);
         return
       }
+      context.commit('SET_MEETINGS', response.data.data.meetings)
     },
     getUser : async function (context) {
       const response = await axios({
