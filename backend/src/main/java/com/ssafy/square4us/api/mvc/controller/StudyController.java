@@ -1,8 +1,10 @@
 package com.ssafy.square4us.api.mvc.controller;
 
 import com.ssafy.square4us.api.mvc.model.dto.BasicResponseBody;
+import com.ssafy.square4us.api.mvc.model.dto.FileDTO;
 import com.ssafy.square4us.api.mvc.model.dto.ResponseFactory;
 import com.ssafy.square4us.api.mvc.model.dto.StudyDTO;
+import com.ssafy.square4us.api.mvc.model.entity.FileEntity;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.service.MemberService;
 import com.ssafy.square4us.api.mvc.service.StudyService;
@@ -18,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -57,7 +60,7 @@ public class StudyController {
             return ResponseFactory.forbidden();
         }
 
-        return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "스터디 생성 완료", newStudy.getId(), newStudy.getCategory(), newStudy.getName()));
+        return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "스터디 생성 완료", newStudy.getId(), newStudy.getCategory(), newStudy.getName(), newStudy.getFiles()));
     }
 
     @PostMapping("{studyId}")
@@ -163,7 +166,7 @@ public class StudyController {
             return ResponseFactory.noContent();
         }
 
-        return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "조회 성공", study.getId(), study.getCategory(), study.getName()));
+        return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "조회 성공", study.getId(), study.getCategory(), study.getName(), study.getFiles()));
     }
 
     @PostMapping("/{studyId}/resign")

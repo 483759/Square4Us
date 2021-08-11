@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import com.ssafy.square4us.common.auth.MemberDetails;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,7 +44,8 @@ public class ArticleController {
             @ApiResponse(responseCode = "403", description = "게시글 생성 실패")})
     public ResponseEntity<? extends BasicResponseBody> create(@Parameter(hidden = true) Authentication authentication,
                                                               @PathVariable("studyId") Long studyId,
-                                                              @RequestBody @Parameter(name = "게시글 생성 정보", required = true) ArticleDTO.CreatePostReq req) {
+                                                              @Parameter(name = "게시글 생성 정보", required = true) ArticleDTO.CreatePostReq req,
+                                                              @Parameter(name = "첨부 파일", required = false) MultipartFile[] files) {
         if (authentication == null) {
             return ResponseFactory.forbidden();
         }
@@ -52,12 +54,12 @@ public class ArticleController {
         String memberId = memberDetails.getUsername();
 
         Member member = memberService.getMemberByEmail(memberId);
-        System.out.println(member);
+
         if (member == null) {
             return ResponseFactory.unauthorized();
         }
 
-        ArticleDTO newArticle = articleService.createArticle(studyId, member.getId(), req);
+        ArticleDTO newArticle = articleService.createArticle(studyId, member.getId(), req, files);
 
         if (newArticle == null) {
             return ResponseFactory.forbidden();
@@ -176,7 +178,7 @@ public class ArticleController {
     public ResponseEntity<? extends BasicResponseBody> updateArticle(@Parameter(hidden = true) Authentication authentication,
                                                                      @PathVariable("studyId") Long studyId,
                                                                      @PathVariable("articleId") Long articleId,
-                                                                     @RequestBody @Parameter(name = "게시글 수정 정보", required = true) ArticleDTO.CreatePostReq req) {
+                                                                     @Parameter(name = "게시글 수정 정보", required = true) ArticleDTO.CreatePostReq req, @Parameter(name = "첨부파일", required = false) MultipartFile[] files) {
         if (authentication == null) {
             return ResponseFactory.forbidden();
         }
@@ -198,7 +200,7 @@ public class ArticleController {
             return ResponseFactory.conflict();
         }
 
-        articleService.updateArticle(articleId, req);
+        articleService.updateArticle(articleId, req, files);
 
         return ResponseFactory.ok();
     }

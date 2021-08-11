@@ -24,7 +24,7 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     @Transactional
-    public MeetingDTO createMeeting(Long studyId, MeetingDTO.CreatePostReq meetingInfo) {
+    public MeetingDTO createMeeting(Long studyId, int maximum) {
         Optional<Study> study = studyRepo.findById(studyId);
         if (!study.isPresent()) {
             return null;
@@ -33,7 +33,7 @@ public class MeetingServiceImpl implements MeetingService {
         Meeting meeting = meetingRepo.save(
                 Meeting.builder()
                         .study(study.get())
-                        .maximum(meetingInfo.getMaximum())
+                        .maximum(maximum)
                         .run_flag('T')
                         .build()
         );
@@ -55,5 +55,10 @@ public class MeetingServiceImpl implements MeetingService {
     @Transactional
     public List<MeetingDTO> findAllMeetings() {
         return meetingRepositorySupport.findAll();
+    }
+
+    @Override
+    public List<MeetingDTO> findMeetingsByStudy(Long studyId) {
+        return meetingRepositorySupport.findMeetingByStudy(studyId);
     }
 }

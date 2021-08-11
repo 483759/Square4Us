@@ -33,14 +33,14 @@ public class MeetingController {
         return memberService.getMemberByEmail(memberId);
     }
 
-    @PostMapping("")
+    @PostMapping("/{maximum}")
     @Operation(summary = "미팅 생성", description = "미팅 생성한다", responses = {
             @ApiResponse(responseCode = "201", description = "미팅 생성 성공"),
             @ApiResponse(responseCode = "401", description = "권한 없음"),
             @ApiResponse(responseCode = "403", description = "미팅 생성 실패")})
     public ResponseEntity<? extends BasicResponseBody> create(@Parameter(hidden = true) Authentication authentication,
-                                                              @PathVariable("studyId") Long studyId,
-                                                              @RequestBody @Parameter(name = "미팅 생성 정보", required = true) MeetingDTO.CreatePostReq meetingInfo) {
+                                                              @PathVariable("studyId") Long studyId, @PathVariable("maximum") int maximum) {
+                                                              //@RequestBody @Parameter(name = "미팅 생성 정보", required = true) MeetingDTO.GeneratePostReq meetingInfo) {
         if (authentication == null) {
             return ResponseFactory.forbidden();
         }
@@ -54,7 +54,7 @@ public class MeetingController {
             return ResponseFactory.unauthorized();
         }
 
-        MeetingDTO newMeeting = meetingService.createMeeting(studyId, meetingInfo);
+        MeetingDTO newMeeting = meetingService.createMeeting(studyId, maximum);
 
         if (newMeeting == null) {
             return ResponseFactory.forbidden();
@@ -89,12 +89,24 @@ public class MeetingController {
         return ResponseEntity.ok(MeetingDTO.EnterGetRes.of(200, "성공", meetingInfo));
     }
 
+//    @GetMapping("")
+//    @Operation(summary = "미팅 목록 조회", description = "현재 모든 미팅의 목록을 조회한다", responses = {
+//            @ApiResponse(responseCode = "200", description = "성공"),
+//            @ApiResponse(responseCode = "204", description = "존재하지 않음")})
+//    public ResponseEntity<? extends BasicResponseBody> readAll() {
+//        List<MeetingDTO> list = meetingService.findAllMeetings();
+//        if (list == null) {
+//            return ResponseFactory.noContent();
+//        }
+//        return ResponseEntity.ok(MeetingDTO.ListGetRes.of(200, "조회 성공", list));
+//    }
+
     @GetMapping("")
     @Operation(summary = "미팅 목록 조회", description = "현재 모든 미팅의 목록을 조회한다", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "204", description = "존재하지 않음")})
-    public ResponseEntity<? extends BasicResponseBody> readAll() {
-        List<MeetingDTO> list = meetingService.findAllMeetings();
+    public ResponseEntity<? extends BasicResponseBody> readMeetingByStudy(@PathVariable("studyId") Long studyId) {
+        List<MeetingDTO> list = meetingService.findMeetingsByStudy(studyId);
         if (list == null) {
             return ResponseFactory.noContent();
         }
