@@ -44,9 +44,9 @@ public class S3Util {
         FileDTO f = FileDTO.builder()
                         .id(null)
                         .contentType(multipartFile.getContentType())
-                        .fileOriginName(multipartFile.getName())
+                        .fileOriginName(multipartFile.getOriginalFilename())
                         .filePath(uploadImageUrl.substring(0, idx))
-                        .fileName(uploadImageUrl.substring(idx))
+                        .fileName(uploadImageUrl.substring(idx + 1))
                         .build();
         return f;
     }
