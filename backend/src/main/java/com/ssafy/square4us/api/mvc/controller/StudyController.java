@@ -60,7 +60,7 @@ public class StudyController {
             return ResponseFactory.forbidden();
         }
 
-        return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "스터디 생성 완료", newStudy.getId(), newStudy.getCategory(), newStudy.getName(), newStudy.getFiles()));
+        return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "스터디 생성 완료", newStudy.getId(), newStudy.getCategory(), newStudy.getName()));
     }
 
     @PostMapping("{studyId}")
@@ -191,7 +191,7 @@ public class StudyController {
             return ResponseFactory.noContent();
         }
 
-        return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "조회 성공", study.getId(), study.getCategory(), study.getName(), study.getFiles()));
+        return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "조회 성공", study.getId(), study.getCategory(), study.getName()));
     }
 
     @PostMapping("/{studyId}/resign")

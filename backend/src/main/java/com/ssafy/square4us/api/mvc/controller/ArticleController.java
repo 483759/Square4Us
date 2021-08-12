@@ -20,6 +20,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/study/{studyId}/article")
@@ -198,7 +200,11 @@ public class ArticleController {
             return ResponseFactory.conflict();
         }
 
-        articleService.updateArticle(articleId, req, files);
+        try {
+            articleService.updateArticle(articleId, req, files);
+        } catch (IOException e) {
+            return ResponseFactory.internalServerError();
+        }
 
         return ResponseFactory.ok();
     }
@@ -211,7 +217,7 @@ public class ArticleController {
     public ResponseEntity<? extends BasicResponseBody> uploadFiles(@Parameter(hidden = true) Authentication authentication,
                                                                    @PathVariable("studyId") @Parameter(description = "스터디 ID", required = true) Long studyId,
                                                                    @PathVariable("articleId") @Parameter(description = "게시물 ID", required = true) Long articleId,
-                                                                   @RequestParam(required = true) @Parameter(description = "첨부파일들", required = true) MultipartFile[] files) {
+                                                                   @RequestParam(required = true) @Parameter(description = "첨부파일들", required = true) MultipartFile[] files) throws IOException {
         if (authentication == null) {
             return ResponseFactory.forbidden();
         }

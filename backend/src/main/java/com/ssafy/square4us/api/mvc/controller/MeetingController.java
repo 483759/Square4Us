@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -57,7 +58,12 @@ public class MeetingController {
             return ResponseFactory.unauthorized();
         }
 
-        MeetingDTO newMeeting = meetingService.createMeeting(studyId, maximum, thumbnail);
+        MeetingDTO newMeeting = null;
+        try {
+            newMeeting = meetingService.createMeeting(studyId, maximum, thumbnail);
+        } catch (IOException e) {
+            return ResponseFactory.internalServerError();
+        }
 
         if (newMeeting == null) {
             return ResponseFactory.forbidden();
@@ -140,7 +146,11 @@ public class MeetingController {
             return ResponseFactory.forbidden();
         }
 
-        meetingService.updateThumbnail(meetingId, thumbnail);
+        try {
+            meetingService.updateThumbnail(meetingId, thumbnail);
+        } catch (IOException e) {
+            return ResponseFactory.internalServerError();
+        }
 
         return ResponseFactory.ok();
     }
