@@ -38,13 +38,11 @@ public class MemberController {
             @Parameter(name = "로그인 정보", required = true) @RequestBody MemberDTO.LoginPostReq loginInfo) {
         String email = loginInfo.getEmail();
         String password = loginInfo.getPassword();
-        System.out.println(email);
-        System.out.println(password);
+        
         try {
             Member member = memberService.getMemberByEmail(email);
 
             if (member == null) {
-                System.out.println("없는데?");
                 return ResponseFactory.notFound();
             }
             if (new BCryptPasswordEncoder().matches(password, member.getPassword()) == false) {
@@ -148,19 +146,21 @@ public class MemberController {
         }
 
         String email = memberDetails.getUsername();
-        memberService.updateMemberByEmail(email, updateInfo);
+        MemberDTO member = memberService.getMemberDTOByEmail(email);
+        memberService.updateMemberByEmail(member.getId(), updateInfo);
 
         MemberDTO modified = memberService.getMemberDTOByEmail(email);
         return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "수정 성공", modified.getEmail(), modified.getRole(), modified.getNickname(), modified.getProfile(), modified.getReport()));
     }
 
-    @PatchMapping("/me/profile")
+    @PostMapping("/me/profile")
     @Operation(summary = "프로필 사진 변경", description = "회원의 프로필 사진을 변경한다.", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "401", description = "인증 실패"),
             @ApiResponse(responseCode = "500", description = "서버 오류")})
     public ResponseEntity<? extends BasicResponseBody> modifyProfile(@Parameter(hidden = true) Authentication authentication,
                                                                      @Parameter(name = "프로필 사진", required = true) MultipartFile profile) {
+
 
         if (authentication == null) {
             return ResponseFactory.forbidden();

@@ -1,5 +1,6 @@
 package com.ssafy.square4us.api.mvc.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.square4us.api.mvc.model.entity.Article;
 import com.ssafy.square4us.api.mvc.model.entity.FileEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,14 +21,15 @@ public class ArticleDTO {
     private String category;
     private String title;
     private String content;
-    private StudyDTO study;
-    private MemberDTO member;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private Integer hit;
     private Integer good;
     private Integer dislike;
     private List<FileDTO> files;
+    @JsonIgnore
+    private StudyDTO study;
+    private MemberDTO member;
 
     @Builder
     public ArticleDTO(Article article) {
