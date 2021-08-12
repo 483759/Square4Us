@@ -14,6 +14,7 @@ public interface ArticleService {
     ArticleDTO getArticle(Long articleId);
     void deleteByArticleId(Long articleId);
     void evalArticle(Long articleId, String what);
+
     void updateArticle(Long articleId, ArticleDTO.WritePostReq req, MultipartFile[] files) throws IOException;
     void uploadFiles(Long articleId, MultipartFile[] files) throws IOException;
 }

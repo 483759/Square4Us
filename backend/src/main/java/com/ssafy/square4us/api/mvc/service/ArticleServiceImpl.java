@@ -142,7 +142,6 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-
     public void updateArticle(Long articleId, ArticleDTO.WritePostReq req, MultipartFile[] files) throws IOException {
         Optional<Article> article = articleRepo.findById(articleId);
         if(!article.isPresent()) {

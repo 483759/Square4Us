@@ -179,7 +179,6 @@ public class ArticleController {
                                                                      @PathVariable("studyId") Long studyId,
                                                                      @PathVariable("articleId") Long articleId,
                                                                      @Parameter(name = "게시글 수정 정보", required = true) ArticleDTO.WritePostReq req, @Parameter(name = "첨부파일", required = false) MultipartFile[] files) {
-
         if (authentication == null) {
             return ResponseFactory.forbidden();
         }
