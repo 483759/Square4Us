@@ -15,6 +15,7 @@
       <StudyMainPage v-if="activeStudyNav === 0"/>
       <StudyMainMeeting v-else-if="activeStudyNav === 1" :studyId='studyId' />
       <StudyArticle v-else-if="activeStudyNav === 2" :studyId="studyId" /> 
+
       <StudyDataPage v-else-if="activeStudyNav === 3"/>
       <StudyStatistic v-else-if="activeStudyNav === 4"/> 
       <StudyConfig v-else-if="activeStudyNav === 5" />

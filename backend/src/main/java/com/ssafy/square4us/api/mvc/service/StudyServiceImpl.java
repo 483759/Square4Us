@@ -115,6 +115,20 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional
+    public Boolean delegateLeader(Long studyId, Long leaderId, Long memberId) {
+        Long result = studyRepositorySupport.updateLeaderMember(studyId, leaderId, 'F');
+        if(result==0) {
+            return false;
+        }
+        result = studyRepositorySupport.updateLeaderMember(studyId, memberId, 'T');
+        if(result==0) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    @Transactional
     public Boolean deleteByStudyId(String email, Long studyId) {
         StudyMemberDTO sm = studyRepositorySupport.getStudyMemberByEmail(email, studyId);
         if (sm == null || sm.getLeader() != 'T') {

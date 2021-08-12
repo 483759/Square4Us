@@ -1,5 +1,5 @@
 <template>
-  <div class='tiptap-wrapper'> <!-- 내가 넣은 클래스 -->
+  <div class='tiptap-wrapper' @drop.prevent="addFile" @dragover.prevent> <!-- 내가 넣은 클래스 -->
   <input type="text" v-model='title' id='tiptap-title'>
     
     <p v-if="editor" class='tiptap-buttons'> <!-- 내가 넣은 클래스 -->
@@ -98,11 +98,12 @@
         highlight
       </button>
     </BubbleMenu>
-  <EditorContent :editor="editor" />
+    <EditorContent :editor="editor" />
     <p class='article-buttons'>
       <button @click='save'>저장</button>
       <button>뒤로가기</button>
     </p>
+    <p>{{ filenames }}</p>
   </div>
 </template>
 
@@ -127,22 +128,39 @@ export default {
   data() {
     return {
       editor: null,
-      title: ''
+      title: '',
+      files : []
     }
   },
   methods: {
+    
     // 실제 store 접근은 StudyArticle.vue에서 이루어진다
     save : function () {
       // this.title과 this.modelValue 를 저장하면 된다.
       const data = {
-        req: {
+        article: {
           "category": "15",
           "title": this.title,
           "content": this.modelValue
         },
-        files: [],
+        files: this.files,
       }
       this.$emit('saveArticle', data)
+    },
+    addFile : function (e) {
+      const droppedFiles = e.dataTransfer.files;
+      if(!droppedFiles) return;
+      [...droppedFiles].forEach((file)=>{
+        this.files.push(file)
+      })
+      
+    }
+  },
+  computed : {
+    filenames: function () {
+      return this.files.map((file)=>{
+        return file.name
+      })
     }
   },
   watch: {

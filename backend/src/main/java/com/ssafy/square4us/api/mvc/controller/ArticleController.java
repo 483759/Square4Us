@@ -45,7 +45,7 @@ public class ArticleController {
             @ApiResponse(responseCode = "403", description = "게시글 생성 실패")})
     public ResponseEntity<? extends BasicResponseBody> create(@Parameter(hidden = true) Authentication authentication,
                                                               @PathVariable("studyId") Long studyId,
-                                                              @RequestBody(required = true) @Parameter(name = "게시글 생성 정보", required = true) ArticleDTO.CreatePostReq req) {
+                                                              @RequestBody(required = true) @Parameter(name = "게시글 생성 정보", required = true) ArticleDTO.WritePostReq req) {
         if (authentication == null) {
             return ResponseFactory.forbidden();
         }
@@ -178,7 +178,7 @@ public class ArticleController {
     public ResponseEntity<? extends BasicResponseBody> updateArticle(@Parameter(hidden = true) Authentication authentication,
                                                                      @PathVariable("studyId") Long studyId,
                                                                      @PathVariable("articleId") Long articleId,
-                                                                     @Parameter(name = "게시글 수정 정보", required = true) ArticleDTO.CreatePostReq req, @Parameter(name = "첨부파일", required = false) MultipartFile[] files) throws IOException {
+                                                                     @Parameter(name = "게시글 수정 정보", required = true) ArticleDTO.WritePostReq req, @Parameter(name = "첨부파일", required = false) MultipartFile[] files) {
         if (authentication == null) {
             return ResponseFactory.forbidden();
         }

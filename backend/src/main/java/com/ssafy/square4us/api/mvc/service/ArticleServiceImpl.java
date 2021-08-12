@@ -36,7 +36,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public ArticleDTO createArticle(Long studyId, Long memberId, ArticleDTO.CreatePostReq req) {
+    public ArticleDTO createArticle(Long studyId, Long memberId, ArticleDTO.WritePostReq req) {
         Optional<Study> study = studyRepo.findById(studyId);
         Optional<Member> member = memberRepo.findById(memberId);
 
@@ -142,7 +142,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public void updateArticle(Long articleId, ArticleDTO.CreatePostReq req, MultipartFile[] files) throws IOException {
+    public void updateArticle(Long articleId, ArticleDTO.WritePostReq req, MultipartFile[] files) {
         Optional<Article> article = articleRepo.findById(articleId);
         if(!article.isPresent()) {
             return;

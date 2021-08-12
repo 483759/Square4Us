@@ -24,6 +24,9 @@ public interface StudyService {
     List<StudyDTO> findStudiesByMember(Long memberId);
 
     @Transactional
+    Boolean delegateLeader(Long studyId, Long leaderId, Long memberId);
+
+    @Transactional
     Boolean deleteByStudyId(String email, Long studyId);
 
     @Transactional
