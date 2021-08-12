@@ -206,6 +206,26 @@ export default createStore({
         return
       }
       context.commit('SET_STUDIES', response.data.data.studyList.content)
+    },
+    withdrawMembership : async function(context) {
+      const response = await axios({
+        method: "DELETE",
+        url: `/member/me`,
+      }).catch((err)=>{
+        if(err.response.status===409){
+          alert('팀장인 스터디가 있으면 탈퇴할 수 없습니다');
+        }        
+        console.log(err.response);
+      })
+      if (!response) {
+        alert("회원 탈퇴에 실패했습니다");
+        return
+      }
+      if(response.data.data.statusCode==='200'){
+        localStorage.removeItem('JWT');
+        context.commit('LOGOUT');
+        router.push({name: 'Main'})
+      }
     }
   },
   modules: {},

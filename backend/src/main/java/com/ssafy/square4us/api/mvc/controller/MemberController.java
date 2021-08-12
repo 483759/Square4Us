@@ -229,7 +229,10 @@ public class MemberController {
             return ResponseFactory.unauthorized();
         }
 
-        memberService.deleteMemberByEmail(memberDetails.getUsername());
+        boolean flag = memberService.deleteMemberByEmail(memberDetails.getUsername());
+        if(!flag) {
+            return ResponseFactory.conflict();
+        }
 
         return ResponseFactory.ok();
     }

@@ -35,7 +35,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public ArticleDTO createArticle(Long studyId, Long memberId, ArticleDTO.CreatePostReq req, MultipartFile[] files) {
+    public ArticleDTO createArticle(Long studyId, Long memberId, ArticleDTO.WritePostReq req, MultipartFile[] files) {
         Optional<Study> study = studyRepo.findById(studyId);
         Optional<Member> member = memberRepo.findById(memberId);
 
@@ -71,7 +71,7 @@ public class ArticleServiceImpl implements ArticleService {
         String realPath = BASE_PATH + File.separator + today.getYear() + File.separator + today.getMonth() + File.separator + today.getDayOfMonth();
         File path = new File(realPath);
         if(!path.exists()) {
-            path.mkdir();
+            path.mkdirs();
         }
         List<FileEntity> list = new ArrayList<>();
         for(MultipartFile file: files) {
@@ -158,7 +158,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public void updateArticle(Long articleId, ArticleDTO.CreatePostReq req, MultipartFile[] files) {
+    public void updateArticle(Long articleId, ArticleDTO.WritePostReq req, MultipartFile[] files) {
         Optional<Article> article = articleRepo.findById(articleId);
         if(!article.isPresent()) {
             return;

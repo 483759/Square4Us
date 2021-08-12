@@ -18,7 +18,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import com.ssafy.square4us.common.auth.MemberDetails;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -44,7 +43,7 @@ public class ArticleController {
             @ApiResponse(responseCode = "403", description = "게시글 생성 실패")})
     public ResponseEntity<? extends BasicResponseBody> create(@Parameter(hidden = true) Authentication authentication,
                                                               @PathVariable("studyId") Long studyId,
-                                                              @Parameter(name = "게시글 생성 정보", required = true) ArticleDTO.CreatePostReq req,
+                                                              @Parameter(name = "게시글 생성 정보", required = true) ArticleDTO.WritePostReq req,
                                                               @Parameter(name = "첨부 파일", required = false) MultipartFile[] files) {
         if (authentication == null) {
             return ResponseFactory.forbidden();
@@ -178,7 +177,7 @@ public class ArticleController {
     public ResponseEntity<? extends BasicResponseBody> updateArticle(@Parameter(hidden = true) Authentication authentication,
                                                                      @PathVariable("studyId") Long studyId,
                                                                      @PathVariable("articleId") Long articleId,
-                                                                     @Parameter(name = "게시글 수정 정보", required = true) ArticleDTO.CreatePostReq req, @Parameter(name = "첨부파일", required = false) MultipartFile[] files) {
+                                                                     @Parameter(name = "게시글 수정 정보", required = true) ArticleDTO.WritePostReq req, @Parameter(name = "첨부파일", required = false) MultipartFile[] files) {
         if (authentication == null) {
             return ResponseFactory.forbidden();
         }

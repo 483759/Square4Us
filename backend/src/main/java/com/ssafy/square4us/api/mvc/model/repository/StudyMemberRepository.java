@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StudyMemberRepository extends JpaRepository<StudyMember, Long> {
     StudyMember findByStudy_IdAndMember_Id(Long studyId, Long memberId);
+    Boolean existsStudyMemberByMember_Id(Long memberId);
 }
