@@ -1,17 +1,18 @@
 import router from "@/router";
 import axios from "axios";
-import { createStore } from "vuex";
+import {createStore} from "vuex";
 
 export default createStore({
   state: {
     isLogin: false,
     user: {},
     studies: [], // 전체스터디 목록
+    curStudy: [],
     myStudies: [], // 내 스터디 목록
     myMeetings: [],
     studyArticles: [],
 
-    activeStudyNav : 0
+    activeStudyNav: 0
   },
   mutations: {
     LOGIN : function (state) {
@@ -25,8 +26,11 @@ export default createStore({
     SET_USER: function (state, payload) {
       state.user = payload
     },
-    SET_STUDIES : function (state, payload) { // 전체목록
+    SET_STUDIES: function (state, payload) { // 전체목록
       state.studies = payload
+    },
+    SET_CURRENT_STUDY: function (state, payload) {
+      state.curStudy = payload
     },
     SET_MY_STUDIES: function (state, payload) { // 내 스터디목록
       state.myStudies = payload
@@ -37,7 +41,7 @@ export default createStore({
     SET_STUDY_ARTICLES: function (state, payload) {
       state.studyArticles = payload
     },
-    SET_STUDY_ACTIVE : function (state, payload) {
+    SET_STUDY_ACTIVE: function (state, payload) {
       state.activeStudyNav = payload
     },
     SET_ARTICLES : function (state, payload) {
@@ -176,7 +180,7 @@ export default createStore({
       const response = await axios({
         method: "POST",
         url: `/study/${studyId}`,
-      }).catch((err)=>{
+      }).catch((err) => {
         console.log(err.response);
       })
       if (!response) {
@@ -186,11 +190,24 @@ export default createStore({
       alert('가입 신청 성공')
       console.log(response.data.data);
     },
-    getStudies : async function(context){ // 전체 스터디 목록
+    getStudyByNumber: async function (context, studyId) {
+      const response = await axios({
+        method: "GET",
+        url: `/study/${studyId}`,
+      }).catch((err) => {
+        console.log(err.response);
+      })
+      if (response.data.statusCode === 204) {
+        alert('존재하지 않는 스터디입니다');
+        return;
+      }
+      context.commit('SET_CURRENT_STUDY', response.data.data);
+    },
+    getStudies: async function (context) { // 전체 스터디 목록
       const response = await axios({
         method: "GET",
         url: `/study?page=0&size=20&sorted=true&unsorted=true&empty=true`,
-      }).catch((err)=>{
+      }).catch((err) => {
         console.log(err.response);
       })
       if (!response) {

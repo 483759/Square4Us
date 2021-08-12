@@ -38,7 +38,7 @@ import StudyStatistic from '@/components/study/main/statistic/StudyStatistic.vue
 import StudyConfig from '@/components/study/main/config/StudyConfig.vue'
 import StudyMemberConfig from '@/components/study/main/config/StudyMemberConfig.vue'
 import { useStore } from 'vuex'
-import { computed } from '@vue/runtime-core'
+import { onMounted, computed, onUnmounted } from '@vue/runtime-core'
 export default {
   name: 'StudyMain',
   props: {
@@ -58,7 +58,7 @@ export default {
     StudyConfig,
     StudyMemberConfig
   },
-  setup() {
+  setup(props) {
     const store = useStore()
     const activeStudyNav = computed(()=>store.state.activeStudyNav)
     const menus = [
@@ -70,6 +70,13 @@ export default {
       '스터디 설정',
       '멤버 관리'
     ]
+    onMounted(()=>{
+      store.dispatch('getStudyByNumber', props.studyId);
+    })
+    onUnmounted(()=>{
+      store.commit('SET_CURRENT_STUDY', [])
+    })
+
     return {
       menus,
       activeStudyNav

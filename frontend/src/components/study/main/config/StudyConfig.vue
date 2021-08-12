@@ -1,6 +1,7 @@
 <template>
   <header id='section-title'>
     <div>스터디 설정</div>
+    <button></button>
   </header>
 
 </template>
