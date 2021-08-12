@@ -1,7 +1,6 @@
 package com.ssafy.square4us.api.mvc.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ssafy.square4us.api.mvc.model.entity.FileEntity;
 import com.ssafy.square4us.api.mvc.model.entity.Study;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
@@ -10,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -64,28 +62,30 @@ public class StudyDTO {
         private Long id;
         private String category;
         private String name;
+        private Long leaderId;
 
-        public InfoGetRes(Long id, String category, String name) {
+        public InfoGetRes(Long id, String category, String name, Long leaderId) {
             this.id = id;
             this.category = category;
             this.name = name;
+            this.leaderId = leaderId;
         }
 
-        public static BasicResponseBody<StudyDTO.InfoGetRes> of(Integer statusCode, String message, Long id, String category, String name) {
-            return BasicResponseBody.of(statusCode, message, new StudyDTO.InfoGetRes(id, category, name));
+        public static BasicResponseBody<StudyDTO.InfoGetRes> of(Integer statusCode, String message, Long id, String category, String name, Long leaderId) {
+            return BasicResponseBody.of(statusCode, message, new StudyDTO.InfoGetRes(id, category, name, leaderId));
         }
     }
 
     @Getter
-    public static class PabeableListGetRes {
+    public static class PageableListGetRes {
         Page<StudyDTO> studyList;
 
-        public PabeableListGetRes(Page<StudyDTO> studyList) {
+        public PageableListGetRes(Page<StudyDTO> studyList) {
             this.studyList = studyList;
         }
 
-        public static BasicResponseBody<StudyDTO.PabeableListGetRes> of(Integer statusCode, String message, Page<StudyDTO> studyList) {
-            return BasicResponseBody.of(statusCode, message, new StudyDTO.PabeableListGetRes(studyList));
+        public static BasicResponseBody<PageableListGetRes> of(Integer statusCode, String message, Page<StudyDTO> studyList) {
+            return BasicResponseBody.of(statusCode, message, new PageableListGetRes(studyList));
         }
     }
 
