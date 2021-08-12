@@ -124,9 +124,6 @@ template {
     width: 40rem;
     display: flex;
     justify-content: center;
-    
-    
->>>>>>> fix_userinfo_design
 }
 
 .inputbox {
@@ -176,19 +173,9 @@ template {
   border: gray 1px solid;
   margin: 0 0 20px 0;
 }
-<<<<<<< HEAD
 .buttonsection {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
 }
 </style>
-=======
-.buttonsection{
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    }
-
-</style>
->>>>>>> fix_userinfo_design
