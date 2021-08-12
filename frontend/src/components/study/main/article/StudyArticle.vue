@@ -60,11 +60,13 @@ export default {
 
     // 게시글 작성  
     const saveArticle = (data)=>{
-      const datas = {
+      const  { article, files } = data
+      const newData = {
         studyId : props.studyId, 
-        data: data
+        article,
+        files
       }
-      store.dispatch('createArticle', datas)
+      store.dispatch('createArticle', newData)
     }
 
 

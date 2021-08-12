@@ -215,17 +215,37 @@ export default createStore({
       }
       context.commit('SET_STUDY_ARTICLES', response.data.data.articleList)
     },
-    createArticle: async function(context, datas){
-      console.log(datas);
+    createArticle: async function(context, data){
       const response = await axios({
         method: 'POST',
-        url: `/study/${datas.studyId}/article`,
-        data: datas.data
+        url: `/study/${data.studyId}/article`,
+        data: data.article
       }).catch((err)=>{
         console.log(err.response)
       })
       if (!response) {
         alert('게시글 생성 실패')
+        console.log(response);
+        return
+      }
+      console.log(response.data);
+      context.dispatch('addFilesToArticle', { studyId : data.studyId , articleId : response.data.data.id, files: data.files})
+    },
+    addFilesToArticle: async function (context, data) {
+      const { studyId, articleId, files } = data
+      let formData = new FormData();
+      files.forEach((f) => {
+        formData.append('files', f);
+      });
+      const response = await axios({
+        method: 'POST',
+        url: `/study/${studyId}/article/${articleId}/files`,
+        data: formData
+      }).catch((err)=>{
+        console.log(err.response)
+      })
+      if (!response) {
+        alert('파일 업로드 실패')
         console.log(response);
         return
       }
