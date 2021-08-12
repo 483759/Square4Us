@@ -74,30 +74,32 @@ public class StudyDTO {
         private Long id;
         private String category;
         private String name;
+        private Long leaderId;
         private List<FileDTO> files;
 
-        public InfoGetRes(Long id, String category, String name, List<FileDTO> files) {
+        public InfoGetRes(Long id, String category, String name, Long leaderId, List<FileDTO> files) {
             this.id = id;
             this.category = category;
             this.name = name;
+            this.leaderId = leaderId;
             this.files = files;
         }
 
-        public static BasicResponseBody<StudyDTO.InfoGetRes> of(Integer statusCode, String message, Long id, String category, String name, List<FileDTO> files) {
-            return BasicResponseBody.of(statusCode, message, new StudyDTO.InfoGetRes(id, category, name, files));
+        public static BasicResponseBody<StudyDTO.InfoGetRes> of(Integer statusCode, String message, Long id, String category, String name, Long leaderId, List<FileDTO> files) {
+            return BasicResponseBody.of(statusCode, message, new StudyDTO.InfoGetRes(id, category, name, leaderId, files));
         }
     }
 
     @Getter
-    public static class PabeableListGetRes {
+    public static class PageableListGetRes {
         Page<StudyDTO> studyList;
 
-        public PabeableListGetRes(Page<StudyDTO> studyList) {
+        public PageableListGetRes(Page<StudyDTO> studyList) {
             this.studyList = studyList;
         }
 
-        public static BasicResponseBody<StudyDTO.PabeableListGetRes> of(Integer statusCode, String message, Page<StudyDTO> studyList) {
-            return BasicResponseBody.of(statusCode, message, new StudyDTO.PabeableListGetRes(studyList));
+        public static BasicResponseBody<PageableListGetRes> of(Integer statusCode, String message, Page<StudyDTO> studyList) {
+            return BasicResponseBody.of(statusCode, message, new PageableListGetRes(studyList));
         }
     }
 
