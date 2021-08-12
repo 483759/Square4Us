@@ -10,7 +10,7 @@
     </div>
   </header>
   <!-- 여기에 v-if로 게시글 작성, 조회가 들어가게 됨 -->
-  <StudyArticleCreate v-if='state.isCreateMode'/>
+  <StudyArticleCreate v-if='state.isCreateMode' @saveArticle='saveArticle'/>
   <ul class='article-item' v-else>
     <!-- <h3>스터디 메인 미팅리스트 : 여기 들어오면 axios요청을 보내 목록을 갱신함</h3> -->
     <StudyArticleItem 
@@ -28,8 +28,8 @@
 import StudyArticleItem from '@/components/study/main/article/StudyArticleItem.vue'
 import StudyArticleCreate from '@/components/study/main/article/StudyArticleCreate.vue'
 // import router from '@/router'
- import { useStore } from 'vuex'
- import { computed, onMounted, onUnmounted, reactive } from '@vue/runtime-core'
+import { useStore } from 'vuex'
+import { computed, onMounted, onUnmounted, reactive } from '@vue/runtime-core'
 
 export default {
   name: 'StudyArticle',
@@ -53,10 +53,20 @@ export default {
       isCreateMode: false
     })
 
-    // 게시글 작성
+    // 게시글 작성 토글
     const createArticle = ()=>{
       state.isCreateMode = !state.isCreateMode
     }
+
+    // 게시글 작성  
+    const saveArticle = (data)=>{
+      const datas = {
+        studyId : props.studyId, 
+        data: data
+      }
+      store.dispatch('createArticle', datas)
+    }
+
 
     onMounted(()=>{
       store.dispatch('getArticles', props.studyId)
@@ -66,9 +76,11 @@ export default {
     })
 
     return {
+      props,
       state,
       articles,
-      createArticle
+      saveArticle,
+      createArticle,
     }
   }
 }

@@ -131,10 +131,18 @@ export default {
     }
   },
   methods: {
+    // 실제 store 접근은 StudyArticle.vue에서 이루어진다
     save : function () {
       // this.title과 this.modelValue 를 저장하면 된다.
-      console.log(this.title);
-      console.log(this.modelValue);
+      const data = {
+        req: {
+          "category": "15",
+          "title": this.title,
+          "content": this.modelValue
+        },
+        files: [],
+      }
+      this.$emit('saveArticle', data)
     }
   },
   watch: {
@@ -210,6 +218,11 @@ export default {
   
 }
 .ProseMirror p{
+}
+
+.ProseMirror ul{
+  list-style-type: disc;
+  padding-left: 20px;
 }
 /* .ProseMirror {
   > * + * {
