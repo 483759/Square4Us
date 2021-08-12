@@ -4,7 +4,7 @@
   <h1>프로필관리</h1>
   <div>
     <div class="profile">
-      <img style="height: 360px; width: 300px;" src= "" alt="없음">
+      <img style="height: 14rem;width: 12rem;" :src="credentials.profile_path" alt="없음">
     </div>
       <button class="menuButton" v-show="!data.imgChange" @click="imgchangebutton">사진 수정</button>
       <div class="buttonsection" v-if="data.imgChange">
@@ -16,14 +16,12 @@
           <!-- </div> -->
           <form id="profileForm" role="form" method="post" enctype="multupart/form-data" action="/api/member/me/profile">
             <input type="file" name="profile">
-            <button type="button" class="profile_gitmenuButton" @click="updateProfilePhoto">사진 변경</button>
-            <button type="button" class="profile_gitmenuButton" @click="deleteProfilePhoto">사진 삭제</button>
+            <button type="button" class="profile_menuButton" @click="updateProfilePhoto">사진 변경</button>
+            <button type="button" class="profile_menuButton" @click="deleteProfilePhoto">사진 삭제</button>
             <button type="button" class="cancelButton" @click="imgchangebutton">취소</button>
           </form>
         </div>
-        <div>
-          <button class="menuButton" @click="putUserInfo">프로필 저장</button>
-        </div>
+        
     </div>
 </div>
 </template>
@@ -32,7 +30,7 @@
 import axios from 'axios'
 import { useStore } from 'vuex'
 import { reactive } from '@vue/reactivity'
-import { computed} from '@vue/runtime-core'
+import { computed, onMounted} from '@vue/runtime-core'
 export default {
   name: "ProfileManage",
   setup() {
@@ -42,14 +40,24 @@ export default {
       nickname: user.nickname,
       email: user.email,
         introduction: 'introduction',
-        profile_path: 'profile path'
+        profile_path: ''
     })
 
     const data = reactive({
-            imgUrl: "http://img.marieclairekorea.com/2018/10/mck_5bd26c6899aa0-562x709.jpg",
+            imgUrl: credentials.profile_path,
             imgChange: false,
             profile_path: ""
             })
+    onMounted(()=> {
+      axios({
+        method: 'get',
+        url: 'member/me',
+      }).then(response => {
+        credentials.profile_path = response.data.data.profile.filePath + '/' + response.data.data.profile.fileName
+      })
+    })
+   
+
      // 버튼 변경 함수
     const imgchangebutton = () => {
         data.imgChange = !data.imgChange
@@ -69,7 +77,7 @@ export default {
             processType: false,
           }).then(response => {
             console.log(response.data.data.profile);
-            credentials.profile_path = response.data.data.profile.filePath + '\\' + response.data.data.profile.fileName;
+            credentials.profile_path = response.data.data.profile.filePath + '/' + response.data.data.profile.fileName;
             console.log(credentials.profile_path);
           })
         }
@@ -88,7 +96,8 @@ export default {
       deleteProfilePhoto,
       data,
       credentials,
-      user
+      user,
+    
     }
   }
 }

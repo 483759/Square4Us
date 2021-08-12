@@ -229,6 +229,8 @@ export default {
   display: flex;
   justify-content: center;
   width: 40rem;
+  min-height: 600px;
+  min-width: 900px;
   /* height: 100%; */
   right: 10%;
   margin: 100px 100px 0 0px;
