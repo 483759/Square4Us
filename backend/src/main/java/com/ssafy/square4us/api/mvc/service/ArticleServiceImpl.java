@@ -24,6 +24,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+
 public class ArticleServiceImpl implements ArticleService {
 
     private final static String BASE_PATH = System.getProperty("user.dir") + "\\article";
@@ -35,7 +36,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public ArticleDTO createArticle(Long studyId, Long memberId, ArticleDTO.CreatePostReq req, MultipartFile[] files) {
+    public ArticleDTO createArticle(Long studyId, Long memberId, ArticleDTO.CreatePostReq req) {
         Optional<Study> study = studyRepo.findById(studyId);
         Optional<Member> member = memberRepo.findById(memberId);
 
@@ -55,13 +56,6 @@ public class ArticleServiceImpl implements ArticleService {
 
         article = articleRepo.save(article);
 
-        if(files != null && files.length > 0) {
-            int code = saveFiles(article, files);
-            if(code == 1) {
-                return null;
-            }
-        }
-
         return new ArticleDTO(article);
     }
 
@@ -71,10 +65,13 @@ public class ArticleServiceImpl implements ArticleService {
         String realPath = BASE_PATH + File.separator + today.getYear() + File.separator + today.getMonth() + File.separator + today.getDayOfMonth();
         File path = new File(realPath);
         if(!path.exists()) {
-            path.mkdir();
+            path.mkdirs();
         }
         List<FileEntity> list = new ArrayList<>();
         for(MultipartFile file: files) {
+            if(file == null) {
+
+            }
             String originName = file.getOriginalFilename();
             String contentType = file.getContentType();
             String uuid = UUID.randomUUID().toString();
@@ -95,7 +92,9 @@ public class ArticleServiceImpl implements ArticleService {
             list.add(fe);
             try {
                 file.transferTo(new File(realPath, saveName));
+                System.out.println("파일 저장 성공");
             } catch(IOException e) {
+                System.out.println("파일 저장 실패");
                 return 1;
             }
         }
@@ -169,6 +168,16 @@ public class ArticleServiceImpl implements ArticleService {
         art.setTitle(req.getTitle());
         art.setContent(req.getContent());
         saveFiles(art, files);
+    }
+
+    @Override
+    @Transactional
+    public void uploadFiles(Long articleId, MultipartFile[] files) {
+        Optional<Article> find = articleRepo.findById(articleId);
+        if(!find.isPresent()) {
+            return;
+        }
+        saveFiles(find.get(), files);
     }
 
     @Transactional
