@@ -41,6 +41,7 @@ export default createStore({
     }
   },
   actions: {
+    // 유저
     login: async function(context, credentials) {
       const response = await axios({
         method: "POST",
@@ -77,6 +78,64 @@ export default createStore({
       }
       context.dispatch('login', loginCredentials)
     },
+    getUser : async function (context) {
+      const response = await axios({
+        method: "GET",
+        url: "/member/me",
+      }).catch((err)=>{
+        console.log(err.response);
+        localStorage.removeItem('JWT');
+      })
+      if (!response) return false
+      await context.commit('SET_USER', response.data.data)
+      context.commit('LOGIN')
+      return true
+    },
+    updateMemberInfo: async function (context, data) {
+      const response = await axios({
+        method: 'PATCH',
+        url: '/member/me',
+        data: data
+      }).catch((err)=>{
+        console.log(err.response)
+      })
+      if(!response) {
+        alert('수정 실패')
+        console.log(response)
+        return
+      }
+      console.log(response);
+    },
+    // 미팅
+    getMeetings: async function (context, studyId) {
+      const response = await axios({
+        method: 'GET',
+        url: `/study/${studyId}/meeting`,
+      }).catch((err)=>{
+        console.log(err.response);
+      })
+      if (!response) {
+        alert('목록 조회 실패')
+        console.log(response);
+        return
+      }
+      context.commit('SET_MEETINGS', response.data.data.meetings)
+    },
+    createMeeting: async function (context, data) {
+      const response = await axios({
+        method: 'POST',
+        url: `/study/${data.studyId}/meeting/${data.maximum}`,
+      }).catch((err)=>{
+        console.log(err.response);
+      })
+      if (!response) {
+        alert('생성 실패')
+        console.log(response);
+        return
+      }
+      console.log(response);
+    },
+    // 스터디
     createStudy : async function(context, data) {
       console.log(data)
       const response = await axios({
@@ -94,77 +153,6 @@ export default createStore({
       const studyId = response.data.data.id
       context.dispatch('getMyStudies')
       router.push({path: `/study/${studyId}`})
-    },
-    createMeeting: async function (context, data) {
-      const response = await axios({
-        method: 'POST',
-        url: `/study/${data.studyId}/meeting/${data.maximum}`,
-      }).catch((err)=>{
-        console.log(err.response);
-      })
-      if (!response) {
-        alert('생성 실패')
-        console.log(response);
-        return
-      }
-      console.log(response);
-    },
-    updateMemberInfo: async function (context, data) {
-      const response = await axios({
-        method: 'PATCH',
-        url: '/member/me',
-        data: data
-      }).catch((err)=>{
-        console.log(err.response)
-      })
-      if(!response) {
-        alert('수정 실패')
-        console.log(response)
-        return
-      }
-      console.log(response);
-    }
-    ,
-    getMeetings: async function (context, studyId) {
-      const response = await axios({
-        method: 'GET',
-        url: `/study/${studyId}/meeting`,
-      }).catch((err)=>{
-        console.log(err.response);
-      })
-      if (!response) {
-        alert('목록 조회 실패')
-        console.log(response);
-        return
-      }
-      context.commit('SET_MEETINGS', response.data.data.meetings)
-    },
-    getArticles: async function(context, studyId) {
-      const response = await axios({
-        method: 'GET',
-        url: `/study/${studyId}/article?page=0&size=5&sorted=true&unsorted=true&empty=true`,
-      }).catch((err)=>{
-        console.log(err.response)
-      })
-      if (!response) {
-        alert('게시글 조회 실패')
-        console.log(response);
-        return
-      }
-      context.commit('SET_STUDY_ARTICLES', response.data.data.articleList)
-    },
-    getUser : async function (context) {
-      const response = await axios({
-        method: "GET",
-        url: "/member/me",
-      }).catch((err)=>{
-        console.log(err.response);
-        localStorage.removeItem('JWT');
-      })
-      if (!response) return false
-      await context.commit('SET_USER', response.data.data)
-      context.commit('LOGIN')
-      return true
     },
     getMyStudies: async function (context) {
       const response = await axios({
@@ -206,7 +194,39 @@ export default createStore({
         return
       }
       context.commit('SET_STUDIES', response.data.data.studyList.content)
-    }
+    },
+    // 아티클
+    getArticles: async function(context, studyId) {
+      const response = await axios({
+        method: 'GET',
+        url: `/study/${studyId}/article?page=0&size=5&sorted=true&unsorted=true&empty=true`,
+      }).catch((err)=>{
+        console.log(err.response)
+      })
+      if (!response) {
+        alert('게시글 조회 실패')
+        console.log(response);
+        return
+      }
+      context.commit('SET_STUDY_ARTICLES', response.data.data.articleList)
+    },
+    createArticle: async function(context, datas){
+      console.log(datas);
+      const response = await axios({
+        method: 'POST',
+        url: `/study/${datas.studyId}/article`,
+        data: datas.data
+      }).catch((err)=>{
+        console.log(err.response)
+      })
+      if (!response) {
+        alert('게시글 생성 실패')
+        console.log(response);
+        return
+      }
+      console.log(response);
+    },
   },
+
   modules: {},
 });

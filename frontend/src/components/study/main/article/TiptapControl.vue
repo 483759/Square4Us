@@ -1,5 +1,5 @@
 <template>
-  <Tiptap :modelValue='state.modelValue' @updateModelValue='updateModelValue'/>
+  <Tiptap :modelValue='state.modelValue' @updateModelValue='updateModelValue' />
 </template>
 
 <script>
@@ -21,9 +21,11 @@ export default {
       state.modelValue=data
     }
 
+
+
     return {
       state,
-      updateModelValue
+      updateModelValue,
     }
   }
 }
