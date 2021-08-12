@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.square4us.api.mvc.model.entity.Article;
 import com.ssafy.square4us.api.mvc.model.entity.FileEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
@@ -55,6 +52,7 @@ public class ArticleDTO {
     }
 
     @Getter
+    @ToString
     @Schema(description = "Article Create Post Request")
     public static class CreatePostReq {
         @Schema(name = "category", example = "15")
