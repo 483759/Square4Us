@@ -10,7 +10,6 @@ export default {
   setup() {
     const store = useStore()
     const withdraw = () =>{
-      console.log('Hi');
       store.dispatch('withdrawMembership');
     }
 

@@ -282,12 +282,27 @@ export default createStore({
         alert("회원 탈퇴에 실패했습니다");
         return
       }
-      if(response.data.data.statusCode==='200'){
+      if(response.status===200){
         localStorage.removeItem('JWT');
         context.commit('LOGOUT');
         router.push({name: 'Main'})
       }
-
+    },
+    removeStudy : async function(context, studyId) {
+      const response = await axios({
+        method: "DELETE",
+        url: `/study/${studyId}`,
+      }).catch((err)=>{
+        if(err.response.status===409){
+          alert('삭제할 수 없습니다');
+        }        
+        console.log(err.response);
+      })
+      console.log(response)
+      if(response.status===200){
+        this.state.curStudy=[]
+        router.push({name: 'Main'})
+      }
     }
   },
 
