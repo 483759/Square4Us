@@ -24,16 +24,14 @@ public class StudyDTO {
     private char dismantleFlag = 'F';
     @JsonIgnore
     private Date dismantleDate;
-    private List<FileDTO> files;
 
     @Builder
-    public StudyDTO(Long id, String category, String name, char dismantleFlag, Date dismantleDate, List<FileDTO> files) {
+    public StudyDTO(Long id, String category, String name, char dismantleFlag, Date dismantleDate) {
         this.id = id;
         this.category = category;
         this.name = name;
         this.dismantleFlag = dismantleFlag;
         this.dismantleDate = dismantleDate;
-        this.files = files;
     }
 
     public StudyDTO(Study study) {
@@ -42,14 +40,6 @@ public class StudyDTO {
         this.name = study.getName();
         this.dismantleFlag = study.getDismantleFlag();
         this.dismantleDate = study.getDismantleDate();
-        if(study.getFiles() != null) {
-            this.files = new ArrayList<>();
-            for(FileEntity fe: study.getFiles()) {
-                this.files.add(new FileDTO(fe));
-            }
-        } else {
-            this.files = null;
-        }
     }
 
     @Getter

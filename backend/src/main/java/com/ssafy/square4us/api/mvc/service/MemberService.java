@@ -20,7 +20,7 @@ public interface MemberService {
 
     Long updateMemberByEmail(Long memberId, MemberDTO.UpdatePatchReq updateInfo);
 
-    MemberDTO updateProfileByEmail(String email, MultipartFile profile);
+    MemberDTO updateProfileByEmail(String email, MultipartFile profile) throws IOException;
 
     MemberDTO deleteProfileByEmail(String email);
 
