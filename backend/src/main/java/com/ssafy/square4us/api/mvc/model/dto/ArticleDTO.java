@@ -54,7 +54,7 @@ public class ArticleDTO {
     @Getter
     @ToString
     @Schema(description = "Article Create Post Request")
-    public static class CreatePostReq {
+    public static class WritePostReq {
         @Schema(name = "category", example = "15")
         String category;
 
@@ -65,7 +65,7 @@ public class ArticleDTO {
         String content;
 
         @Builder
-        public CreatePostReq(String category, String title, String content) {
+        public WritePostReq(String category, String title, String content) {
             this.category = category;
             this.title = title;
             this.content = content;
