@@ -22,7 +22,7 @@
       <StudyMemberConfig v-else-if="activeStudyNav === 6" :studyId='studyId'/>
       <div v-else> 아무것에도 포함 안됨 </div>
     </template>
-    
+  
   </AsideFrame>
 </template>
 
@@ -30,12 +30,12 @@
 import AsideFrame from '@/components/AsideFrame.vue'
 import StudyMainAside from '@/components/study/main/StudyMainAside.vue'
 import StudyMainPage from '@/components/study/main/StudyMainPage.vue'
-import StudyMainMeeting from '@/components/study/main/StudyMainMeeting.vue'
-import StudyArticle from '@/components/study/main/StudyArticle.vue'
-import StudyDataPage from '@/components/study/main/StudyDataPage.vue'
-import StudyStatistic from '@/components/study/main/StudyStatistic.vue'
-import StudyConfig from '@/components/study/main/StudyConfig.vue'
-import StudyMemberConfig from '@/components/study/main/StudyMemberConfig.vue'
+import StudyMainMeeting from '@/components/study/main/meeting/StudyMainMeeting.vue'
+import StudyArticle from '@/components/study/main/article/StudyArticle.vue'
+import StudyDataPage from '@/components/study/main/data/StudyDataPage.vue'
+import StudyStatistic from '@/components/study/main/statistic/StudyStatistic.vue'
+import StudyConfig from '@/components/study/main/config/StudyConfig.vue'
+import StudyMemberConfig from '@/components/study/main/config/StudyMemberConfig.vue'
 import { useStore } from 'vuex'
 import { computed } from '@vue/runtime-core'
 export default {

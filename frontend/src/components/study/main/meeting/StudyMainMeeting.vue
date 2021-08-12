@@ -23,7 +23,7 @@
 
 <script>
 import { reactive } from '@vue/reactivity'
-import StudyMainMeetingItem from '@/components/study/main/StudyMainMeetingItem.vue'
+import StudyMainMeetingItem from '@/components/study/main/meeting/StudyMainMeetingItem.vue'
 import router from '@/router'
 import { useStore } from 'vuex'
 import { computed, onMounted, onUnmounted } from '@vue/runtime-core'

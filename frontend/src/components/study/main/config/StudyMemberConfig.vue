@@ -11,7 +11,7 @@
 <script>
 import axios from 'axios'
 import { onMounted, reactive,} from '@vue/runtime-core'
-import StudyMemberConfigItem from '@/components/study/main/StudyMemberConfigItem'
+import StudyMemberConfigItem from '@/components/study/main/config/StudyMemberConfigItem'
 export default {
   name: 'StudyMemberConfig',
   props: {

@@ -72,6 +72,7 @@ export default {
 
   #frame-section {
     flex-basis: 800px;
+    min-height: 555px;
     flex-grow: 1;
     background-color: rgb(255, 255, 255);
     box-sizing: border-box;
