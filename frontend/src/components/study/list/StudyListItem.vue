@@ -3,9 +3,12 @@
   <li v-for='study in studies' :key='study.id' @click='joinStudy(study.id)'>
     <div class="studyBox">
       <div class="studyImageBox">
-          {{study.files}}
-          {{study.category}}
-          {{study.name}} 
+          <img style="height:200px; width:280px;" src="/main1.jpg" alt="스터디이미지">
+          <div>
+            {{study.category}}
+            {{study.name}} 
+          </div>
+          
       </div>
      
       <!-- <div>
@@ -53,7 +56,8 @@ export default {
   flex-direction: column;
   
   height: 200px;
-  aspect-ratio: 1.4/1;
+  width: 280px;
+  /* aspect-ratio: 1.4/1; */
   border: 1px solid gray;
   margin: 20px 15px 0 15px;
   
@@ -64,14 +68,18 @@ export default {
   width: inherit;
   border-bottom: gray 1px solid;
   color: black;
+  font-size: 20px;
 }
 .studyImageBox:hover {
+  height: inherit;
+  width: inherit;
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
   justify-content: center;
   font-size: 20px;
   color: white;
+ 
   
  
 
@@ -81,6 +89,7 @@ export default {
   width: 50px;
   box-sizing: border-box;
 }
+
 
 
 
