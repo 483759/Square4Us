@@ -10,6 +10,7 @@ export default createStore({
     myStudies: [], // 내 스터디 목록
     myMeetings: [],
     studyArticles: [],
+
     activeStudyNav : 0
   },
   mutations: {
@@ -38,6 +39,9 @@ export default createStore({
     },
     SET_STUDY_ACTIVE : function (state, payload) {
       state.activeStudyNav = payload
+    },
+    SET_ARTICLES : function (state, payload) {
+      state.studyArticles = payload
     }
   },
   actions: {
@@ -195,6 +199,7 @@ export default createStore({
       }
       context.commit('SET_STUDIES', response.data.data.studyList.content)
     },
+
     // 아티클
     getArticles: async function(context, studyId) {
       const response = await axios({
@@ -245,6 +250,7 @@ export default createStore({
         context.commit('LOGOUT');
         router.push({name: 'Main'})
       }
+
     }
   },
 
