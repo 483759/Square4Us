@@ -20,6 +20,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/study/{studyId}/article")
@@ -176,7 +178,7 @@ public class ArticleController {
     public ResponseEntity<? extends BasicResponseBody> updateArticle(@Parameter(hidden = true) Authentication authentication,
                                                                      @PathVariable("studyId") Long studyId,
                                                                      @PathVariable("articleId") Long articleId,
-                                                                     @Parameter(name = "게시글 수정 정보", required = true) ArticleDTO.CreatePostReq req, @Parameter(name = "첨부파일", required = false) MultipartFile[] files) {
+                                                                     @Parameter(name = "게시글 수정 정보", required = true) ArticleDTO.CreatePostReq req, @Parameter(name = "첨부파일", required = false) MultipartFile[] files) throws IOException {
         if (authentication == null) {
             return ResponseFactory.forbidden();
         }
@@ -211,7 +213,7 @@ public class ArticleController {
     public ResponseEntity<? extends BasicResponseBody> uploadFiles(@Parameter(hidden = true) Authentication authentication,
                                                                    @PathVariable("studyId") @Parameter(description = "스터디 ID", required = true) Long studyId,
                                                                    @PathVariable("articleId") @Parameter(description = "게시물 ID", required = true) Long articleId,
-                                                                   @RequestParam(required = true) @Parameter(description = "첨부파일들", required = true) MultipartFile[] files) {
+                                                                   @RequestParam(required = true) @Parameter(description = "첨부파일들", required = true) MultipartFile[] files) throws IOException {
         if (authentication == null) {
             return ResponseFactory.forbidden();
         }

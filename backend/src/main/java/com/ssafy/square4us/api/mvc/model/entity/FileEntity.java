@@ -21,10 +21,6 @@ public class FileEntity extends BaseTimeEntity{
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "study_id")
-    private Study study;
-
-    @ManyToOne
     @JoinColumn(name = "article_id")
     private Article article;
 
@@ -45,9 +41,8 @@ public class FileEntity extends BaseTimeEntity{
     private String contentType;
 
     @Builder
-    public FileEntity(Member member, Study study, Article article, Meeting meeting, String fileName, String filePath, String fileOriginName, String contentType) {
+    public FileEntity(Member member, Article article, Meeting meeting, String fileName, String filePath, String fileOriginName, String contentType) {
         this.member = member;
-        this.study = study;
         this.article = article;
         this.meeting = meeting;
         this.fileName = fileName;

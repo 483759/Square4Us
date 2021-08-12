@@ -5,6 +5,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 public interface ArticleService {
     ArticleDTO createArticle(Long studyId, Long MemberId, ArticleDTO.CreatePostReq req);
     PageImpl<ArticleDTO> findStudiesWithPaging(Pageable pageable, Long studyId);
@@ -12,6 +14,6 @@ public interface ArticleService {
     ArticleDTO getArticle(Long articleId);
     void deleteByArticleId(Long articleId);
     void evalArticle(Long articleId, String what);
-    void updateArticle(Long articleId, ArticleDTO.CreatePostReq req, MultipartFile[] files);
-    void uploadFiles(Long articleId, MultipartFile[] files);
+    void updateArticle(Long articleId, ArticleDTO.CreatePostReq req, MultipartFile[] files) throws IOException;
+    void uploadFiles(Long articleId, MultipartFile[] files) throws IOException;
 }

@@ -177,7 +177,12 @@ public class MemberController {
         }
 
         String email = memberDetails.getUsername();
-        MemberDTO member = memberService.updateProfileByEmail(email, profile);
+        MemberDTO member = null;
+        try {
+            member = memberService.updateProfileByEmail(email, profile);
+        } catch (IOException e) {
+            return ResponseFactory.internalServerError();
+        }
 
         if(member == null) {
             return ResponseFactory.serviceUnavailable();

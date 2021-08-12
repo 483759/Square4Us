@@ -15,12 +15,20 @@ public class FileDTO {
     private String fileOriginName;
     private String contentType;
 
-    @Builder
     public FileDTO(FileEntity file) {
         this.id = file.getId();
         this.fileName = file.getFileName();
         this.filePath = file.getFilePath();
         this.fileOriginName = file.getFileOriginName();
         this.contentType = file.getContentType();
+    }
+
+    @Builder
+    public FileDTO(Long id, String fileName, String filePath, String fileOriginName, String contentType) {
+        this.id = id;
+        this.fileName = fileName;
+        this.filePath = filePath;
+        this.fileOriginName = fileOriginName;
+        this.contentType = contentType;
     }
 }
