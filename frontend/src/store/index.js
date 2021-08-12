@@ -9,6 +9,7 @@ export default createStore({
     studies: [], // 전체스터디 목록
     myStudies: [], // 내 스터디 목록
     myMeetings: [],
+    studyArticles: [], //특정 스터디 목록
     activeStudyNav : 0
   },
   mutations: {
@@ -34,6 +35,9 @@ export default createStore({
     },
     SET_STUDY_ACTIVE : function (state, payload) {
       state.activeStudyNav = payload
+    },
+    SET_ARTICLES : function (state, payload) {
+      state.studyArticles = payload
     }
   },
   actions: {
@@ -188,6 +192,21 @@ export default createStore({
         return
       }
       context.commit('SET_STUDIES', response.data.data.studyList.content)
+    },
+    getArticles : async function(context, studyId) {
+      const response = await axios({
+        method: "GET",
+        url: `/study/${studyId}/article?page=0&size=7&sorted=true&unsorted=true&empty=true`,
+        
+      }).catch((err)=>{
+        console.log(err.response);
+      })
+      console.log('response', response)
+      if (!response) {
+        alert("게시글 목록을 받아오지 못했습니다")
+        return
+      }
+      context.commit('SET_ARTICLES', response.data.data.articleList.content)
     }
   },
   modules: {},

@@ -2,7 +2,7 @@
 
 <div>
   <h1>내 정보</h1>
-<hr>
+
 <section class="usersection myInfoBox" >
   <div class="usersection_left">
     <!-- 왼쪽블럭 -->
@@ -22,28 +22,7 @@
     
     
   </div>
-  <!-- 오른쪽 블럭 -->
-  <div class="profileFrame">
-    <div class="profile">
-      <img style="height: 360px; width: 300px;" :src="credentials.profile_path" alt="없음">
-    </div>
-      <button class="menuButton" v-show="!data.imgChange" @click="imgchangebutton">사진 수정</button>
-      <div class="buttonsection" v-if="data.imgChange">
-        <!-- <input type="text" placeholder="{{credentials.profile_path}}" v-model="credentials.profile_path" class="profilePath" /> -->
-        <!-- <div> -->
-          <!-- <button class="cancelButton" @click="imgchangebutton">취소</button> -->
-          <!-- 사진저장 버튼을 누를 때 따로 보내야할지 모르겠음 -->
-          <!-- <button class="cancelButton" @click="putimage">사진 저장</button> -->
-        <!-- </div> -->
-        <form id="profileForm" role="form" method="post" enctype="multupart/form-data" action="/api/member/me/profile">
-          <input type="file" name="profile">
-          <button type="button" class="menuButton" @click="updateProfilePhoto">사진 변경</button>
-          <button type="button" class="menuButton" @click="deleteProfilePhoto">사진 삭제</button>
-          <button type="button" class="menuButton" @click="imgchangebutton">취소</button>
-        </form>
-      </div>
-   
-  </div>
+  
 </section>
 <div>
   <button class="menuButton" @click="putUserInfo">프로필 저장</button>
@@ -135,57 +114,38 @@ export default {
 
 }
 </script>
-
 <style>
+
+
 template {
     background-color: #f2f2f2;
 }
-.usersection{
-    display: flex;
-    justify-content: space-evenly;
-    
-}
 .myInfoBox {
+    width: 40rem;
     display: flex;
-    /* justify-content: start; */
-    width: 20rem;
+    justify-content: center;
+    
     
 }
-.usersection_left {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+
 .inputbox {
   height: 1.5rem;
   width: 18rem;
   color: #000;
   font: 20px sans-serif;
-  margin-bottom: 20px;
-  margin-left: 80px;
-  margin-right: 40px;
   border-radius: 3px;
   border: gray 1px solid;
+  margin: 0 0 20px 0;
 }
-.profileFrame {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-
-  width: 20rem;
-  margin-top: 50px;
-  margin-right: 50px;
+#nickname{
+  border: none;
+  border-bottom: gray 1px solid;
 }
-.profile {
-    height: 14rem;
-    width: 12rem;
-    border: 1px solid black;
-    margin: 0 0 2rem 0;
+#user_email {
+  border: none;
+  border-bottom: gray 1px solid;
 }
-.profilePath {
-  width: 12rem;
-}
+ 
 .menuButton {
   /* margin-left: 100px; */
   height: 40px;
@@ -209,16 +169,14 @@ template {
 .badgeBox {
   height: 200px;
   width: 18rem;
-  border: 1px solid black;
-  margin-left: 80px;
-  margin-bottom: 40px;
-  margin-right: 40px;
   border-radius: 3px;
   border: gray 1px solid;
+  margin: 0 0 20px 0;
 }
 .buttonsection{
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     }
+
 </style>
