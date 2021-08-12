@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @Table(name = "file")
 public class FileEntity extends BaseTimeEntity{
 
