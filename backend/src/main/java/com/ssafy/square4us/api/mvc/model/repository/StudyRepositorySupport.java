@@ -77,6 +77,13 @@ public class StudyRepositorySupport extends QuerydslRepositorySupport {
                 ;
     }
 
+    public Long updateLeaderMember(Long studyId, Long memberId, char leader) {
+        return jpaQueryFactory.update(qStudyMember)
+                .where(qStudyMember.study.id.eq(studyId), qStudyMember.member.id.eq(memberId), qStudyMember.leader.ne(leader))
+                .set(qStudyMember.leader, leader)
+                .execute();
+    }
+
     public Boolean existStudyMember(Long studyId, Long memberId) {
         Integer result = jpaQueryFactory
                 .selectOne()
