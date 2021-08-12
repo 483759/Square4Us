@@ -24,5 +24,5 @@ public interface MemberService {
 
     MemberDTO deleteProfileByEmail(String email);
 
-    void deleteMemberByEmail(String email);
+    Boolean deleteMemberByEmail(String email);
 }

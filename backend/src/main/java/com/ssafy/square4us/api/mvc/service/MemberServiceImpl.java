@@ -7,6 +7,7 @@ import com.ssafy.square4us.api.mvc.model.entity.MemberRole;
 import com.ssafy.square4us.api.mvc.model.repository.FileRepository;
 import com.ssafy.square4us.api.mvc.model.repository.MemberRepository;
 import com.ssafy.square4us.api.mvc.model.repository.MemberRepositorySupport;
+import com.ssafy.square4us.api.mvc.model.repository.StudyMemberRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,11 +29,13 @@ public class MemberServiceImpl implements MemberService {
     private final String PROFILE_PATH = System.getProperty("user.dir") + "\\profile";
 
     private final MemberRepository memberRepository;
+    private final StudyMemberRepository studyMemberRepo;
     private final MemberRepositorySupport memberRepositorySupport;
     private final FileRepository fileRepository;
 
-    public MemberServiceImpl(MemberRepository memberRepository, MemberRepositorySupport memberRepositorySupport, FileRepository fileRepository) {
+    public MemberServiceImpl(MemberRepository memberRepository, StudyMemberRepository studyMemberRepo, MemberRepositorySupport memberRepositorySupport, FileRepository fileRepository) {
         this.memberRepository = memberRepository;
+        this.studyMemberRepo = studyMemberRepo;
         this.memberRepositorySupport = memberRepositorySupport;
         this.fileRepository = fileRepository;
     }
@@ -127,9 +130,19 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public void deleteMemberByEmail(String email) {
+    public Boolean deleteMemberByEmail(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        if(!member.isPresent()){
+            return false;
+        }
+
+        if(studyMemberRepo.existsStudyMemberByMember_Id(member.get().getId())){
+            return false;
+        }
+
         deleteProfileByEmail(email);
         memberRepository.deleteByEmail(email);
+        return true;
     }
 
     @Transactional

@@ -18,7 +18,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import com.ssafy.square4us.common.auth.MemberDetails;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -44,8 +43,7 @@ public class ArticleController {
             @ApiResponse(responseCode = "403", description = "게시글 생성 실패")})
     public ResponseEntity<? extends BasicResponseBody> create(@Parameter(hidden = true) Authentication authentication,
                                                               @PathVariable("studyId") Long studyId,
-                                                              @Parameter(name = "게시글 생성 정보", required = true) ArticleDTO.CreatePostReq req,
-                                                              @Parameter(name = "첨부 파일", required = false) MultipartFile[] files) {
+                                                              @RequestBody(required = true) @Parameter(name = "게시글 생성 정보", required = true) ArticleDTO.CreatePostReq req) {
         if (authentication == null) {
             return ResponseFactory.forbidden();
         }
@@ -59,7 +57,7 @@ public class ArticleController {
             return ResponseFactory.unauthorized();
         }
 
-        ArticleDTO newArticle = articleService.createArticle(studyId, member.getId(), req, files);
+        ArticleDTO newArticle = articleService.createArticle(studyId, member.getId(), req);
 
         if (newArticle == null) {
             return ResponseFactory.forbidden();
@@ -201,6 +199,37 @@ public class ArticleController {
         }
 
         articleService.updateArticle(articleId, req, files);
+
+        return ResponseFactory.ok();
+    }
+
+    @PostMapping("{articleId}/files")
+    @Operation(summary = "게시물에 파일 업로드", description = "articleId에 해당하는 게시물에 파일을 업로드한다.", responses = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "401", description = "권한 없음"),
+            @ApiResponse(responseCode = "403", description = "게시물이 존재하지 않음")})
+    public ResponseEntity<? extends BasicResponseBody> uploadFiles(@Parameter(hidden = true) Authentication authentication,
+                                                                   @PathVariable("studyId") @Parameter(description = "스터디 ID", required = true) Long studyId,
+                                                                   @PathVariable("articleId") @Parameter(description = "게시물 ID", required = true) Long articleId,
+                                                                   @RequestParam(required = true) @Parameter(description = "첨부파일들", required = true) MultipartFile[] files) {
+        if (authentication == null) {
+            return ResponseFactory.forbidden();
+        }
+
+        MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
+        String memberId = memberDetails.getUsername();
+
+        Member member = memberService.getMemberByEmail(memberId);
+        if (member == null) {
+            return ResponseFactory.unauthorized();
+        }
+
+        ArticleDTO article = articleService.getArticle(articleId);
+        if(article == null || article.getMember().getId() != member.getId()) {
+            return ResponseFactory.forbidden();
+        }
+
+        articleService.uploadFiles(articleId, files);
 
         return ResponseFactory.ok();
     }

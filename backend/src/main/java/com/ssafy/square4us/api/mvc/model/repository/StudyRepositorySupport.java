@@ -43,7 +43,7 @@ public class StudyRepositorySupport extends QuerydslRepositorySupport {
                 .from(qStudyMember)
                 .innerJoin(qStudyMember.member, qMember)
                 .leftJoin(qStudyMember.study, qStudy)
-                .where(qMember.id.eq(memberId), qStudy.dismantleFlag.ne('T'))
+                .where(qMember.id.eq(memberId), qStudy.dismantleFlag.ne('T'), qStudyMember.accepted.eq('T'))
                 .fetch();
     }
 
