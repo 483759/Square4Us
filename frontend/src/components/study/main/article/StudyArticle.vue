@@ -17,6 +17,7 @@
     <StudyArticleItem :article='article'/>
     </li>
   </ul>
+  <Pagination v-model="state.page" :records="20" :per-page="1" @paginate="paginate" :options='{texts: {count:""}}'/>
 </article>
 </template>
 
@@ -24,6 +25,7 @@
 //import { reactive } from '@vue/reactivity'
 import StudyArticleItem from '@/components/study/main/article/StudyArticleItem.vue'
 import StudyArticleCreate from '@/components/study/main/article/StudyArticleCreate.vue'
+import Pagination from 'v-pagination-3';
 // import router from '@/router'
 import { useStore } from 'vuex'
 import { computed, onMounted, onUnmounted, reactive } from '@vue/runtime-core'
@@ -37,6 +39,7 @@ export default {
     }
   },
   components : {
+    Pagination,
     StudyArticleItem,
     StudyArticleCreate
   },
@@ -47,8 +50,15 @@ export default {
     })
 
     const state = reactive({
-      isCreateMode: false
+      isCreateMode: false,
+      page: 1
     })
+
+    //페이지네이션
+    const paginate = (pageNum)=>{
+      state.page = pageNum
+      console.log(pageNum); // 클릭한 페이지가 넘어옴
+    }
 
     // 게시글 작성 토글
     const createArticle = ()=>{
@@ -87,6 +97,7 @@ export default {
       props,
       state,
       articles,
+      paginate,
       saveArticle,
       createArticle,
     }
@@ -109,4 +120,16 @@ export default {
   border-bottom: 1px solid #195C77;
   padding: 0 10px;
 }
+
+/* 버튼 배치 */
+.pagination  {
+  display: flex;
+  justify-content: center;
+}
+/* 버튼 스타일링 */
+/* .page-link { 
+  background-color:white ;
+  border: none;
+  cursor: pointer;
+} */
 </style>
