@@ -237,16 +237,15 @@ export default createStore({
         method: 'POST',
         url: `/study/${data.studyId}/article`,
         data: data.article
-      }).catch((err)=>{
-        console.log(err.response)
-      })
-      if (!response) {
-        alert('게시글 생성 실패')
-        console.log(response);
-        return
+      }).catch((err)=>err.response)
+
+      console.log(response);
+      if (response.status !==200) return false
+      
+      if (data.files.length) {
+        context.dispatch('addFilesToArticle', { studyId : data.studyId , articleId : response.data.data.id, files: data.files})
       }
-      console.log(response.data);
-      context.dispatch('addFilesToArticle', { studyId : data.studyId , articleId : response.data.data.id, files: data.files})
+      return true
     },
     addFilesToArticle: async function (context, data) {
       const { studyId, articleId, files } = data
