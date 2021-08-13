@@ -7,11 +7,12 @@
     <section>
       d
     </section>
-    <button v-if='state.isLeader===state.userId' @click="withdraw()">스터디 폐쇄</button>
+    <button v-if='isLeader' @click="withdraw()">스터디 폐쇄</button>
   </article>
 </template>
 
 <script>
+import { computed } from '@vue/runtime-core'
 import { useStore } from 'vuex'
 export default {
   name: 'StudyConfig',
@@ -23,13 +24,13 @@ export default {
   },
   setup(props) {
     const store = useStore()
-
+    const isLeader = computed(()=> store.getters.isLeader)
     const withdraw = () =>{
       store.dispatch('removeStudy', props.studyId)
     }
     return {
       props,
-      state,
+      isLeader,
       withdraw
     }
   }

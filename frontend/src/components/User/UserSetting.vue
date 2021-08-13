@@ -43,7 +43,7 @@ import { useStore } from 'vuex'
 import Modal from '@/components/home/Modal.vue'
 export default {
   name: 'UserSetting',
-   components : {
+  components : {
     Modal
   },
   setup() {
@@ -126,7 +126,7 @@ export default {
   .header_withdrawal{
     display: flex;
     flex-direction: row; 
-    justify-content: end; 
+    justify-content: flex-end; 
     height: 35px;
   }
   .button_close {
