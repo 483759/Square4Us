@@ -17,4 +17,5 @@ public interface ArticleService {
 
     void updateArticle(Long articleId, ArticleDTO.WritePostReq req, MultipartFile[] files) throws IOException;
     void uploadFiles(Long articleId, MultipartFile[] files) throws IOException;
+    PageImpl<ArticleDTO> getArticleListWithSearchingAndPaging(Pageable pageable, Long studyId, String key, String word);
 }

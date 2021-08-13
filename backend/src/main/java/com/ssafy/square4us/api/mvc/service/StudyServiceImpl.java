@@ -12,7 +12,6 @@ import com.ssafy.square4us.api.mvc.model.repository.StudyMemberRepository;
 import com.ssafy.square4us.api.mvc.model.repository.StudyRepository;
 import com.ssafy.square4us.api.mvc.model.repository.StudyRepositorySupport;
 import com.ssafy.square4us.common.util.S3Util;
-import org.checkerframework.checker.nullness.Opt;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -203,6 +202,14 @@ public class StudyServiceImpl implements StudyService {
             throw new Exception("스터디가 없다!!");
         }
         deleteProfile(study.get());
+    }
+
+    @Override
+    public PageImpl<StudyDTO> getStudyListWithSearchingAndPaging(Pageable pageable, String key, String word) {
+        if(key.equals("category")) {
+            return studyRepositorySupport.findStudiesWithPagingByCategory(word, pageable);
+        }
+        return studyRepositorySupport.findStudiesWithPagingByStudyName(word, pageable);
     }
 
     @Transactional

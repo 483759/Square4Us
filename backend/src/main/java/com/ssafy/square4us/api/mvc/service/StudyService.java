@@ -2,6 +2,7 @@ package com.ssafy.square4us.api.mvc.service;
 
 import com.ssafy.square4us.api.mvc.model.dto.StudyDTO;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
+import com.ssafy.square4us.api.mvc.model.entity.Study;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,4 +49,7 @@ public interface StudyService {
 
     @Transactional
     void deleteProfile(Long studyId) throws Exception;
+
+    @Transactional
+    PageImpl<StudyDTO> getStudyListWithSearchingAndPaging(Pageable pageable, String key, String word);
 }
