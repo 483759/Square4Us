@@ -120,6 +120,31 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional
+    public boolean rejectStudyJoin(Long studyId, Long memberId, Member leader) {
+        Optional<Study> study = studyRepo.findById(studyId);    //존재하는 스터디인지 확인
+        if (!study.isPresent()) {
+            return false;
+        }
+        if (study.get().getDismantleFlag() == 'T') {      //이미 해체한 스터디이면
+            return true;
+        }
+
+        StudyMember leaderMember = studyMemberRepo.findByStudy_IdAndMember_Id(studyId, leader.getId());
+        if (leaderMember == null || leaderMember.getLeader() != 'T') {
+            return false;
+        }
+
+        StudyMember newMember = studyMemberRepo.findByStudy_IdAndMember_Id(studyId, memberId);
+        if (newMember == null) {
+            return false;
+        }
+
+        studyMemberRepo.delete(newMember);
+        return true;
+    }
+
+    @Override
+    @Transactional
     public Boolean delegateLeader(Long studyId, Long leaderId, Long memberId) {
         Long result = studyRepositorySupport.updateLeaderMember(studyId, leaderId, 'F');
         if (result == 0) {

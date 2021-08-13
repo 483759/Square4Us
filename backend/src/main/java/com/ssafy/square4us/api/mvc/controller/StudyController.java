@@ -110,6 +110,30 @@ public class StudyController {
         return ResponseFactory.forbidden();
     }
 
+    @PostMapping("{studyId}/reject/{memberId}")
+    @Operation(summary = "스터디 가입 거절")
+    public ResponseEntity<? extends BasicResponseBody> rejectJoinRequest(@Parameter(hidden = true) Authentication authentication, @PathVariable Long studyId, @PathVariable Long memberId) {
+        if (authentication == null) {
+            return ResponseFactory.forbidden();
+        }
+
+        MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
+        String email = memberDetails.getUsername();
+
+        Member member = memberService.getMemberByEmail(email);
+
+        if (member == null) {
+            return ResponseFactory.unauthorized();
+        }
+
+        boolean result = studyService.rejectStudyJoin(studyId, memberId, member);
+
+        if (result) {
+            return ResponseFactory.ok();
+        }
+        return ResponseFactory.forbidden();
+    }
+
     @PatchMapping("{studyId}/delegate/{memberId}")
     @Operation(summary = "스터디 리더 권한 위임")
     public ResponseEntity<? extends BasicResponseBody> delegateLeader(@Parameter(hidden = true) Authentication authentication, @PathVariable Long studyId, @PathVariable Long memberId) {

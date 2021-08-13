@@ -35,4 +35,7 @@ public interface StudyService {
     Boolean resign(String email, Long studyId);
 
     PageImpl<StudyDTO> findStudiesWithPaging(Pageable pageable);
+
+    @Transactional
+    boolean rejectStudyJoin(Long studyId, Long memberId, Member leader);
 }

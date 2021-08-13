@@ -21,6 +21,7 @@ export default {
     console.log(props.myStudies);
     const selectedStudy = ref('default')
     const selectStudy = ()=>{
+      store.dispatch('getStudyByNumber', selectedStudy.value);
       store.commit('SET_STUDY_ACTIVE', 0)
       router.push({path: `/study/${selectedStudy.value}`})
       selectedStudy.value = 'default'
