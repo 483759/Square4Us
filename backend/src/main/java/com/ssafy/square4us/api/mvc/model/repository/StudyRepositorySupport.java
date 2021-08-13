@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 
@@ -99,11 +100,21 @@ public class StudyRepositorySupport extends QuerydslRepositorySupport {
         return result != null;
     }
 
+    @Transactional
     public Long deleteStudyById(Long studyId) {
         return jpaQueryFactory.update(qStudy)
                 .where(qStudy.id.eq(studyId))
                 .set(qStudy.dismantleFlag, 'T')
                 .set(qStudy.dismantleDate, new Date(System.currentTimeMillis()))
+                .execute();
+    }
+
+    @Transactional
+    public Long withdrawStudy(Long memberId, Long studyId) {
+        return jpaQueryFactory.delete(qStudyMember)
+                .where(qStudyMember.study.id.eq(studyId),
+                        qStudyMember.member.id.eq(memberId),
+                        qStudyMember.leader.ne('T'))
                 .execute();
     }
 }

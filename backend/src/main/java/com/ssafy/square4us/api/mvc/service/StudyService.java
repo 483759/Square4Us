@@ -33,7 +33,7 @@ public interface StudyService {
     Boolean deleteByStudyId(String email, Long studyId);
 
     @Transactional
-    Boolean resign(String email, Long studyId);
+    Boolean withdrawStudy(Long memberId, Long studyId);
 
     PageImpl<StudyDTO> findStudiesWithPaging(Pageable pageable);
 

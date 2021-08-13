@@ -220,7 +220,7 @@ public class StudyController {
         return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "조회 성공", study.getId(), study.getCategory(), study.getName(), leaderId, null));
     }
 
-    @PostMapping("/{studyId}/resign")
+    @PostMapping("/{studyId}/withdraw")
     @Operation(summary = "스터디 탈퇴", description = "스터디를 탈퇴한다(비 리더)", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "204", description = "존재하지 않음")})
@@ -235,8 +235,9 @@ public class StudyController {
             return ResponseFactory.unauthorized();
         }
         String email = memberDetails.getUsername();
+        Member member = memberService.getMemberByEmail(email);
 
-        boolean flag = studyService.resign(email, studyId);
+        boolean flag = studyService.withdrawStudy(member.getId(), studyId);
         if (!flag) return ResponseFactory.conflict();
 
         return ResponseFactory.ok();

@@ -253,12 +253,8 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     @Transactional
-    public Boolean resign(String email, Long studyId) {
-        StudyMemberDTO sm = studyRepositorySupport.getStudyMemberByEmail(email, studyId);
-        if (sm == null || sm.getLeader() != 'F') {
-            return false;
-        }
-        return true;
+    public Boolean withdrawStudy(Long memberId, Long studyId) {
+        return studyRepositorySupport.withdrawStudy(memberId, studyId) != 0;
     }
 
 }
