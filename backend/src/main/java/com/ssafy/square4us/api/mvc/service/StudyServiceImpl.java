@@ -99,6 +99,11 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    public Long findStudyLeader(Long studyId) {
+        return studyRepositorySupport.findStudyLeader(studyId);
+    }
+
+    @Override
     public StudyDTO findByStudyId(Long studyId) {
         return studyRepositorySupport.findByStudyId(studyId);
     }
@@ -117,11 +122,11 @@ public class StudyServiceImpl implements StudyService {
     @Transactional
     public Boolean delegateLeader(Long studyId, Long leaderId, Long memberId) {
         Long result = studyRepositorySupport.updateLeaderMember(studyId, leaderId, 'F');
-        if(result==0) {
+        if (result == 0) {
             return false;
         }
         result = studyRepositorySupport.updateLeaderMember(studyId, memberId, 'T');
-        if(result==0) {
+        if (result == 0) {
             return false;
         }
         return true;

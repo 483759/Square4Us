@@ -59,19 +59,28 @@ export default {
     }
 
     // 게시글 작성  
-    const saveArticle = (data)=>{
+    const saveArticle = async (data)=>{
       const  { article, files } = data
       const newData = {
         studyId : props.studyId, 
         article,
         files
       }
-      store.dispatch('createArticle', newData)
+      const result = await store.dispatch('createArticle', newData)
+      if (result) {
+        console.log('게시물 생성 성공');
+        state.isCreateMode = !state.isCreateMode
+        getArticles()
+        return
+      }
+      console.log('게시물 생성 실패');
+    }
+    const getArticles = ()=>{
+      store.dispatch('getArticles', props.studyId)
     }
 
-
     onMounted(()=>{
-      store.dispatch('getArticles', props.studyId)
+      getArticles()
     })
     onUnmounted(()=>{
       store.commit('SET_STUDY_ARTICLES', [])

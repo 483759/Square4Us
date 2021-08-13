@@ -107,6 +107,8 @@ public class MemberDTO {
 
     @Getter
     public static class InfoGetRes {
+        @Schema(name = "회원 아이디")
+        Long id;
         @Schema(name = "회원 이메일")
         String email;
         @Schema(name = "회원 권한(Auth)")
@@ -118,7 +120,8 @@ public class MemberDTO {
         @Schema(name = "신고 누적 회수")
         int report;
 
-        public InfoGetRes(String email, MemberRole role, String nickname, FileDTO profile, int report) {
+        public InfoGetRes(Long id, String email, MemberRole role, String nickname, FileDTO profile, int report) {
+            this.id = id;
             this.email = email;
             this.role = role;
             this.nickname = nickname;
@@ -126,8 +129,8 @@ public class MemberDTO {
             this.report = report;
         }
 
-        public static BasicResponseBody<InfoGetRes> of(Integer statusCode, String message, String email, MemberRole role, String nickname, FileDTO profile, int report) {
-            return BasicResponseBody.of(statusCode, message, new InfoGetRes(email, role, nickname, profile, report));
+        public static BasicResponseBody<InfoGetRes> of(Integer statusCode, String message, Long id, String email, MemberRole role, String nickname, FileDTO profile, int report) {
+            return BasicResponseBody.of(statusCode, message, new InfoGetRes(id, email, role, nickname, profile, report));
         }
     }
 

@@ -17,6 +17,8 @@ public interface StudyService {
     @Transactional
     Boolean acceptStudyJoin(Long studyId, Long memberId, Member leader);
 
+    Long findStudyLeader(Long studyId);
+
     StudyDTO findByStudyId(Long studyId);
 
     List<StudyDTO> findAllStudies();
