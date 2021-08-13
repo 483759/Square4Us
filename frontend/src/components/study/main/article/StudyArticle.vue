@@ -12,12 +12,10 @@
   <!-- 여기에 v-if로 게시글 작성, 조회가 들어가게 됨 -->
   <StudyArticleCreate v-if='state.isCreateMode' @saveArticle='saveArticle'/>
   <ul class='article-item' v-else>
+    <li v-for='article in articles.content' :key='article.id' >
     <!-- <h3>스터디 메인 미팅리스트 : 여기 들어오면 axios요청을 보내 목록을 갱신함</h3> -->
-    <StudyArticleItem 
-      v-for='article in articles.content' 
-      :key='article.id' 
-      :article='article'
-      />
+    <StudyArticleItem :article='article'/>
+    </li>
   </ul>
 </article>
 </template>

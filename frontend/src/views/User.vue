@@ -17,10 +17,10 @@
     <button @click="infopage3" :class="{ 'clickedbutton': data.click3, 'unclickedbutton': !data.click3 }">UserSetting</button>
     </div>
     <div>
-    <button @click="infopage4" :class="{ 'clickedbutton': data.click4, 'unclickedbutton': !data.click4 }">UserStudy</button>
+    <button @click="infopage4" :class="{ 'clickedbutton': data.click4, 'unclickedbutton': !data.click4 }">UserNote</button>
     </div>
     <div>
-    <button @click="infopage5" :class="{ 'clickedbutton': data.click5, 'unclickedbutton': !data.click5 }">UserNote</button>
+    
     </div>
     <div>
     <div class="xbutton "></div>
@@ -38,10 +38,10 @@
       <UserSetting/>
     </div>
     <div v-if="data.infopage === 4">
-      <UserStudy/>
+       <UserNote/>
     </div>
     <div v-if="data.infopage === 5">
-      <UserNote/>
+     
     </div>
     
   </div>
@@ -53,7 +53,7 @@
 <script>
 import UserInfo from '@/components/User/UserInfo'
 import UserSetting from '@/components/User/UserSetting'
-import UserStudy from '@/components/User/UserStudy/UserStudy'
+// import UserStudy from '@/components/User/UserStudy/UserStudy'
 import UserNote from '@/components/User/UserNote'
 import ProfileManage from '@/components/User/ProfileManage.vue'
 import { reactive } from '@vue/reactivity'
@@ -64,7 +64,7 @@ export default {
   components: {
     UserInfo,
     ProfileManage,
-    UserStudy,
+    // UserStudy,
     UserNote,
     UserSetting,
   },
@@ -189,6 +189,8 @@ export default {
   font-size: 18px;
   font-weight: bold;
   margin: 3px 0 0 10px;
+  animation: move 1s ease-in 0 1 none forwards;
+  animation: name duration timing-function delay iteration-count direction fill-mode;
 }
 .clickedbutton {
   display: flex;
@@ -241,5 +243,23 @@ export default {
   flex-basis: 90%;
 
 }
+
+@keyframes move {
+  0% {
+
+  }
+
+  30%{
+
+  }
+  60%{
+
+  }
+  100%{
+
+  }
+}
+
+
 </style>
 

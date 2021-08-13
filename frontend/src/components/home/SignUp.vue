@@ -24,7 +24,7 @@
             <p><input class="input_signup" type="email" id="signup_email" name="email" placeholder="이메일 입력" v-model="credentials.email"></p>
             <p><input class="input_signup" type="nickname" id="signup_nickname" name="nickname" placeholder="닉네임" v-model="credentials.nickname"></p>
             <p><input class="input_signup" type="password"  id="signup_password" name="password" placeholder="비밀번호" v-model="credentials.password"></p>
-            <p><input class="input_signup" type="password_confirmation"  id="signup_password_confirmation" name="password_confirmation" placeholder="비밀번호확인" v-model="credentials.password_confirmation"></p>
+            <p><input class="input_signup" type="password"  id="signup_password_confirmation" name="password_confirmation" placeholder="비밀번호확인" v-model="credentials.password_confirmation"></p>
             <p><input type="file" name="profile"></p>
             <button class="button_signup">signup</button>
           </form>

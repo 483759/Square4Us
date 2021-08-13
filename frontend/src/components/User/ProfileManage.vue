@@ -18,7 +18,7 @@
             <input type="file" name="profile">
             <button type="button" class="profile_menuButton" @click="updateProfilePhoto">사진 변경</button>
             <button type="button" class="profile_menuButton" @click="deleteProfilePhoto">사진 삭제</button>
-            <button type="button" class="cancelButton" @click="imgchangebutton">취소</button>
+            <button type="button" class="cancelButton" @click="imgchangebutton">돌아가기</button>
           </form>
         </div>
         
