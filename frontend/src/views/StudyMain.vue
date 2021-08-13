@@ -17,9 +17,9 @@
 
       <StudyDataPage v-else-if="activeStudyNav === 3"/>
       <StudyStatistic v-else-if="activeStudyNav === 4"/> 
-      <StudyConfig v-else-if="activeStudyNav === 5" :studyId="studyId" />
       <!-- 회원 관리 목록 만들기 -->
-      <StudyMemberConfig v-else-if="activeStudyNav === 6" :studyId='studyId'/>
+      <StudyMemberConfig v-else-if="activeStudyNav === 5" :studyId='studyId'/>
+      <StudyConfig v-else-if="activeStudyNav === 6" :studyId="studyId" />
       <div v-else> 아무것에도 포함 안됨 </div>
     </template>
   </AsideFrame>
