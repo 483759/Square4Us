@@ -12,14 +12,11 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
 public class MemberRepositorySupport extends QuerydslRepositorySupport {
-    @PersistenceContext
-    EntityManager entityManager;
     private final JPAQueryFactory jpaQueryFactory;
     QMember qMember = QMember.member;
     QStudyMember qStudyMember = QStudyMember.studyMember;
@@ -32,17 +29,12 @@ public class MemberRepositorySupport extends QuerydslRepositorySupport {
 
     @Transactional
     public Long updateByMemberEmail(Long memberId, MemberDTO.UpdatePatchReq updateInfo) {
-        JPAUpdateClause jpaUpdateClause = new JPAUpdateClause(entityManager, qMember);
-        Long affectedRow = jpaUpdateClause
+        //JPAUpdateClause jpaUpdateClause = new JPAUpdateClause(entityManager, qMember);
+        Long affectedRow = jpaQueryFactory.update(qMember)
                 .where(qMember.id.eq(memberId))
                 .set(qMember.nickname, updateInfo.getNickname())
-                //.set(qMember.profile, member.getProfile())
+                .set(qMember.introduction, updateInfo.getIntroduction())
                 .execute();
-//        Long affectedRow = jpaQueryFactory
-//                .where(qMember.id.eq(member.getId()))
-//                .set(qMember.nickname, member.getNickname())
-//                .set(qMember.profile, member.getProfile())
-//                .execute();
         return affectedRow;
     }
 
