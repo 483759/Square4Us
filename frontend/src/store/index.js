@@ -7,7 +7,7 @@ export default createStore({
     isLogin: false,
     user: {},
     studies: [], // 전체스터디 목록
-    curStudy: [],
+    curStudy: {},
     myStudies: [], // 내 스터디 목록
     myMeetings: [],
     studyArticles: [],
@@ -304,6 +304,16 @@ export default createStore({
       }
     }
   },
-
+  getters: {
+    isLeader : function (state) {
+      // console.log(state.user, state.curStudy);
+        if (state.user && state.curStudy) {
+          if (state.user.id===state.curStudy.leaderId) {
+            return true
+          }
+        }
+        return false
+    }
+  },
   modules: {},
 });

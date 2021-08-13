@@ -17,7 +17,6 @@
       v-for='article in articles.content' 
       :key='article.id' 
       :article='article'
-      @onEnter='onEnter'
       />
   </ul>
 </article>

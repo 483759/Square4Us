@@ -141,7 +141,7 @@ export default {
   .header_login{
     display: flex;
     flex-direction: row;  
-    justify-content: end;
+    justify-content: flex-end;
     height: 35px;
   }
   .footer_login{
