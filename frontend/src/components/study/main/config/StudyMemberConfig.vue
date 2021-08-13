@@ -7,7 +7,7 @@
   <ul class='member-item'>
     <StudyMemberListItem v-for='member in state.memberList' :key='member.id' :member='member' :studyId='studyId'/>
   </ul>
-  <template v-if='state.isLeader'>
+  <template v-if='state.isLeader && state.waitList.length!=0'>
     <h2> 가입 신청한 멤버 </h2>
     <ul class='member-item'>
       <StudyMemberConfigItem v-for='member in state.waitList' :key='member.id' :member='member' :studyId='studyId'/>
