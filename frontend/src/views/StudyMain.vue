@@ -1,4 +1,5 @@
 <template>
+<div>{{isLeader}}</div>
   <AsideFrame>
 
     <template v-slot:aside-header>
@@ -61,15 +62,15 @@ export default {
   setup() {
     const store = useStore()
     const activeStudyNav = computed(()=>store.state.activeStudyNav)
-    const menus = [
-      '스터디 메인', 
-      '미팅', 
-      '게시글', 
-      '스터디 학습 자료', 
-      '통계', 
-      '스터디 설정',
-      '멤버 관리'
-    ]
+    const menus = computed(()=>{
+      if (store.state.user && store.state.curStudy) {
+        if (store.state.user.id===store.state.curStudy.leaderId) {
+          return ['스터디 메인', '미팅', '게시글', '스터디 학습 자료', '통계', '스터디 설정','멤버 관리']
+        }
+      }
+      return ['스터디 메인', '미팅', '게시글', '스터디 학습 자료', '통계']
+    })
+
 
     return {
       menus,

@@ -7,7 +7,7 @@ export default createStore({
     isLogin: false,
     user: {},
     studies: [], // 전체스터디 목록
-    curStudy: [],
+    curStudy: {},
     myStudies: [], // 내 스터디 목록
     myMeetings: [],
     studyArticles: [],
