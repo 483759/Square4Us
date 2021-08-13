@@ -170,6 +170,12 @@ public class StudyServiceImpl implements StudyService {
         if(!study.isPresent()) {
             throw new Exception("해당 스터디가 없다!!");
         }
+        Study st = study.get();
+        FileEntity prevProfile = st.getProfile();
+        if(prevProfile != null) {
+            s3Util.delete(prevProfile);
+            fileRepo.delete(prevProfile);
+        }
         String path = "studyProfile";
         try {
             FileDTO up = s3Util.upload(profile, path);
