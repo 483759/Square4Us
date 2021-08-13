@@ -8,18 +8,39 @@
       </div>
     </template>
     <template v-slot:section>
+      <StudyListItem v-if='studies.length' :studies='studies'/>
     </template>
   </StudyListFrame>
 </template>
 
 <script>
 import StudyListFrame from '@/components/StudyListFrame.vue'
+import StudyListItem from '@/components/study/list/StudyListItem.vue'
 import StudyCreateButton from '@/components/study/list/StudyCreateButton.vue'
+import { useStore } from 'vuex'
+import { computed, onMounted } from '@vue/runtime-core'
 export default {
   name: 'StudyList',
   components: {
     StudyListFrame,
+    StudyListItem,
     StudyCreateButton
+  },
+  setup(){
+    const store = useStore()
+    const studies = computed(()=>store.state.studies)
+
+    onMounted( ()=>{
+      store.dispatch('getMyStudies')
+      store.dispatch('getStudies')
+      if (Object.keys(store.state.user).length == 0) {
+        store.dispatch('getUser')
+      }
+      // 여기서 스터디 목록을 가져온다
+    })
+    return {
+      studies
+    }
   }
 }
 </script>

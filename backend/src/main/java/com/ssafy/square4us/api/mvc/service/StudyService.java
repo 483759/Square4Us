@@ -17,11 +17,16 @@ public interface StudyService {
     @Transactional
     Boolean acceptStudyJoin(Long studyId, Long memberId, Member leader);
 
+    Long findStudyLeader(Long studyId);
+
     StudyDTO findByStudyId(Long studyId);
 
     List<StudyDTO> findAllStudies();
 
     List<StudyDTO> findStudiesByMember(Long memberId);
+
+    @Transactional
+    Boolean delegateLeader(Long studyId, Long leaderId, Long memberId);
 
     @Transactional
     Boolean deleteByStudyId(String email, Long studyId);
@@ -30,4 +35,7 @@ public interface StudyService {
     Boolean resign(String email, Long studyId);
 
     PageImpl<StudyDTO> findStudiesWithPaging(Pageable pageable);
+
+    @Transactional
+    boolean rejectStudyJoin(Long studyId, Long memberId, Member leader);
 }

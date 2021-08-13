@@ -43,7 +43,7 @@ public class StudyRepositorySupport extends QuerydslRepositorySupport {
                 .from(qStudyMember)
                 .innerJoin(qStudyMember.member, qMember)
                 .leftJoin(qStudyMember.study, qStudy)
-                .where(qMember.id.eq(memberId), qStudy.dismantleFlag.ne('T'))
+                .where(qMember.id.eq(memberId), qStudy.dismantleFlag.ne('T'), qStudyMember.accepted.eq('T'))
                 .fetch();
     }
 
@@ -75,6 +75,20 @@ public class StudyRepositorySupport extends QuerydslRepositorySupport {
                 .where(qMember.email.eq(email), qStudy.id.eq(studyId))
                 .fetchOne()
                 ;
+    }
+
+    public Long findStudyLeader(Long studyId) {
+        return jpaQueryFactory.select(qStudyMember.member.id)
+                .from(qStudyMember)
+                .where(qStudyMember.study.id.eq(studyId), qStudyMember.leader.eq('T'))
+                .fetchOne();
+    }
+
+    public Long updateLeaderMember(Long studyId, Long memberId, char leader) {
+        return jpaQueryFactory.update(qStudyMember)
+                .where(qStudyMember.study.id.eq(studyId), qStudyMember.member.id.eq(memberId), qStudyMember.leader.ne(leader))
+                .set(qStudyMember.leader, leader)
+                .execute();
     }
 
     public Boolean existStudyMember(Long studyId, Long memberId) {
