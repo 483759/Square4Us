@@ -1,18 +1,25 @@
 package com.ssafy.square4us.api.mvc.service;
 
+import com.ssafy.square4us.api.mvc.model.dto.FileDTO;
 import com.ssafy.square4us.api.mvc.model.dto.StudyDTO;
 import com.ssafy.square4us.api.mvc.model.dto.StudyMemberDTO;
+import com.ssafy.square4us.api.mvc.model.entity.FileEntity;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.model.entity.Study;
 import com.ssafy.square4us.api.mvc.model.entity.StudyMember;
+import com.ssafy.square4us.api.mvc.model.repository.FileRepository;
 import com.ssafy.square4us.api.mvc.model.repository.StudyMemberRepository;
 import com.ssafy.square4us.api.mvc.model.repository.StudyRepository;
 import com.ssafy.square4us.api.mvc.model.repository.StudyRepositorySupport;
+import com.ssafy.square4us.common.util.S3Util;
+import org.checkerframework.checker.nullness.Opt;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,11 +30,15 @@ public class StudyServiceImpl implements StudyService {
     private final StudyRepository studyRepo;
     private final StudyRepositorySupport studyRepositorySupport;
     private final StudyMemberRepository studyMemberRepo;
+    private final FileRepository fileRepo;
+    private final S3Util s3Util;
 
-    public StudyServiceImpl(StudyRepository studyRepo, StudyRepositorySupport studyRepositorySupport, StudyMemberRepository studyMemberRepo) {
+    public StudyServiceImpl(StudyRepository studyRepo, StudyRepositorySupport studyRepositorySupport, StudyMemberRepository studyMemberRepo, FileRepository fileRepo, S3Util s3Util) {
         this.studyRepo = studyRepo;
         this.studyRepositorySupport = studyRepositorySupport;
         this.studyMemberRepo = studyMemberRepo;
+        this.fileRepo = fileRepo;
+        this.s3Util = s3Util;
     }
 
     @Override
@@ -144,6 +155,61 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    public Boolean isLeaderOfThisStudy(Long studyId, Long memberId) {
+        StudyMember studyMem = studyMemberRepo.findByStudy_IdAndMember_Id(studyId, memberId);
+        if(studyMem == null || studyMem.getLeader() == 'F') {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    @Transactional(rollbackFor = IOException.class)
+    public void updateProfile(Long studyId, MultipartFile profile) throws Exception {
+        Optional<Study> study = studyRepo.findById(studyId);
+        if(!study.isPresent()) {
+            throw new Exception("해당 스터디가 없다!!");
+        }
+        String path = "studyProfile";
+        try {
+            FileDTO up = s3Util.upload(profile, path);
+            FileEntity fe = FileEntity.builder()
+                    .meeting(null)
+                    .member(null)
+                    .article(null)
+                    .study(study.get())
+                    .filePath(up.getFilePath())
+                    .fileName(up.getFileName())
+                    .fileOriginName(up.getFileOriginName())
+                    .contentType(up.getContentType())
+                    .build();
+            fileRepo.save(fe);
+        } catch(IOException e) {
+            throw new IOException("파일 저장 실패!");
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteProfile(Long studyId) throws Exception {
+        Optional<Study> study = studyRepo.findById(studyId);
+        if(!study.isPresent()) {
+            throw new Exception("스터디가 없다!!");
+        }
+        deleteProfile(study.get());
+    }
+
+    @Transactional
+    public void deleteProfile(Study study) throws Exception {
+        FileEntity fe = study.getProfile();
+        if(fe == null) {
+            throw new Exception("프사 없음!");
+        }
+        s3Util.delete(fe);
+        fileRepo.delete(fe);
+    }
+
+    @Override
     @Transactional
     public Boolean delegateLeader(Long studyId, Long leaderId, Long memberId) {
         Long result = studyRepositorySupport.updateLeaderMember(studyId, leaderId, 'F');
@@ -165,6 +231,16 @@ public class StudyServiceImpl implements StudyService {
             return false;
         }
 
+        Optional<Study> find = studyRepo.findById(studyId);
+        if(!find.isPresent()) {
+            return false;
+        }
+        Study study = find.get();
+        FileEntity fe = study.getProfile();
+        if(fe != null) {
+            s3Util.delete(fe);
+            fileRepo.delete(fe);
+        }
         Long affectedRow = studyRepositorySupport.deleteStudyById(studyId);
         return affectedRow != 0;
     }

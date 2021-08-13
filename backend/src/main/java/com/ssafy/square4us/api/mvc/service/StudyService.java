@@ -5,6 +5,7 @@ import com.ssafy.square4us.api.mvc.model.entity.Member;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -38,4 +39,13 @@ public interface StudyService {
 
     @Transactional
     boolean rejectStudyJoin(Long studyId, Long memberId, Member leader);
+
+    @Transactional
+    Boolean isLeaderOfThisStudy(Long studyId, Long memberId);
+
+    @Transactional
+    void updateProfile(Long studyId, MultipartFile profile) throws Exception;
+
+    @Transactional
+    void deleteProfile(Long studyId) throws Exception;
 }

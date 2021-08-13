@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class StudyController {
 
         Long leaderId = studyService.findStudyLeader(newStudy.getId());
 
-        return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "스터디 생성 완료", newStudy.getId(), newStudy.getCategory(), newStudy.getName(), leaderId));
+        return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "스터디 생성 완료", newStudy.getId(), newStudy.getCategory(), newStudy.getName(), leaderId, null));
     }
 
     @PostMapping("{studyId}")
@@ -216,7 +217,7 @@ public class StudyController {
 
         Long leaderId = studyService.findStudyLeader(studyId);
 
-        return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "조회 성공", study.getId(), study.getCategory(), study.getName(), leaderId));
+        return ResponseEntity.ok(StudyDTO.InfoGetRes.of(200, "조회 성공", study.getId(), study.getCategory(), study.getName(), leaderId, null));
     }
 
     @PostMapping("/{studyId}/resign")
@@ -268,6 +269,76 @@ public class StudyController {
         boolean flag = studyService.deleteByStudyId(email, studyId);
 
         if (!flag) return ResponseFactory.conflict();
+
+        return ResponseFactory.ok();
+    }
+
+    @PostMapping("{studyId}/profile")
+    @Operation(summary = "스터디 프로필 사진 입력")
+    public ResponseEntity<? extends BasicResponseBody> updateProfile(@Parameter(hidden = true) Authentication authentication,
+                                                                     @PathVariable("studyId") Long studyId,
+                                                                     MultipartFile profile) {
+        if(authentication == null) {
+            return ResponseFactory.unauthorized();
+        }
+
+        MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
+
+        if(memberDetails == null) {
+            return ResponseFactory.unauthorized();
+        }
+
+        String email = memberDetails.getUsername();
+        StudyDTO study = studyService.findByStudyId(studyId);
+
+        if(study == null) {
+            return ResponseFactory.notFound();
+        }
+
+        Boolean flag = studyService.isLeaderOfThisStudy(studyId, memberService.getMemberByEmail(email).getId());
+        if(!flag.booleanValue()) {
+            return ResponseFactory.forbidden();
+        }
+
+        try {
+            studyService.updateProfile(studyId, profile);
+        } catch(Exception e) {
+            return ResponseFactory.internalServerError();
+        }
+        return ResponseFactory.ok();
+    }
+
+    @PutMapping("{studyId}/profile")
+    @Operation(summary = "스터디 프로필 사진 삭제")
+    public ResponseEntity<? extends BasicResponseBody> deleteProfile(@Parameter(hidden = true) Authentication authentication,
+                                                                     @PathVariable("studyId") Long studyId) {
+        if(authentication == null) {
+            return ResponseFactory.unauthorized();
+        }
+
+        MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
+
+        if(memberDetails == null) {
+            return ResponseFactory.unauthorized();
+        }
+
+        String email = memberDetails.getUsername();
+        StudyDTO study = studyService.findByStudyId(studyId);
+
+        if(study == null) {
+            return ResponseFactory.notFound();
+        }
+
+        Boolean flag = studyService.isLeaderOfThisStudy(studyId, memberService.getMemberByEmail(email).getId());
+        if(!flag.booleanValue()) {
+            return ResponseFactory.forbidden();
+        }
+
+        try {
+            studyService.deleteProfile(studyId);
+        } catch(Exception e) {
+            return ResponseFactory.internalServerError();
+        }
 
         return ResponseFactory.ok();
     }
