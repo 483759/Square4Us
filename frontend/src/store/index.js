@@ -304,6 +304,16 @@ export default createStore({
       }
     }
   },
-
+  getters: {
+    isLeader : function (state) {
+      // console.log(state.user, state.curStudy);
+        if (state.user && state.curStudy) {
+          if (state.user.id===state.curStudy.leaderId) {
+            return true
+          }
+        }
+        return false
+    }
+  },
   modules: {},
 });

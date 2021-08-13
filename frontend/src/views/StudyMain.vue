@@ -1,7 +1,5 @@
 <template>
-<div>{{isLeader}}</div>
   <AsideFrame>
-
     <template v-slot:aside-header>
         <img id='aside-header-thumbnail' src="/meeting-thumbnail.jpg" alt="썸네일">
     </template>
@@ -24,7 +22,6 @@
       <StudyMemberConfig v-else-if="activeStudyNav === 6" :studyId='studyId'/>
       <div v-else> 아무것에도 포함 안됨 </div>
     </template>
-  
   </AsideFrame>
 </template>
 
@@ -49,28 +46,17 @@ export default {
     }
   },
   components :{
-    AsideFrame,
-    StudyMainAside,
-    StudyMainPage,
-    StudyMainMeeting,
-    StudyArticle,
-    StudyDataPage,
-    StudyStatistic,
-    StudyConfig,
-    StudyMemberConfig
+    AsideFrame, StudyMainAside, StudyMainPage, StudyMainMeeting, StudyArticle,
+    StudyDataPage, StudyStatistic, StudyConfig, StudyMemberConfig
   },
   setup() {
     const store = useStore()
     const activeStudyNav = computed(()=>store.state.activeStudyNav)
     const menus = computed(()=>{
-      if (store.state.user && store.state.curStudy) {
-        if (store.state.user.id===store.state.curStudy.leaderId) {
-          return ['스터디 메인', '미팅', '게시글', '스터디 학습 자료', '통계', '스터디 설정','멤버 관리']
-        }
-      }
-      return ['스터디 메인', '미팅', '게시글', '스터디 학습 자료', '통계']
+      return store.getters.isLeader 
+        ? ['스터디 메인', '미팅', '게시글', '스터디 학습 자료', '통계', '멤버', '스터디 설정']
+        : ['스터디 메인', '미팅', '게시글', '스터디 학습 자료', '통계', '멤버']
     })
-
 
     return {
       menus,
