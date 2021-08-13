@@ -3,18 +3,21 @@
     멤버 관리
   </header>
   <!--  -->
-  <h2> 기존 멤버 </h2>
+  <h2> 스터디 멤버 </h2>
   <ul class='member-item'>
     <StudyMemberListItem v-for='member in state.memberList' :key='member.id' :member='member' :studyId='studyId'/>
   </ul>
-  <h2> 가입 신청한 멤버 </h2>
-  <ul class='member-item'>
-    <StudyMemberConfigItem v-for='member in state.waitList' :key='member.id' :member='member' :studyId='studyId'/>
-  </ul>
+  <template v-if='state.isLeader'>
+    <h2> 가입 신청한 멤버 </h2>
+    <ul class='member-item'>
+      <StudyMemberConfigItem v-for='member in state.waitList' :key='member.id' :member='member' :studyId='studyId'/>
+    </ul>
+  </template>
 </template>
 
 <script>
 import axios from 'axios'
+import { useStore } from 'vuex';
 import { onMounted, reactive,} from '@vue/runtime-core'
 import StudyMemberListItem from '@/components/study/main/config/StudyMemberListItem'
 import StudyMemberConfigItem from '@/components/study/main/config/StudyMemberConfigItem'
@@ -32,8 +35,10 @@ export default {
   },
   setup(props){
     /// api/member/study/{studyId}/wait
+    const store = useStore()
     const state = reactive({
       memberList : [],
+      isLeader : store.getters.isLeader,
       waitList : []
     })
     const joinedListup = async()=>{
@@ -55,7 +60,7 @@ export default {
         console.log(err.response);
       })
       if (response) {
-        console.log(response.data.data.memberList);
+        // console.log(response.data.data.memberList);
         state.waitList = response.data.data.memberList
       }
     }
