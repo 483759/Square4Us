@@ -59,6 +59,28 @@ public class StudyRepositorySupport extends QuerydslRepositorySupport {
         return new PageImpl<>(results, pageable, totalCount);
     }
 
+    public PageImpl<StudyDTO> findStudiesWithPagingByCategory(String word, Pageable pageable) {
+        JPAQuery query = jpaQueryFactory
+                .select(Projections.constructor(StudyDTO.class, qStudy))
+                .from(qStudy)
+                .where(qStudy.dismantleFlag.ne('T'), qStudy.category.eq(word));
+
+        Long totalCount = query.fetchCount();
+        List<StudyDTO> results = getQuerydsl().applyPagination(pageable, query).fetch();
+        return new PageImpl<>(results, pageable, totalCount);
+    }
+
+    public PageImpl<StudyDTO> findStudiesWithPagingByStudyName(String word, Pageable pageable) {
+        JPAQuery query = jpaQueryFactory
+                .select(Projections.constructor(StudyDTO.class, qStudy))
+                .from(qStudy)
+                .where(qStudy.dismantleFlag.ne('T'), qStudy.name.like("%" + word + "%"));
+
+        Long totalCount = query.fetchCount();
+        List<StudyDTO> results = getQuerydsl().applyPagination(pageable, query).fetch();
+        return new PageImpl<>(results, pageable, totalCount);
+    }
+
     public StudyDTO findByStudyId(Long studyId) {
         return jpaQueryFactory
                 .select(Projections.constructor(StudyDTO.class, qStudy))

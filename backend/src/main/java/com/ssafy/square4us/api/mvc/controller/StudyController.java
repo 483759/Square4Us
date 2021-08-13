@@ -4,6 +4,7 @@ import com.ssafy.square4us.api.mvc.model.dto.BasicResponseBody;
 import com.ssafy.square4us.api.mvc.model.dto.ResponseFactory;
 import com.ssafy.square4us.api.mvc.model.dto.StudyDTO;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
+import com.ssafy.square4us.api.mvc.model.entity.Study;
 import com.ssafy.square4us.api.mvc.service.MemberService;
 import com.ssafy.square4us.api.mvc.service.StudyService;
 import com.ssafy.square4us.common.auth.MemberDetails;
@@ -14,11 +15,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.Basic;
 import java.util.List;
 
 @RestController
@@ -201,6 +204,23 @@ public class StudyController {
             return ResponseFactory.noContent();
         }
         return ResponseEntity.ok(StudyDTO.PageableListGetRes.of(200, "조회 성공", list));
+    }
+
+    @GetMapping("search")
+    @Operation(summary = "스터디 목록 검색 및 조회", description = "스터디의 검색 결과를 반환한다.", responses = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "204", description = "존재하지 않음")})
+    public ResponseEntity<? extends BasicResponseBody> getStudyListWitSearchingAndPaging(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+                                                                                        String key,
+                                                                                        String word) {
+        if(!key.equals("category") && !key.equals("name")) {
+            return ResponseFactory.forbidden();
+        }
+        Page<StudyDTO> studyList = studyService.getStudyListWithSearchingAndPaging(pageable, key, word);
+        if(studyList == null || studyList.getSize() == 0) {
+            return ResponseFactory.noContent();
+        }
+        return ResponseEntity.ok(StudyDTO.PageableListGetRes.of(200, "조회 성공", studyList));
     }
 
 

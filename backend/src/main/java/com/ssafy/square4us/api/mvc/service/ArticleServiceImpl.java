@@ -165,6 +165,12 @@ public class ArticleServiceImpl implements ArticleService {
         saveFiles(find.get(), files);
     }
 
+    @Override
+    @Transactional
+    public PageImpl<ArticleDTO> getArticleListWithSearchingAndPaging(Pageable pageable, Long studyId, String key, String word) {
+        return articleRepositorySupport.getArticleListWithSearchingAndPaging(pageable, studyId, key, word);
+    }
+
     @Transactional
     public void deletePrevFiles(Article article) {
         List<FileEntity> prevFiles = article.getFiles();

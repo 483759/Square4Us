@@ -41,4 +41,25 @@ public class ArticleRepositorySupport extends QuerydslRepositorySupport {
         List<ArticleDTO> results = getQuerydsl().applyPagination(pageable, query).fetch();
         return new PageImpl<>(results, pageable, totalCount);
     }
+
+    public PageImpl<ArticleDTO> getArticleListWithSearchingAndPaging(Pageable pageable, Long studyId, String key, String word) {
+        JPAQuery query = jpaQueryFactory
+                .select(Projections.constructor(ArticleDTO.class, qArticle))
+                .from(qArticle)
+                .where(qArticle.study.id.eq(studyId));
+        switch(key) {
+            case "category":
+                query.where(qArticle.category.eq(word));
+                break;
+            case "title":
+                query.where(qArticle.title.like("%" + word + "%"));
+                break;
+            default:
+                query.where(qArticle.content.like("%" + word + "%"));
+        }
+
+        Long totalCount = query.fetchCount();
+        List<ArticleDTO> results = getQuerydsl().applyPagination(pageable, query).fetch();
+        return new PageImpl<>(results, pageable, totalCount);
+    }
 }
