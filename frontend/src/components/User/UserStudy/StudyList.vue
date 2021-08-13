@@ -1,6 +1,6 @@
 <template>
   <section id='user-info'>
-    <option v-for='study in myStudies' :value="study.id" :key='study.id' @click="selectStudy(study.id)" >{{study.name}}</option>
+    <option v-for='study in myStudies' :value="study.id" :key='study.id' @click="selectStudy(study.id)" >{{study}}</option>
 </section>
 </template>
 

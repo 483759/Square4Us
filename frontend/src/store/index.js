@@ -221,7 +221,7 @@ export default createStore({
     getArticles: async function(context, studyId) {
       const response = await axios({
         method: 'GET',
-        url: `/study/${studyId}/article?page=0&size=5&sorted=true&unsorted=true&empty=true`,
+        url: `/study/${studyId}/article?page=0&size=6&sorted=true&unsorted=true&empty=true`,
       }).catch((err)=>{
         console.log(err.response)
       })
