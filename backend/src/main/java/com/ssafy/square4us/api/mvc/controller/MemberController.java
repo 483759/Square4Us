@@ -124,7 +124,7 @@ public class MemberController {
         String email = memberDetails.getUsername();
         MemberDTO member = memberService.getMemberDTOByEmail(email);
 
-        return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "회원 정보 조회 성공", member.getId(), member.getEmail(), member.getRole(), member.getNickname(), member.getProfile(), member.getReport()));
+        return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "회원 정보 조회 성공", member.getId(), member.getEmail(), member.getRole(), member.getNickname(), member.getIntroduction() , member.getProfile(), member.getReport()));
     }
 
     @PatchMapping("/me")
@@ -147,10 +147,12 @@ public class MemberController {
 
         String email = memberDetails.getUsername();
         MemberDTO member = memberService.getMemberDTOByEmail(email);
-        memberService.updateMemberByEmail(member.getId(), updateInfo);
+        Long result = memberService.updateMemberByEmail(member.getId(), updateInfo);
+        if(result == 0){
+            return ResponseFactory.conflict();
+        }
 
-        MemberDTO modified = memberService.getMemberDTOByEmail(email);
-        return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "수정 성공", modified.getId(), modified.getEmail(), modified.getRole(), modified.getNickname(), modified.getProfile(), modified.getReport()));
+        return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "수정 성공", member.getId(), member.getEmail(), member.getRole(), updateInfo.getNickname(), updateInfo.getIntroduction() , member.getProfile(), member.getReport()));
     }
 
     @PostMapping("/me/profile")
@@ -188,7 +190,7 @@ public class MemberController {
             return ResponseFactory.serviceUnavailable();
         }
 
-        return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "프로필 수정 성공", member.getId(), member.getEmail(), member.getRole(), member.getNickname(), member.getProfile(), member.getReport()));
+        return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "프로필 수정 성공", member.getId(), member.getEmail(), member.getRole(), member.getNickname(), member.getIntroduction(), member.getProfile(), member.getReport()));
     }
 
     @DeleteMapping("/me/profile")
@@ -214,7 +216,7 @@ public class MemberController {
             return ResponseFactory.serviceUnavailable();
         }
 
-        return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "프로필 삭제 성공", member.getId(), member.getEmail(), member.getRole(), member.getNickname(), member.getProfile(), member.getReport()));
+        return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "프로필 삭제 성공", member.getId(), member.getEmail(), member.getRole(), member.getNickname(), member.getIntroduction(), member.getProfile(), member.getReport()));
     }
 
     @DeleteMapping("me")

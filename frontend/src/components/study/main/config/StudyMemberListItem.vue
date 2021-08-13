@@ -1,7 +1,8 @@
 <template>
   <li>
-    <div class='article-title' style="width=400px">{{ member.email }} </div> 
-    <div class='article-author' style="width=400px">{{ member.nickname }} </div> 
+    <div class='member-email' style="width=300px">{{ member.email }} </div> 
+    <div class='member-nickname' style="width=200px">{{ member.nickname }} </div> 
+    <div class='member-introduction' style="width=500px">{{ member.introduction }} </div> 
 
     <template v-if='state.userId===member.id'>
       <button @click="withdraw">스터디 탈퇴</button>
@@ -73,7 +74,7 @@ export default {
 </script>
 
 <style>
-.article-title, .article-author, .article-date {
+.member-email, .member-nickname, .member-introduction {
   flex-grow: 1;
   font-size: 0.95rem;
   font-weight: 600;
