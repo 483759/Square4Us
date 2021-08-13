@@ -13,7 +13,6 @@
 
 <script>
 import { useStore } from 'vuex'
-import { reactive } from '@vue/runtime-core'
 export default {
   name: 'StudyConfig',
   props: {
@@ -24,10 +23,6 @@ export default {
   },
   setup(props) {
     const store = useStore()
-    const state = reactive({
-      userId : store.state.user.id,
-      isLeader : store.state.curStudy.leaderId,
-    })
 
     const withdraw = () =>{
       store.dispatch('removeStudy', props.studyId)
