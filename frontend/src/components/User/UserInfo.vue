@@ -14,7 +14,7 @@
       </textarea>
     </div>
     <div>
-      <input type="text" name="email" class="inputbox" :placeholder="user.email" v-model="credentials.email">
+      <input type="text" name="email" class="inputbox" :placeholder="user.email" v-model="credentials.email" disabled>
     </div>
     <div>
       <div class="badgeBox"></div>

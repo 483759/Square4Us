@@ -86,7 +86,7 @@ public class ArticleController {
     @Operation(summary = "게시물 검색 및 목록 조회", description = "현재 스터디에서 검색 조건에 맞는 게시물의 목록을 조회한다.", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "204", description = "존재하지 않음")})
-    public ResponseEntity<? extends BasicResponseBody> getArticleListWithSearchingAndPaging(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+    public ResponseEntity<? extends BasicResponseBody> getArticleListWithSearchingAndPaging(@PageableDefault(size = 6, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                                                                                             @PathVariable("studyId") Long studyId,
                                                                                             String key,
                                                                                             String word) {
