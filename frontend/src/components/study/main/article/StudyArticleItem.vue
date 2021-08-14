@@ -1,6 +1,6 @@
 <template>
 <!-- <li style="height:80px"> -->
-<div class="articleCard">
+<div class="articleCard" @click="getArticle">
   <div class="articleTitleBox">
     <div style="font-size: 12px">
       {{article.id}}번째 글
@@ -27,6 +27,9 @@
 </template>
 
 <script>
+//import { useStore } from 'vuex'
+import { reactive } from '@vue/runtime-core'
+
 export default {
   name: 'StudyArticleItem',
   props: {
@@ -36,6 +39,11 @@ export default {
     }
   },
   setup() {
+    // const store = useStore()
+    const state = reactive({
+      isViewMode: false,
+      page: 1
+    })
       const dateFormatter = (date)=>{
           var month=date.substring(5,7)
           var day=date.substring(8,10)
@@ -43,8 +51,14 @@ export default {
           return month+'월 '+day+'일 '+time
       }
 
+      const getArticle = async () => {
+
+      }
+
       return {
-          dateFormatter
+        state,
+        dateFormatter,
+        getArticle
       }
   }
 }

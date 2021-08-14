@@ -132,7 +132,10 @@ public class ArticleDTO {
         @Schema(description = "첨부파일")
         private List<FileDTO> files;
 
-        public ArticleGetRes(Long id, String email, String category, String title, String content, LocalDateTime createdDate, LocalDateTime modifiedDate, Integer hit, Integer good, Integer dislike, List<FileDTO> files) {
+        @Schema(description = "작성자")
+        private MemberDTO member;
+
+        public ArticleGetRes(Long id, String email, String category, String title, String content, LocalDateTime createdDate, LocalDateTime modifiedDate, Integer hit, Integer good, Integer dislike, List<FileDTO> files, MemberDTO member) {
             this.id = id;
             this.email = email;
             this.category = category;
@@ -144,12 +147,13 @@ public class ArticleDTO {
             this.good = good;
             this.dislike = dislike;
             this.files = files;
+            this.member = member;
         }
 
         public static BasicResponseBody<ArticleDTO.ArticleGetRes> of(Integer statusCode, String message, ArticleDTO article) {
             ArticleDTO.ArticleGetRes result = new ArticleDTO.ArticleGetRes(article.getId(), article.getMember().getEmail(), article.getCategory(),
                                                                            article.getTitle(), article.getContent(), article.getCreatedDate(),
-                                                                           article.getModifiedDate(), article.getHit(), article.getGood(), article.getDislike(), article.getFiles());
+                                                                           article.getModifiedDate(), article.getHit(), article.getGood(), article.getDislike(), article.getFiles(), article.getMember());
             return BasicResponseBody.of(statusCode, message, result);
         }
     }
