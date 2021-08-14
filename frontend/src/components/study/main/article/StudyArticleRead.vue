@@ -9,11 +9,13 @@
   </div>
   <button @click="like">좋아요</button>
   <button @click="like">싫어요</button>
+  <Comment :article="props.article" />
 </div>
 </template>
 
 <script>
 //import { useStore } from 'vuex'
+import Comment from '@/components/study/main/comment/Comment.vue'
 import { onMounted, reactive } from '@vue/runtime-core'
 
 export default {
@@ -23,6 +25,9 @@ export default {
       type: Object,
       required: true
     }
+  },
+  components: {
+    Comment
   },
   setup(props) {
     // const store = useStore()
