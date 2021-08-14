@@ -18,6 +18,20 @@
     <StudyArticleItem :article='article' @click="readArticle(article.id)"/>
     </li>
   </ul>
+  <div id="article-search">
+    <select v-model="search.key" @change="resetWord">
+      <option disabled value="">Please select one</option>
+      <option value="category">카테고리</option>
+      <option value="title">제목</option>
+      <option value="content">내용</option>
+    </select>
+    <select v-if="search.key == 'category'" v-model="search.word">
+      <option disabled value="">Please select one</option>
+      <option value=""></option>
+    </select>
+    <input v-if="search.key == 'title' || search.key == 'content'" v-model="search.word" @keyup.enter="getArticlesWithSearch">
+    <button type="button" v-if="search.key == 'title' || search.key == 'content' || (search.key == 'category' && search.word != '')" @click="getArticlesWithSearch">검색</button>
+  </div>
   <Pagination v-model="state.page" :records="20" :per-page="1" @paginate="paginate" :options='{texts: {count:""}}'/>
 </article>
 </template>
@@ -52,7 +66,10 @@ export default {
     const articles = computed(()=>{
       return store.state.studyArticles
     })
-
+    const search = reactive({
+      key: "",
+      word: "",
+    });
     const state = reactive({
       isCreateMode: false,
       isReadMode: false,
@@ -105,6 +122,15 @@ export default {
     const getArticles = ()=>{
       store.dispatch('getArticles', props.studyId)
     }
+    const getArticlesWithSearch = () => {
+      store.dispatch('getArticlesWithSearch',
+      {
+        studyId: props.studyId,
+        key: search.key,
+        word: search.word
+      });
+    }
+    const resetWord = () => { search.word = ""; }
 
     onMounted(()=>{
       getArticles()
@@ -115,6 +141,7 @@ export default {
 
     return {
       props,
+      search,
       state,
       articles,
       paginate,
@@ -122,6 +149,8 @@ export default {
       getArticles,
       saveArticle,
       createArticle,
+      getArticlesWithSearch,
+      resetWord
     }
   }
 }

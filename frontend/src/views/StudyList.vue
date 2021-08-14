@@ -2,7 +2,22 @@
   <StudyListFrame>
     <template v-slot:header>
       <div id='study-category'>카테고리</div>
-      <div id='study-search'>검색창</div>
+      <div id='study-search'>
+        <select v-model="search.key" @change="resetWord">
+          <option disabled value="">Please select one</option>
+          <option value="category">카테고리</option>
+          <option value="name">이름</option>
+        </select>
+        <select v-if="search.key == 'category'" v-model="search.word">
+          <option disabled value="">Please select one</option>
+          <option value="coding">코딩</option>
+          <option value="cert">자격증</option>
+          <option value="official">공시</option>
+          <option value="just">모각코</option>
+        </select>
+        <input v-if="search.key == 'name'" type="text" v-model="search.word" @keyup.enter="getStudiesWithSearch"/>
+        <button type="button" v-if="search.key == 'name' || (search.key == 'category' && search.word != '')" @click="getStudiesWithSearch">검색</button>
+      </div>
       <div id='study-create'>
         <StudyCreateButton/>
       </div>
@@ -18,7 +33,7 @@ import StudyListFrame from '@/components/StudyListFrame.vue'
 import StudyListItem from '@/components/study/list/StudyListItem.vue'
 import StudyCreateButton from '@/components/study/list/StudyCreateButton.vue'
 import { useStore } from 'vuex'
-import { computed, onMounted } from '@vue/runtime-core'
+import { computed, onMounted, reactive } from '@vue/runtime-core'
 export default {
   name: 'StudyList',
   components: {
@@ -27,6 +42,10 @@ export default {
     StudyCreateButton
   },
   setup(){
+    const search = reactive({
+      key: "",
+      word: ""
+    });
     const store = useStore()
     const studies = computed(()=>store.state.studies)
 
@@ -38,8 +57,18 @@ export default {
       }
       // 여기서 스터디 목록을 가져온다
     })
+
+    const resetWord = () => search.word = "";
+
+    const getStudiesWithSearch = () => {
+      store.dispatch('getStudiesWithSearch', { key: search.key, word: search.word });
+    };
+
     return {
-      studies
+      search,
+      studies,
+      resetWord,
+      getStudiesWithSearch
     }
   }
 }

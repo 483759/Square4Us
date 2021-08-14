@@ -210,7 +210,7 @@ public class StudyController {
     @Operation(summary = "스터디 목록 검색 및 조회", description = "스터디의 검색 결과를 반환한다.", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "204", description = "존재하지 않음")})
-    public ResponseEntity<? extends BasicResponseBody> getStudyListWitSearchingAndPaging(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+    public ResponseEntity<? extends BasicResponseBody> getStudyListWitSearchingAndPaging(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                                                                                         String key,
                                                                                         String word) {
         if(!key.equals("category") && !key.equals("name")) {
@@ -220,6 +220,7 @@ public class StudyController {
         if(studyList == null || studyList.getSize() == 0) {
             return ResponseFactory.noContent();
         }
+
         return ResponseEntity.ok(StudyDTO.PageableListGetRes.of(200, "조회 성공", studyList));
     }
 

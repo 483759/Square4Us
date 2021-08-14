@@ -127,7 +127,7 @@ public class MemberController {
         return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "회원 정보 조회 성공", member.getId(), member.getEmail(), member.getRole(), member.getNickname(), member.getIntroduction() , member.getProfile(), member.getReport()));
     }
 
-    @PatchMapping("/me")
+    @PostMapping("/me")
     @Operation(summary = "회원 정보 수정", description = "회원 정보를 수정한다.", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "401", description = "인증 실패"),
