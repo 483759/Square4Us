@@ -3,19 +3,17 @@
   <li v-for='study in studies' :key='study.id' @click='joinStudy(study.id)'>
     <div class="studyBox">
       <div class="studyImageBox">
-          <img style="height:200px; width:280px;" src="/main1.jpg" alt="스터디이미지">
-          <div>
-            {{study.category}}
-            {{study.name}} 
+          <img class=studyImage v-if="study.profile==null" src="/main1.jpg" alt="스터디이미지">
+          <img class=studyImage v-else :src='getFilePath(study.profile.filePath, study.profile.fileName)' alt="스터디이미지">
+          <div class="studyNameBox">
+             {{study.name}} 
+             <br>
+             <div class="studyCategory">
+                [{{study.category}}]
+             </div>
           </div>
-          
       </div>
-     
-      <!-- <div>
-        <button class="studySignInButton" >가입</button>
-      </div> -->
     </div>
-    
   </li>
 </ul>
 
@@ -33,12 +31,17 @@ export default {
   },
   setup() {
   const store = useStore(); 
-  console.log(store);
+  
   const joinStudy = function (studyId) {
     store.dispatch('joinStudy', studyId)
   }
   
+  const getFilePath = function(path, name) {
+    return path + '/' + name
+  }
+  
     return {
+      getFilePath,
       joinStudy
     }
   }
@@ -49,47 +52,56 @@ export default {
 .studyList{
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 .studyBox {
   display: flex;
   flex-direction: column;
   
-  height: 200px;
-  width: 280px;
-  /* aspect-ratio: 1.4/1; */
-  border: 1px solid gray;
-  margin: 20px 15px 0 15px;
-  
+  height: 220px;
+  width: 330px;
+  margin: 25px 20px 25px 20px;
+  transform: scale(1);
+  transition: all 0.2s ease-out;
 
 }
-.studyImageBox {
-  height: inherit;
-  width: inherit;
-  border-bottom: gray 1px solid;
-  color: black;
-  font-size: 20px;
+
+.studyImage {
+  height:220px;
+  width:330px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transform: scale(1);
 }
-.studyImageBox:hover {
-  height: inherit;
+.studyImage:hover {
+  transform: scale(1.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  transition: all 0.2s ease-out;
+}
+.studyNameBox{
+  height: 50px;
   width: inherit;
   display: flex;
-  flex-direction: column-reverse;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  font-size: 20px;
-  color: white;
- 
-  
- 
-
+  font-size: 18px;
+  font-weight: bold;
+  color: #195C77;
 }
 .studySignInButton{
   height: 30px;
   width: 50px;
   box-sizing: border-box;
+  
 }
-
+.studyCategory {
+  font-size: 15px;
+  font-weight: lighter;
+}
 
 
 

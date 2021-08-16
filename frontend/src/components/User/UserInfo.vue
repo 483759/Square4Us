@@ -10,11 +10,11 @@
       <input type="text" name="nickname" id="nickname" class="inputbox" :placeholder="user.nickname" v-model="credentials.nickname">
     </div>
     <div>
-      <textarea type="textarea" name="introduction" class="inputbox" style="height:250px" id="" cols="30" rows="10" placeholder="{{credentials.introduction}}" v-model="credentials.introduction">
+      <textarea type="textarea" name="introduction" class="inputbox" style="height:250px" id="" cols="30" rows="10" :placeholder="user.introduction" v-model="credentials.introduction">
       </textarea>
     </div>
     <div>
-      <input type="text" name="email" class="inputbox" :placeholder="user.email" v-model="credentials.email">
+      <input type="text" name="email" class="inputbox" :placeholder="user.email" v-model="credentials.email" disabled>
     </div>
     <div>
       <div class="badgeBox"></div>
@@ -46,7 +46,7 @@ export default {
     const credentials = reactive({
       nickname: user.nickname,
       email: user.email,
-      introduction: "introduction",
+      introduction: user.introduction,
       profile_path: "profile path",
     });
     const data = reactive({
@@ -74,7 +74,7 @@ export default {
     };
     // 프로필 수정 함수
     const putUserInfo = () => {
-      store.dispatch("updateMemberInfo", { nickname: credentials.nickname });
+      store.dispatch("updateMemberInfo", { nickname: credentials.nickname, introduction: credentials.introduction });
     };
 
     const updateProfilePhoto = () => {
@@ -88,7 +88,7 @@ export default {
       }).then((response) => {
         console.log(response.data.data.profile);
         credentials.profile_path =
-          response.data.data.profile.filePath + "\\" + response.data.data.profile.fileName;
+          response.data.data.profile.filePath + "/" + response.data.data.profile.fileName;
         console.log(credentials.profile_path);
       });
     };

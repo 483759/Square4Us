@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import { useStore } from 'vuex'
+import { onMounted, onUnmounted } from '@vue/runtime-core'
 export default {
   name: 'StudyMainAside',
   props: {
@@ -17,9 +19,24 @@ export default {
     activeIndex: {
       type: Number,
       required: true
+    },
+    studyId: {
+      type: String,
+      required : true
     }
   },
-  setup() {
+  setup(props) {
+    const store = useStore()
+    onMounted(()=>{
+      store.dispatch('getStudyByNumber', props.studyId);
+    })
+    onUnmounted(()=>{
+      store.commit('SET_CURRENT_STUDY', [])
+    })
+
+    return {
+      props
+    }
   }
 }
 </script>

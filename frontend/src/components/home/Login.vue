@@ -2,9 +2,11 @@
   <section class="modal_z_index">
     <Modal  :isShow='isShow' @switchModal='switchModal'>
       <!-- 모달헤더 -->
-      <template v-slot:header class="header_login">
+      <template v-slot:header >
         <!-- <header> 헤더도 들어감 </header> -->
-        <button class="button_close" @click.stop="switchModal">X</button>
+        <div class="header_login">
+          <button class="button_close" @click.stop="switchModal">X</button>
+        </div>
       </template>
 
       <!-- 모달바디 -->
@@ -138,8 +140,8 @@ export default {
   }
   .header_login{
     display: flex;
-    flex-direction: row-reverse;  
-    justify-content: flex-start;
+    flex-direction: row;  
+    justify-content: flex-end;
     height: 35px;
   }
   .footer_login{
@@ -192,12 +194,12 @@ export default {
     /* block으로 해야 x가 쉽게 가운데로 옴 */
     height: 30px;
     width: 30px;
-    border: gray;
+    border: black 1px solid;
     border-radius: 5px;
     margin: 0;
     padding: auto;
-
-    box-shadow: 2px 1px 3px;
+    background-color: lightgray;
+    box-shadow: -2px 1px 3px;
     box-sizing: border-box;
     
   }

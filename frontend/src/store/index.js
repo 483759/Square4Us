@@ -1,17 +1,18 @@
 import router from "@/router";
 import axios from "axios";
-import { createStore } from "vuex";
+import {createStore} from "vuex";
 
 export default createStore({
   state: {
     isLogin: false,
     user: {},
     studies: [], // 전체스터디 목록
+    curStudy: {},
     myStudies: [], // 내 스터디 목록
     myMeetings: [],
     studyArticles: [],
 
-    activeStudyNav : 0
+    activeStudyNav: 0
   },
   mutations: {
     LOGIN : function (state) {
@@ -25,8 +26,11 @@ export default createStore({
     SET_USER: function (state, payload) {
       state.user = payload
     },
-    SET_STUDIES : function (state, payload) { // 전체목록
+    SET_STUDIES: function (state, payload) { // 전체목록
       state.studies = payload
+    },
+    SET_CURRENT_STUDY: function (state, payload) {
+      state.curStudy = payload
     },
     SET_MY_STUDIES: function (state, payload) { // 내 스터디목록
       state.myStudies = payload
@@ -37,7 +41,7 @@ export default createStore({
     SET_STUDY_ARTICLES: function (state, payload) {
       state.studyArticles = payload
     },
-    SET_STUDY_ACTIVE : function (state, payload) {
+    SET_STUDY_ACTIVE: function (state, payload) {
       state.activeStudyNav = payload
     },
     SET_ARTICLES : function (state, payload) {
@@ -96,8 +100,9 @@ export default createStore({
       return true
     },
     updateMemberInfo: async function (context, data) {
+      console.log(data);
       const response = await axios({
-        method: 'PATCH',
+        method: 'POST',
         url: '/member/me',
         data: data
       }).catch((err)=>{
@@ -108,7 +113,8 @@ export default createStore({
         console.log(response)
         return
       }
-      console.log(response);
+      await context.commit('SET_USER', response.data.data);
+      console.log(response.data.data);
     },
     // 미팅
     getMeetings: async function (context, studyId) {
@@ -176,7 +182,7 @@ export default createStore({
       const response = await axios({
         method: "POST",
         url: `/study/${studyId}`,
-      }).catch((err)=>{
+      }).catch((err) => {
         console.log(err.response);
       })
       if (!response) {
@@ -186,11 +192,24 @@ export default createStore({
       alert('가입 신청 성공')
       console.log(response.data.data);
     },
-    getStudies : async function(context){ // 전체 스터디 목록
+    getStudyByNumber: async function (context, studyId) {
+      const response = await axios({
+        method: "GET",
+        url: `/study/${studyId}`,
+      }).catch((err) => {
+        console.log(err.response);
+      })
+      if (response.data.statusCode === 204) {
+        alert('존재하지 않는 스터디입니다');
+        return;
+      }
+      context.commit('SET_CURRENT_STUDY', response.data.data);
+    },
+    getStudies: async function (context) { // 전체 스터디 목록
       const response = await axios({
         method: "GET",
         url: `/study?page=0&size=20&sorted=true&unsorted=true&empty=true`,
-      }).catch((err)=>{
+      }).catch((err) => {
         console.log(err.response);
       })
       if (!response) {
@@ -199,12 +218,40 @@ export default createStore({
       }
       context.commit('SET_STUDIES', response.data.data.studyList.content)
     },
+    getStudiesWithSearch: async function (context, param) {
+      const response = await axios({
+        method: "GET",
+        url: `/study/search?key=${param.key}&word=${param.word}`,
+      }).catch(err => {
+        console.log(err.response);
+      })
+      if (!response) {
+        alert("스터디 목록을 받아오지 못했습니다")
+        return
+      }
+      context.commit('SET_STUDIES', response.data.data.studyList.content);
+    },
 
     // 아티클
     getArticles: async function(context, studyId) {
       const response = await axios({
         method: 'GET',
-        url: `/study/${studyId}/article?page=0&size=5&sorted=true&unsorted=true&empty=true`,
+        url: `/study/${studyId}/article?page=0&size=6&sorted=true&unsorted=true&empty=true`,
+      }).catch((err)=>{
+        console.log(err.response)
+      })
+      if (!response) {
+        alert('게시글 조회 실패')
+        console.log(response);
+        return
+      }
+      context.commit('SET_STUDY_ARTICLES', response.data.data.articleList)
+    },
+
+    getArticlesWithSearch: async function (context, param) {
+      const response = await axios({
+        method: 'GET',
+        url: `/study/${param.studyId}/article/search?key=${param.key}&word=${param.word}`,
       }).catch((err)=>{
         console.log(err.response)
       })
@@ -220,16 +267,15 @@ export default createStore({
         method: 'POST',
         url: `/study/${data.studyId}/article`,
         data: data.article
-      }).catch((err)=>{
-        console.log(err.response)
-      })
-      if (!response) {
-        alert('게시글 생성 실패')
-        console.log(response);
-        return
+      }).catch((err)=>err.response)
+
+      console.log(response);
+      if (response.status !==200) return false
+      
+      if (data.files.length) {
+        context.dispatch('addFilesToArticle', { studyId : data.studyId , articleId : response.data.data.id, files: data.files})
       }
-      console.log(response.data);
-      context.dispatch('addFilesToArticle', { studyId : data.studyId , articleId : response.data.data.id, files: data.files})
+      return true
     },
     addFilesToArticle: async function (context, data) {
       const { studyId, articleId, files } = data
@@ -265,14 +311,39 @@ export default createStore({
         alert("회원 탈퇴에 실패했습니다");
         return
       }
-      if(response.data.data.statusCode==='200'){
+      if(response.status===200){
         localStorage.removeItem('JWT');
         context.commit('LOGOUT');
         router.push({name: 'Main'})
       }
-
+    },
+    removeStudy : async function(context, studyId) {
+      const response = await axios({
+        method: "DELETE",
+        url: `/study/${studyId}`,
+      }).catch((err)=>{
+        if(err.response.status===409){
+          alert('삭제할 수 없습니다');
+        }        
+        console.log(err.response);
+      })
+      console.log(response)
+      if(response.status===200){
+        this.state.curStudy=[]
+        router.push({name: 'Main'})
+      }
     }
   },
-
+  getters: {
+    isLeader : function (state) {
+      // console.log(state.user, state.curStudy);
+        if (state.user && state.curStudy) {
+          if (state.user.id===state.curStudy.leaderId) {
+            return true
+          }
+        }
+        return false
+    }
+  },
   modules: {},
 });

@@ -1,12 +1,11 @@
 <template>
   <AsideFrame>
-
     <template v-slot:aside-header>
         <img id='aside-header-thumbnail' src="/meeting-thumbnail.jpg" alt="썸네일">
     </template>
 
     <template v-slot:aside-body>
-      <StudyMainAside :menus='menus' :activeIndex='activeStudyNav' @onClickMenu='(idx)=>{$store.commit("SET_STUDY_ACTIVE", idx)}'/>
+      <StudyMainAside :menus='menus' :activeIndex='activeStudyNav' :studyId="studyId" @onClickMenu='(idx)=>{$store.commit("SET_STUDY_ACTIVE", idx)}'/>
     </template>
 
     <template v-slot:section>
@@ -18,12 +17,11 @@
 
       <StudyDataPage v-else-if="activeStudyNav === 3"/>
       <StudyStatistic v-else-if="activeStudyNav === 4"/> 
-      <StudyConfig v-else-if="activeStudyNav === 5" />
       <!-- 회원 관리 목록 만들기 -->
-      <StudyMemberConfig v-else-if="activeStudyNav === 6" :studyId='studyId'/>
+      <StudyMemberConfig v-else-if="activeStudyNav === 5" :studyId='studyId'/>
+      <StudyConfig v-else-if="activeStudyNav === 6" :studyId="studyId" />
       <div v-else> 아무것에도 포함 안됨 </div>
     </template>
-  
   </AsideFrame>
 </template>
 
@@ -48,28 +46,18 @@ export default {
     }
   },
   components :{
-    AsideFrame,
-    StudyMainAside,
-    StudyMainPage,
-    StudyMainMeeting,
-    StudyArticle,
-    StudyDataPage,
-    StudyStatistic,
-    StudyConfig,
-    StudyMemberConfig
+    AsideFrame, StudyMainAside, StudyMainPage, StudyMainMeeting, StudyArticle,
+    StudyDataPage, StudyStatistic, StudyConfig, StudyMemberConfig
   },
   setup() {
     const store = useStore()
     const activeStudyNav = computed(()=>store.state.activeStudyNav)
-    const menus = [
-      '스터디 메인', 
-      '미팅', 
-      '게시글', 
-      '스터디 학습 자료', 
-      '통계', 
-      '스터디 설정',
-      '멤버 관리'
-    ]
+    const menus = computed(()=>{
+      return store.getters.isLeader 
+        ? ['스터디 메인', '미팅', '게시글', '스터디 학습 자료', '통계', '멤버', '스터디 설정']
+        : ['스터디 메인', '미팅', '게시글', '스터디 학습 자료', '통계', '멤버']
+    })
+
     return {
       menus,
       activeStudyNav

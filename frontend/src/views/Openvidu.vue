@@ -70,7 +70,7 @@ const OPENVIDU_SERVER_URL = "https://54.180.140.242:4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 export default {
-  name: "App",
+  name: "Openvidu",
 
   components: {
     UserVideo,

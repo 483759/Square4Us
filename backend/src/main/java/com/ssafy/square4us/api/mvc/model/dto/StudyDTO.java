@@ -1,7 +1,6 @@
 package com.ssafy.square4us.api.mvc.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ssafy.square4us.api.mvc.model.entity.FileEntity;
 import com.ssafy.square4us.api.mvc.model.entity.Study;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
@@ -10,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,14 +22,16 @@ public class StudyDTO {
     private char dismantleFlag = 'F';
     @JsonIgnore
     private Date dismantleDate;
+    private FileDTO profile;
 
     @Builder
-    public StudyDTO(Long id, String category, String name, char dismantleFlag, Date dismantleDate) {
+    public StudyDTO(Long id, String category, String name, char dismantleFlag, Date dismantleDate, FileDTO profile) {
         this.id = id;
         this.category = category;
         this.name = name;
         this.dismantleFlag = dismantleFlag;
         this.dismantleDate = dismantleDate;
+        this.profile = profile;
     }
 
     public StudyDTO(Study study) {
@@ -40,6 +40,11 @@ public class StudyDTO {
         this.name = study.getName();
         this.dismantleFlag = study.getDismantleFlag();
         this.dismantleDate = study.getDismantleDate();
+        if(study.getProfile() != null) {
+            this.profile = new FileDTO(study.getProfile());
+        } else {
+            this.profile = null;
+        }
     }
 
     @Getter
@@ -65,18 +70,18 @@ public class StudyDTO {
         private String category;
         private String name;
         private Long leaderId;
-        private List<FileDTO> files;
+        private FileDTO profile;
 
-        public InfoGetRes(Long id, String category, String name, Long leaderId, List<FileDTO> files) {
+        public InfoGetRes(Long id, String category, String name, Long leaderId, FileDTO profile) {
             this.id = id;
             this.category = category;
             this.name = name;
             this.leaderId = leaderId;
-            this.files = files;
+            this.profile = profile;
         }
 
-        public static BasicResponseBody<StudyDTO.InfoGetRes> of(Integer statusCode, String message, Long id, String category, String name, Long leaderId, List<FileDTO> files) {
-            return BasicResponseBody.of(statusCode, message, new StudyDTO.InfoGetRes(id, category, name, leaderId, files));
+        public static BasicResponseBody<StudyDTO.InfoGetRes> of(Integer statusCode, String message, Long id, String category, String name, Long leaderId, FileDTO profile) {
+            return BasicResponseBody.of(statusCode, message, new StudyDTO.InfoGetRes(id, category, name, leaderId, profile));
         }
     }
 

@@ -28,6 +28,8 @@ public class Member {
 
     private String nickname;
 
+    private String introduction;
+
     @ColumnDefault("0")
     private int report;
 
@@ -35,12 +37,13 @@ public class Member {
     private FileEntity profile;
 
     @Builder
-    public Member(Long id, String email, String password, MemberRole role, String nickname, int report, FileEntity profile) {
+    public Member(Long id, String email, String password, MemberRole role, String nickname, String introduction, int report, FileEntity profile) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.role = role;
         this.nickname = nickname;
+        this.introduction = introduction;
         this.report = report;
         this.profile = profile;
     }

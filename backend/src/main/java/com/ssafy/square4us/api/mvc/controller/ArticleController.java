@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -79,6 +80,24 @@ public class ArticleController {
             return ResponseFactory.noContent();
         }
         return ResponseEntity.ok(ArticleDTO.ListGetRes.of(200, "조회 성공", list));
+    }
+
+    @GetMapping("search")
+    @Operation(summary = "게시물 검색 및 목록 조회", description = "현재 스터디에서 검색 조건에 맞는 게시물의 목록을 조회한다.", responses = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "204", description = "존재하지 않음")})
+    public ResponseEntity<? extends BasicResponseBody> getArticleListWithSearchingAndPaging(@PageableDefault(size = 6, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+                                                                                            @PathVariable("studyId") Long studyId,
+                                                                                            String key,
+                                                                                            String word) {
+        if(!key.equals("category") && !key.equals("title") && !key.equals("content")) {
+            return ResponseFactory.forbidden();
+        }
+        Page<ArticleDTO> articleList = articleService.getArticleListWithSearchingAndPaging(pageable, studyId, key, word);
+        if(articleList == null || articleList.getSize() == 0) {
+            return ResponseFactory.noContent();
+        }
+        return ResponseEntity.ok(ArticleDTO.ListGetRes.of(200, "조회 성공", articleList));
     }
 
     @GetMapping("{articleId}")

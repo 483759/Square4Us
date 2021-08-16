@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 
@@ -52,6 +53,28 @@ public class StudyRepositorySupport extends QuerydslRepositorySupport {
                 .select(Projections.constructor(StudyDTO.class, qStudy))
                 .from(qStudy)
                 .where(qStudy.dismantleFlag.ne('T'));
+
+        Long totalCount = query.fetchCount();
+        List<StudyDTO> results = getQuerydsl().applyPagination(pageable, query).fetch();
+        return new PageImpl<>(results, pageable, totalCount);
+    }
+
+    public PageImpl<StudyDTO> findStudiesWithPagingByCategory(String word, Pageable pageable) {
+        JPAQuery query = jpaQueryFactory
+                .select(Projections.constructor(StudyDTO.class, qStudy))
+                .from(qStudy)
+                .where(qStudy.dismantleFlag.ne('T'), qStudy.category.eq(word));
+
+        Long totalCount = query.fetchCount();
+        List<StudyDTO> results = getQuerydsl().applyPagination(pageable, query).fetch();
+        return new PageImpl<>(results, pageable, totalCount);
+    }
+
+    public PageImpl<StudyDTO> findStudiesWithPagingByStudyName(String word, Pageable pageable) {
+        JPAQuery query = jpaQueryFactory
+                .select(Projections.constructor(StudyDTO.class, qStudy))
+                .from(qStudy)
+                .where(qStudy.dismantleFlag.ne('T'), qStudy.name.like("%" + word + "%"));
 
         Long totalCount = query.fetchCount();
         List<StudyDTO> results = getQuerydsl().applyPagination(pageable, query).fetch();
@@ -99,11 +122,21 @@ public class StudyRepositorySupport extends QuerydslRepositorySupport {
         return result != null;
     }
 
+    @Transactional
     public Long deleteStudyById(Long studyId) {
         return jpaQueryFactory.update(qStudy)
                 .where(qStudy.id.eq(studyId))
                 .set(qStudy.dismantleFlag, 'T')
                 .set(qStudy.dismantleDate, new Date(System.currentTimeMillis()))
+                .execute();
+    }
+
+    @Transactional
+    public Long withdrawStudy(Long memberId, Long studyId) {
+        return jpaQueryFactory.delete(qStudyMember)
+                .where(qStudyMember.study.id.eq(studyId),
+                        qStudyMember.member.id.eq(memberId),
+                        qStudyMember.leader.ne('T'))
                 .execute();
     }
 }

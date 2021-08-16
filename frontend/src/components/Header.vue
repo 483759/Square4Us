@@ -116,10 +116,22 @@ export default {
 }
 
 #logo-icon{
-  width: 70px;
-  height: 70px;
+  width: 50px;
+  height: 50px;
   cursor: pointer;
   margin-right: 20px;
+}
+#logo-icon:hover{
+  position: relative;
+  animation:ass .3s infinite;
+}
+@keyframes ass {
+  0% {left: 2px;top:2px}
+  20% {left: -4px;top:-4px}
+  40% {left: 0px;top: 4px}
+  60% {left: 4px; top: -4px;}
+  80% {left: 0px; top: 4px}
+  100% {left: -2px;top:-2px}
 }
 
 #logo-text{
