@@ -86,7 +86,7 @@ public class ArticleController {
     @Operation(summary = "게시물 검색 및 목록 조회", description = "현재 스터디에서 검색 조건에 맞는 게시물의 목록을 조회한다.", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "204", description = "존재하지 않음")})
-    public ResponseEntity<? extends BasicResponseBody> getArticleListWithSearchingAndPaging(@PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+    public ResponseEntity<? extends BasicResponseBody> getArticleListWithSearchingAndPaging(@PageableDefault(size = 6, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                                                                                             @PathVariable("studyId") Long studyId,
                                                                                             String key,
                                                                                             String word) {
@@ -160,7 +160,7 @@ public class ArticleController {
         return ResponseFactory.ok();
     }
 
-    @PatchMapping("{articleId}/{what}")
+    @PostMapping("{articleId}/{what}")
     @Operation(summary = "게시물 평가", description = "articleId에 해당하는 게시물을 평가한다.", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "401", description = "권한 없음"),
@@ -180,12 +180,14 @@ public class ArticleController {
             return ResponseFactory.unauthorized();
         }
 
-        if(!what.equals("like") && !what.equals("dislike")) {
+        if(!what.equals("l") && !what.equals("d")) {
             return ResponseFactory.serviceUnavailable();
         }
-        articleService.evalArticle(articleId, what);
-
-        return ResponseFactory.ok();
+        try {
+            return ResponseEntity.ok(ArticleDTO.ArticleGetRes.of(200, "성공", articleService.evalArticle(memberDetails.getUsername(), articleId, what)));
+        } catch (Exception e) {
+            return ResponseFactory.serviceUnavailable();
+        }
     }
 
 

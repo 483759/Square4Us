@@ -14,7 +14,7 @@
       </textarea>
     </div>
     <div>
-      <input type="text" name="email" class="inputbox" :placeholder="user.email" v-model="credentials.email">
+      <input type="text" name="email" class="inputbox" :placeholder="user.email" v-model="credentials.email" disabled>
     </div>
     <div>
       <div class="badgeBox"></div>
@@ -88,7 +88,7 @@ export default {
       }).then((response) => {
         console.log(response.data.data.profile);
         credentials.profile_path =
-          response.data.data.profile.filePath + "\\" + response.data.data.profile.fileName;
+          response.data.data.profile.filePath + "/" + response.data.data.profile.fileName;
         console.log(credentials.profile_path);
       });
     };

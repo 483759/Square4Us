@@ -1,5 +1,6 @@
 package com.ssafy.square4us.api.mvc.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.square4us.api.mvc.model.entity.Comment;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -7,9 +8,10 @@ import org.springframework.data.domain.Page;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CommentDTO extends BasicResponseBody {
+public class CommentDTO{
     private Long id;
     private MemberDTO member;
+    @JsonIgnore
     private ArticleDTO article;
     private String content;
 

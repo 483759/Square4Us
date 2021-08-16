@@ -7,14 +7,18 @@
   <div>
     {{props.article.content}}
   </div>
-  <button @click="like">좋아요</button>
-  <button @click="like">싫어요</button>
+  <button @click="evalArticle('l')">좋아요</button>
+  <button @click="evalArticle('d')">싫어요</button>
+  <Comment :article="props.article" />
 </div>
 </template>
 
 <script>
 //import { useStore } from 'vuex'
+import Comment from '@/components/study/main/comment/Comment.vue'
 import { onMounted, reactive } from '@vue/runtime-core'
+import axios from 'axios'
+import store from '@/store'
 
 export default {
   name: 'StudyArticleRead',
@@ -24,11 +28,14 @@ export default {
       required: true
     }
   },
+  components: {
+    Comment
+  },
   setup(props) {
     // const store = useStore()
     const state = reactive({
       isViewMode: false,
-      page: 1
+      page: 1,
     })
 
     const dateFormatter = (date)=>{
@@ -41,6 +48,25 @@ export default {
     const getArticle = async () => {
     }
 
+    const evalArticle = function(what) {
+      console.log(store.state.curStudy.id);
+      console.log(what);
+      console.dir(props.article.good);
+      console.dir(props.article.dislike);
+      axios({
+        method: "POST",
+        url: `/study/${store.state.curStudy.id}/article/${props.article.id}/` + what,
+      }).then((response) => {
+        // props.article.good = response.data.data.good;
+        console.dir(response.data.data.good);
+        console.dir(response.data.data.dislike);
+        alert('좋아요/싫어요 성공!')
+      }).catch((error) => {
+        console.dir(error);
+        alert('좋아요/싫어요 실패!')
+      });
+    }
+
     onMounted(()=>{
         console.log("HI"+props.article)
     })
@@ -49,7 +75,8 @@ export default {
       props,
       state,
       dateFormatter,
-      getArticle
+      getArticle,
+      evalArticle
     }
   }
 }
