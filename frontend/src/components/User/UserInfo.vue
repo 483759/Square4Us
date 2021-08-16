@@ -88,7 +88,7 @@ export default {
       }).then((response) => {
         console.log(response.data.data.profile);
         credentials.profile_path =
-          response.data.data.profile.filePath + "\\" + response.data.data.profile.fileName;
+          response.data.data.profile.filePath + "/" + response.data.data.profile.fileName;
         console.log(credentials.profile_path);
       });
     };
