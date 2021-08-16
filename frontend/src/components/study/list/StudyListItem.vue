@@ -3,7 +3,8 @@
   <li v-for='study in studies' :key='study.id' @click='joinStudy(study.id)'>
     <div class="studyBox">
       <div class="studyImageBox">
-          <img class=studyImage src="/main1.jpg" alt="스터디이미지">
+          <img class=studyImage v-if="study.profile==null" src="/main1.jpg" alt="스터디이미지">
+          <img class=studyImage v-else :src='getFilePath(study.profile.filePath, study.profile.fileName)' alt="스터디이미지">
           <div class="studyNameBox">
              {{study.name}} 
              <br>
@@ -30,12 +31,17 @@ export default {
   },
   setup() {
   const store = useStore(); 
-  console.log(store);
+  
   const joinStudy = function (studyId) {
     store.dispatch('joinStudy', studyId)
   }
   
+  const getFilePath = function(path, name) {
+    return path + '/' + name
+  }
+  
     return {
+      getFilePath,
       joinStudy
     }
   }
