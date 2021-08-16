@@ -11,10 +11,10 @@
         <img class="logo_signup" src="/square4us.png" alt="">
       </div>
       <form id='signup-form' method="POST" @submit.prevent="signUp">
-        <p><input class="input_signup" type="email" id="signup_email" name="email" placeholder="이메일 입력" v-model="credentials.email"></p>
+        <p><input class="input_signup" type="email" id="signup_email" name="email" placeholder="이메일 입력" v-model="credentials.email" @change="isValid = false;"><button type="button" @click="checkEmail">중복 확인</button></p>
         <p><input class="input_signup" type="nickname" id="signup_nickname" name="nickname" placeholder="닉네임" v-model="credentials.nickname"></p>
         <p><input class="input_signup" type="password"  id="signup_password" name="password" placeholder="비밀번호" v-model="credentials.password"></p>
-        <p><input class="input_signup" type="password_confirmation"  id="signup_password_confirmation" name="password_confirmation" placeholder="비밀번호확인" v-model="password_confirmation"></p>
+        <p><input class="input_signup" type="password"  id="signup_password_confirmation" name="password_confirmation" placeholder="비밀번호확인" v-model="password_confirmation"></p>
         <button class="button_signup" id="signup_button">Signup</button>
       </form>
     </section>
@@ -28,6 +28,7 @@
 <script>
 import { reactive, ref } from '@vue/reactivity'
 import { useStore } from 'vuex'
+import axios from 'axios'
 export default {
   name: 'Signup',
   setup() {
@@ -37,10 +38,36 @@ export default {
       password : "",
       nickname : "",
     })
+    let isValid = false;
     const password_confirmation = ref("");
     // 회원가입 함수
     const store = useStore();
+    const checkEmail = async () => {
+      if(!regExpTest(credentials.email)) {
+        alert("이메일 형식이 잘못되었습니다!");
+        return
+      }
+      axios({
+        method: "GET",
+        url: "member/checkEmail?email=" + credentials.email,
+      }).then(() => {
+        isValid = true;
+        alert("사용 가능한 이메일입니다!");
+      }).catch(() => {
+        isValid = false;
+        alert("사용할 수 없는 이메일입니다!");
+      });
+    }
+    const regExpTest = (str) => {
+      var regExp = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+      let res = regExp.test(str);
+      return res;
+    }
     const signUp = ()=>{
+      if(isValid == false) {
+        alert("이메일 중복 확인을 해주세요!");
+        return;
+      }
       if (password_confirmation.value !== credentials.password) {
         alert("비밀번호가 비밀번호 확인과 일치하지 않습니다")
         return
@@ -49,7 +76,10 @@ export default {
     }
     return {
       credentials,
+      isValid,
+      regExpTest,
       password_confirmation,
+      checkEmail,
       signUp,
     }
   }
