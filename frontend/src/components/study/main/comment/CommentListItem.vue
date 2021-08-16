@@ -10,6 +10,7 @@
   <div>
     <p>{{comment.content}}</p>
     <button @click="modifyCommentMode">수정</button>
+    <button @click="deleteComment">삭제</button>
   </div>
   </template>
 </template>
@@ -39,15 +40,23 @@ export default {
     }
 
     const modifyContent = async () => {
-      console.log(state.content)
       await axios({
         url: `/comment/${props.article.id}/${props.comment.id}`,
         method: 'PATCH',
         data: {content: state.content}
-      }).then((response)=>{
-        console.log(response)
-        //props.comment.content = response.data.data.
+      }).then(()=>{
         state.modifyMode = false
+      }).catch((err)=>{
+        console.log(err)
+      })
+    }
+
+    const deleteComment = async () =>{
+      await axios({
+        url: `/comment/${props.article.id}/${props.comment.id}`,
+        method: 'DELETE'
+      }).then(()=>{
+        console.log('삭제 성공')
       }).catch((err)=>{
         console.log(err)
       })
@@ -57,7 +66,8 @@ export default {
       state,
       props,
       modifyCommentMode,
-      modifyContent
+      modifyContent,
+      deleteComment
     }
   }
 }
