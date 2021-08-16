@@ -1,26 +1,53 @@
 <template>
 <ul class="studyList">
-  <li v-for='study in studies' :key='study.id' @click='joinStudy(study.id)'>
-    <div class="studyBox">
+  <!-- @click='joinStudy(study.id)' -->
+  <li v-for='study in studies' :key='study.id' @click="openModal(study)">
+    <div class="studyBox" >
       <div class="studyImageBox">
           <img class=studyImage v-if="study.profile==null" src="/main1.jpg" alt="스터디이미지">
           <img class=studyImage v-else :src='getFilePath(study.profile.filePath, study.profile.fileName)' alt="스터디이미지">
           <div class="studyNameBox">
-             {{study.name}} 
-             <br>
-             <div class="studyCategory">
-                [{{study.category}}]
-             </div>
+            {{study.name}} 
+            <br>
+            <div class="studyCategory">
+              [{{study.category}}]
+            </div>
           </div>
       </div>
     </div>
   </li>
 </ul>
+<Modal :isShow='isShow' @switchModal='closeModal'>
+  <template v-slot:header >
+  </template>
 
+  <!-- 모달바디 -->
+  <template v-slot:default>
+    <section>
+      <img class='study-signin-img' v-if="state.currentStudy.profile==null" src="/main1.jpg" alt="스터디이미지">
+      <img class='study-signin-img' v-else :src='getFilePath(state.currentStudy.profile.filePath, state.currentStudy.profile.fileName)' alt="스터디이미지">
+      <div class="studyNameBox">
+        {{state.currentStudy.name}} 
+        <br>
+        <div class="studyCategory">
+          [{{state.currentStudy.category}}]
+        </div>
+      </div>
+    </section>
+  </template>
+
+  <!-- 모달푸터 -->
+  <template v-slot:footer>
+    <button @click='joinStudy'>가입하기</button>
+  </template>
+
+</Modal>
 </template>
 
 <script>
 import { useStore } from 'vuex';
+import Modal from '@/components/home/Modal.vue'
+import { reactive, ref } from '@vue/reactivity';
 export default {
   name: 'studyListItem',
   props: {
@@ -29,18 +56,40 @@ export default {
       required: true
     },
   },
+  components : {
+    Modal
+  },
   setup() {
-  const store = useStore(); 
-  
-  const joinStudy = function (studyId) {
-    store.dispatch('joinStudy', studyId)
-  }
-  
-  const getFilePath = function(path, name) {
-    return path + '/' + name
-  }
+    // state
+    const state = reactive({
+      currentStudy: {}
+    })
+    // 모달 관련
+    const isShow = ref(false)
+    const openModal = (study)=>{
+      state.currentStudy = study
+      isShow.value = true
+    }
+    const closeModal = ()=>{
+      isShow.value = false
+    }
+    // 스토어
+    const store = useStore(); 
+
+    const joinStudy = async function () {``
+      await store.dispatch('joinStudy', state.currentStudy.id)
+      closeModal()
+    }
+    
+    const getFilePath = function(path, name) {
+      return path + '/' + name
+    }
   
     return {
+      isShow,
+      state,
+      openModal,
+      closeModal,
       getFilePath,
       joinStudy
     }
@@ -103,6 +152,8 @@ export default {
   font-weight: lighter;
 }
 
-
+.study-signin-img {
+  width: 350px;
+}
 
 </style>
