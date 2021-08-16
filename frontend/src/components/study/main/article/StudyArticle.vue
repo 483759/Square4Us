@@ -11,7 +11,7 @@
   </header>
   <!-- 여기에 v-if로 게시글 작성, 조회가 들어가게 됨 -->
   <StudyArticleCreate v-if='state.isCreateMode' @saveArticle='saveArticle'/>
-  <StudyArticleRead v-if='state.isReadMode' :article='state.article' />
+  <StudyArticleRead v-if='state.isReadMode' :article='state.article' @refreshArticle='refreshArticle'/>
   <ul class='article-item' v-else>
     <li v-for='article in articles.content' :key='article.id' >
     <!-- <h3>스터디 메인 미팅리스트 : 여기 들어오면 axios요청을 보내 목록을 갱신함</h3> -->
@@ -101,6 +101,8 @@ export default {
       }
     }
 
+
+
     // 게시글 작성  
     const saveArticle = async (data)=>{
       const  { article, files } = data
@@ -132,6 +134,19 @@ export default {
     }
     const resetWord = () => { search.word = ""; }
 
+
+    const refreshArticle = async(articleId)=>{
+      const response = await axios({
+        url: `/study/${props.studyId}/article/${articleId}`,
+        method: 'GET'
+      }).catch((err)=>{
+        console.log(err.response)
+      })
+      if(response.status===200){
+        state.article = response.data.data
+      }
+    }
+
     onMounted(()=>{
       getArticles()
     })
@@ -146,6 +161,7 @@ export default {
       articles,
       paginate,
       readArticle,
+      refreshArticle,
       getArticles,
       saveArticle,
       createArticle,

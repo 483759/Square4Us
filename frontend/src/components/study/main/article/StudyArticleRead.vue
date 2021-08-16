@@ -16,7 +16,7 @@
 <script>
 //import { useStore } from 'vuex'
 import Comment from '@/components/study/main/comment/Comment.vue'
-import { onMounted, reactive } from '@vue/runtime-core'
+import { reactive } from '@vue/runtime-core'
 import axios from 'axios'
 import store from '@/store'
 
@@ -31,7 +31,7 @@ export default {
   components: {
     Comment
   },
-  setup(props) {
+  setup(props, { emit }) {
     // const store = useStore()
     const state = reactive({
       isViewMode: false,
@@ -45,37 +45,25 @@ export default {
         return month+'월 '+day+'일 '+time
     }
 
-    const getArticle = async () => {
-    }
-
-    const evalArticle = function(what) {
-      console.log(store.state.curStudy.id);
-      console.log(what);
-      console.dir(props.article.good);
-      console.dir(props.article.dislike);
+    const evalArticle = (flag)=>{
       axios({
         method: "POST",
-        url: `/study/${store.state.curStudy.id}/article/${props.article.id}/` + what,
-      }).then((response) => {
-        // props.article.good = response.data.data.good;
-        console.dir(response.data.data.good);
-        console.dir(response.data.data.dislike);
+        url: `/study/${store.state.curStudy.id}/article/${props.article.id}/${flag}`,
+      }).then((res) => {
         alert('좋아요/싫어요 성공!')
+        console.log(res);
+        emit('refreshArticle', props.article.id)
       }).catch((error) => {
         console.dir(error);
         alert('좋아요/싫어요 실패!')
+        emit('refreshArticle', props.article.id)
       });
     }
-
-    onMounted(()=>{
-        console.log("HI"+props.article)
-    })
 
     return {
       props,
       state,
       dateFormatter,
-      getArticle,
       evalArticle
     }
   }
