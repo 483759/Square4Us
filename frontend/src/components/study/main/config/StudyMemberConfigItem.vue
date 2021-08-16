@@ -3,9 +3,8 @@
     <div class='article-title' style="width=400px">{{ member.email }} </div> 
     <div class='article-author' style="width=400px">{{ member.nickname }} </div> 
 
-    <v-if>
-      <button v-if='state.userId===state.isLeader' @click="approve">가입 승인</button> <button @click='reject'>가입 거절</button>
-    </v-if>
+    <button v-if='state.userId===state.isLeader' @click="approve">가입 승인</button> 
+    <button @click='reject'>가입 거절</button>
   </li>
 </template>
 
@@ -25,13 +24,13 @@ export default {
       required: true
     }
   },
-  setup(props){
+  setup(props, {emit}){
     /// api/member/study/{studyId}/wait
     // 가입 승인
     const store = useStore()
     const state = reactive({
-       userId : store.state.user.id,
-       isLeader : store.state.curStudy.leaderId,
+      userId : store.state.user.id,
+      isLeader : store.state.curStudy.leaderId,
     })
     const approve = async ()=>{
       // /api/study/{studyId}/accept/{memberId}
@@ -44,8 +43,9 @@ export default {
       if (response) {
         console.log(response.data.data);
       }
+      emit('refreshWaitList')
     }
-    // 가입 거절 : 아직 없음
+    // 가입 거절
     const reject = async ()=>{
       const response = await axios({
         url: `/study/${props.studyId}/reject/${props.member.id}`,
@@ -56,6 +56,7 @@ export default {
       if (response) {
         console.log(response.data.data);
       }
+      emit('refreshWaitList')
     }
     return {
       state,

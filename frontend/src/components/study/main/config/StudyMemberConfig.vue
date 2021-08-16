@@ -7,12 +7,12 @@
   <ul class='member-item'>
     <StudyMemberListItem v-for='member in state.memberList' :key='member.id' :member='member' :studyId='studyId'/>
   </ul>
-  <template v-if='state.isLeader && state.waitList.length!=0'>
+  <div v-if='state.isLeader && state.waitList.length!=0'>
     <h2> 가입 신청한 멤버 </h2>
     <ul class='member-item'>
-      <StudyMemberConfigItem v-for='member in state.waitList' :key='member.id' :member='member' :studyId='studyId'/>
+      <StudyMemberConfigItem v-for='member in state.waitList' :key='member.id' :member='member' :studyId='studyId' @refreshWaitList='refreshWaitList'/>
     </ul>
-  </template>
+  </div>
 </template>
 
 <script>
@@ -34,13 +34,13 @@ export default {
     StudyMemberListItem
   },
   setup(props){
-    /// api/member/study/{studyId}/wait
     const store = useStore()
     const state = reactive({
       memberList : [],
       isLeader : store.getters.isLeader,
       waitList : []
     })
+
     const joinedListup = async()=>{
       const response = await axios({
         url: `/member/study/${props.studyId}`,
@@ -49,7 +49,7 @@ export default {
         console.log(err.response);
       })
       if(response.status===200){
-        state.memberList = response.data.data.memberList
+        state.memberList = [...response.data.data.memberList]
       }
     }
     const getSignup = async()=>{
@@ -60,16 +60,21 @@ export default {
         console.log(err.response);
       })
       if (response) {
-        // console.log(response.data.data.memberList);
-        state.waitList = response.data.data.memberList
+        state.waitList = [...response.data.data.memberList]
       }
     }
-    onMounted(()=>{
+    // 가입 대기목록 갱신
+    const refreshWaitList = ()=>{
       getSignup()
       joinedListup()
+    }
+
+    onMounted(()=>{
+      refreshWaitList()
     })
     return {
       state,
+      refreshWaitList
     }
   }
 }
