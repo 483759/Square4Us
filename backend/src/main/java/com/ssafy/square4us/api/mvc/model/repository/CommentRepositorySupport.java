@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -39,5 +40,14 @@ public class CommentRepositorySupport extends QuerydslRepositorySupport {
         Long totalCount = query.fetchCount();
         List<CommentDTO> results = getQuerydsl().applyPagination(pageable, query).fetch();
         return new PageImpl<>(results, pageable, totalCount);
+    }
+
+    @Transactional
+    public Long updateComment(Long commentId, String content){
+        Long affectedRow = jpaQueryFactory.update(qComment)
+                .where(qComment.id.eq(commentId))
+                .set(qComment.content, content)
+                .execute();
+        return affectedRow;
     }
 }
