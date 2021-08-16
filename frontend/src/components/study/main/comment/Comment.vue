@@ -1,10 +1,13 @@
-<template lang="">
-  <div>
-    <li v-for='comment in state.commentList' :key='comment.id'>
-      <CommentListItem :comment='comment' />
-    </li>
-    <input type="text" name="content" v-model="state.writeContent">
-    <button @click="writeComment">댓글 작성</button>
+<template>
+  <div >
+    
+    <CommentListItem  v-for='comment in state.commentList' :key='comment.id' :comment='comment' />
+  
+  <div  class="commentCreatBox">
+    <input class="commentInput" type="text" name="content" v-model="state.writeContent">
+    <button class='green-button' @click="writeComment">댓글 작성</button>
+  </div>
+    
   </div>
 </template>
 <script>
@@ -44,7 +47,7 @@ export default {
 
     onMounted(async ()=>{
       const response = await axios({
-        url: `/comment/${props.article.id}?page=0&size=100&sorted=true&unsorted=true&empty=true`,
+        url: `/comment/${props.article.id}?page=0&size=2&sorted=true&unsorted=true&empty=true`,
         method: 'GET'
       }).catch((err)=>{
         console.log(err.response)
@@ -63,6 +66,16 @@ export default {
   }
 }
 </script>
-<style lang="">
+<style>
+.commentInput {
+  border-radius: 5px;
+  margin-right: 5px;
+}
+.commentCreatBox{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 30px;
+}
   
 </style>
