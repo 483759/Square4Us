@@ -1,5 +1,10 @@
 <template>
   <li>
+    <div>
+      <img v-if="props.member.profile==null" src="/main1.jpg" alt="스터디이미지" width="100">
+      <img v-else :src='getFilePath(props.member.profile.filePath, props.member.profile.fileName)' alt="스터디이미지" width="100">
+    </div>
+    
     <div class='member-email' style="width=300px">{{ member.email }} </div> 
     <div class='member-nickname' style="width=200px">{{ member.nickname }} </div> 
     <div class='member-introduction' style="width=500px">{{ member.introduction }} </div> 
@@ -62,12 +67,16 @@ export default {
         router.push({name: 'Main'})
       }
     }
+    const getFilePath = function(path, name) {
+      return path + '/' + name
+    }
     return {
       props,
       state,
       router,
       delegate,
-      withdraw
+      withdraw,
+      getFilePath
     }
   }
 }
