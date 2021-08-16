@@ -111,4 +111,57 @@ ul {
   padding: 0;
   list-style: none;
 }
+
+
+/* 공통 사용 버튼 */
+.white-button {
+  background-color: white;
+  border: 0;
+  padding: 0;
+  box-shadow: 0 0 0 1px #195C77 inset;
+  color: #195C77;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 5px;
+  width: 150px;
+  height: 35px;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  cursor: pointer;
+}
+
+.white-button:hover {
+  color: #42b983;
+  box-shadow: 0 0 0 1px #42b983 inset;
+  border: 0px;
+  transition: 0.3s;
+}
+
+
+.green-button {
+  background-color: #195C77;
+  border: 0;
+  padding: 0;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 5px;
+  width: 150px;
+  height: 35px;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  cursor: pointer;
+}
+
+.green-button:hover {
+  color: #195C77;
+  box-shadow: 0 0 0 1px #195C77 inset;
+  background-color: white;
+  border: 0px;
+  transition: 0.3s;
+}
 </style>
