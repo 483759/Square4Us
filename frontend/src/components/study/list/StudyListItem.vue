@@ -76,9 +76,9 @@ export default {
     // 스토어
     const store = useStore(); 
 
-    const joinStudy = function () {
-      console.log(state.currentStudy);
-      store.dispatch('joinStudy', state.currentStudy.id)
+    const joinStudy = async function () {``
+      await store.dispatch('joinStudy', state.currentStudy.id)
+      closeModal()
     }
     
     const getFilePath = function(path, name) {
