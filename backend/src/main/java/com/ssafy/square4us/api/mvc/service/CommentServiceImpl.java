@@ -67,12 +67,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void updateComment(Long commentId, CommentDTO.CommentCreatePostReq req) {
+    public Boolean updateComment(Long commentId, CommentDTO.CommentCreatePostReq req) {
         Optional<Comment> comment = commentRepo.findById(commentId);
         if(!comment.isPresent()) {
-            return;
+            return false;
         }
-        Comment com = comment.get();
-        com.setContent(req.getContent());
+        Long result = commentRepositorySupport.updateComment(commentId, req.getContent());
+        return result != 0;
     }
 }

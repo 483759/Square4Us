@@ -16,7 +16,7 @@
 <script>
 //import { useStore } from 'vuex'
 import Comment from '@/components/study/main/comment/Comment.vue'
-import { onMounted, reactive } from '@vue/runtime-core'
+import { reactive } from '@vue/runtime-core'
 
 export default {
   name: 'StudyArticleRead',
@@ -45,10 +45,6 @@ export default {
 
     const getArticle = async () => {
     }
-
-    onMounted(()=>{
-        console.log("HI"+props.article)
-    })
 
     return {
       props,
