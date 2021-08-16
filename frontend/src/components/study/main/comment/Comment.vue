@@ -1,7 +1,7 @@
 <template lang="">
   <div>
     <li v-for='comment in state.commentList' :key='comment.id'>
-      <CommentListItem :comment='comment' />
+      <CommentListItem :comment='comment' :article='article' />
     </li>
     <input type="text" name="content" v-model="state.writeContent">
     <button @click="writeComment">댓글 작성</button>
@@ -51,7 +51,6 @@ export default {
       })
       if(response.status===200){
         state.commentList = response.data.data.commentList.content
-        console.log('')
       }
     })
 
