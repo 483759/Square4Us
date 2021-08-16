@@ -2,10 +2,7 @@ package com.ssafy.square4us.api.mvc.service;
 
 import com.ssafy.square4us.api.mvc.model.dto.ArticleDTO;
 import com.ssafy.square4us.api.mvc.model.dto.FileDTO;
-import com.ssafy.square4us.api.mvc.model.entity.Article;
-import com.ssafy.square4us.api.mvc.model.entity.FileEntity;
-import com.ssafy.square4us.api.mvc.model.entity.Member;
-import com.ssafy.square4us.api.mvc.model.entity.Study;
+import com.ssafy.square4us.api.mvc.model.entity.*;
 import com.ssafy.square4us.api.mvc.model.repository.*;
 import com.ssafy.square4us.common.util.S3Util;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +29,7 @@ public class ArticleServiceImpl implements ArticleService {
     private final MemberRepository memberRepo;
     private final StudyRepository studyRepo;
     private final FileRepository fileRepo;
+    private final ArticleEvaluationRepository articleEvaluationRepo;
     private final S3Util s3Util;
 
     @Override
@@ -127,17 +125,50 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public void evalArticle(Long articleId, String what) {
-        Optional<Article> article = articleRepo.findById(articleId);
-        if(!article.isPresent()) {
-            return;
-        }
-        Article art = article.get();
-        if(what.equals("like")) {
-            art.setGood(art.getGood() + 1);
+    public ArticleDTO evalArticle(String email, Long articleId, String what) throws Exception {
+        Optional<Article> findArticle = articleRepo.findById(articleId);
+        Optional<Member> findMember = memberRepo.findByEmail(email);
+        findArticle.orElseThrow(() -> new Exception("해당하는 게시글이 없음!"));
+        findMember.orElseThrow(() -> new Exception("해당하는 회원이 없음!"));
+        Article article = findArticle.get();
+        Member member = findMember.get();
+        ArticleEvaluation findArticleEval = articleEvaluationRepo.findByMemberAndArticle(member, article);
+
+        if(findArticleEval == null) {
+            ArticleEvaluation newEval = ArticleEvaluation.builder()
+                                            .article(article)
+                                            .member(member)
+                                            .evaluation(what.charAt(0))
+                                            .build();
+            if(newEval.getEvaluation() == 'l') {
+                article.setGood(article.getGood() + 1);
+            } else {
+                article.setDislike(article.getDislike() + 1);
+            }
+            articleEvaluationRepo.save(newEval);
         } else {
-            art.setDislike(art.getDislike() + 1);
+            Character prev = findArticleEval.getEvaluation();
+            Character newC = what.charAt(0);
+            if(prev == newC) {
+                articleEvaluationRepo.delete(findArticleEval);
+                if(prev == 'l') {
+                    article.setGood(article.getGood() - 1);
+                } else {
+                    article.setDislike(article.getDislike() - 1);
+                }
+            } else {
+                if(prev == 'l') {
+                    findArticleEval.setEvaluation('d');
+                    article.setGood(article.getGood() - 1);
+                    article.setDislike(article.getDislike() + 1);
+                } else {
+                    findArticleEval.setEvaluation('l');
+                    article.setGood(article.getGood() + 1);
+                    article.setDislike(article.getDislike() - 1);
+                }
+            }
         }
+        return new ArticleDTO(article);
     }
 
     @Override

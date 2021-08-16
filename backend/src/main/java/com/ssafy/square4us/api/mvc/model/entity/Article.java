@@ -47,13 +47,17 @@ public class Article extends BaseTimeEntity {
     @OneToMany(mappedBy = "article")
     private List<FileEntity> files = new ArrayList<>();
 
+    @OneToMany(mappedBy = "article")
+    private List<ArticleEvaluation> evals = new ArrayList<>();
+
     @Builder
-    public Article(Member member, Study study, String category, String title, String content, List<FileEntity> files) {
+    public Article(Member member, Study study, String category, String title, String content, List<FileEntity> files, List<ArticleEvaluation> evals) {
         this.member = member;
         this.study = study;
         this.category = category;
         this.title = title;
         this.content = content;
         this.files = files;
+        this.evals = evals;
     }
 }

@@ -35,6 +35,8 @@
 //import { useStore } from 'vuex'
 import Comment from '@/components/study/main/comment/Comment.vue'
 import { reactive } from '@vue/runtime-core'
+import axios from 'axios'
+import store from '@/store'
 
 export default {
   name: 'StudyArticleRead',
@@ -47,11 +49,11 @@ export default {
   components: {
     Comment
   },
-  setup(props) {
+  setup(props, { emit }) {
     // const store = useStore()
     const state = reactive({
       isViewMode: false,
-      page: 1
+      page: 1,
     })
 
     const dateFormatter = (date)=>{
@@ -61,14 +63,27 @@ export default {
         return month+'월 '+day+'일 '+time
     }
 
-    const getArticle = async () => {
+    const evalArticle = (flag)=>{
+      console.dir("실행 전 : " + props.article.good + " " + props.article.dislike);
+      axios({
+        method: "POST",
+        url: `/study/${store.state.curStudy.id}/article/${props.article.id}/${flag}`,
+      }).then((res) => {
+        alert('좋아요/싫어요 성공!')
+        console.log(res);
+        emit('refreshArticle', res.data.data)
+        console.dir("실행 후 : " + props.article.good + " " + props.article.dislike);
+      }).catch((error) => {
+        console.dir(error);
+        alert('좋아요/싫어요 실패!')
+      });
     }
 
     return {
       props,
       state,
       dateFormatter,
-      getArticle
+      evalArticle
     }
   }
 }
