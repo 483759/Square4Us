@@ -17,22 +17,22 @@
     <!-- <h3>스터디 메인 미팅리스트 : 여기 들어오면 axios요청을 보내 목록을 갱신함</h3> -->
     <StudyArticleItem :article='article' @click="readArticle(article.id)"/>
     </li>
+    <div id="article-search">
+      <select v-model="search.key" @change="resetWord">
+        <option disabled value="">Please select one</option>
+        <option value="category">카테고리</option>
+        <option value="title">제목</option>
+        <option value="content">내용</option>
+      </select>
+      <select v-if="search.key == 'category'" v-model="search.word">
+        <option disabled value="">Please select one</option>
+        <option value=""></option>
+      </select>
+      <input v-if="search.key == 'title' || search.key == 'content'" v-model="search.word" @keyup.enter="getArticlesWithSearch">
+      <button type="button" v-if="search.key == 'title' || search.key == 'content' || (search.key == 'category' && search.word != '')" @click="getArticlesWithSearch">검색</button>
+    </div>
+    <Pagination v-model="state.page" :records="20" :per-page="1" @paginate="paginate" :options='{texts: {count:""}}'/>
   </ul>
-  <div id="article-search">
-    <select v-model="search.key" @change="resetWord">
-      <option disabled value="">Please select one</option>
-      <option value="category">카테고리</option>
-      <option value="title">제목</option>
-      <option value="content">내용</option>
-    </select>
-    <select v-if="search.key == 'category'" v-model="search.word">
-      <option disabled value="">Please select one</option>
-      <option value=""></option>
-    </select>
-    <input v-if="search.key == 'title' || search.key == 'content'" v-model="search.word" @keyup.enter="getArticlesWithSearch">
-    <button type="button" v-if="search.key == 'title' || search.key == 'content' || (search.key == 'category' && search.word != '')" @click="getArticlesWithSearch">검색</button>
-  </div>
-  <Pagination v-model="state.page" :records="20" :per-page="1" @paginate="paginate" :options='{texts: {count:""}}'/>
 </article>
 </template>
 

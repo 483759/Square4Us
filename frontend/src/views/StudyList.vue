@@ -3,7 +3,7 @@
     <template v-slot:header>
       <div id='study-category'>카테고리</div>
       <div id='study-search'>
-        <select v-model="search.key" @change="resetWord">
+        <select v-model="search.key" @change="resetWord" style="height:33px;">
           <option disabled value="">Please select one</option>
           <option value="category">카테고리</option>
           <option value="name">이름</option>
@@ -83,18 +83,30 @@ export default {
   justify-content: center;
   align-items: center;
   font-size: 0.8rem;
+  background-color: #195C77;
+  
+  font-weight: bold;
+  font-size: 30px;
+  height: 70px;
 }
 
 #study-category {
   flex-basis: 660px;
   flex-grow: 1;
+  color: white;
   }
 
 #study-search {
+  display: flex-start;
+  flex-direction: row-reverse;
+  /* justify-content: start; */
   flex-basis: 210px;
+  padding-right: 20px;
+  
 }
 #study-create {
   flex-basis: 160px;
+  padding-right: 20px;
 }
 
 </style>
