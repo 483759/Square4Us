@@ -6,6 +6,8 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,8 +38,11 @@ public class Member {
     @OneToOne(mappedBy = "member")
     private FileEntity profile;
 
+    @OneToMany(mappedBy = "member")
+    private List<ArticleEvaluation> evals = new ArrayList<>();
+
     @Builder
-    public Member(Long id, String email, String password, MemberRole role, String nickname, String introduction, int report, FileEntity profile) {
+    public Member(Long id, String email, String password, MemberRole role, String nickname, String introduction, int report, FileEntity profile, List<ArticleEvaluation> evals) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -46,5 +51,6 @@ public class Member {
         this.introduction = introduction;
         this.report = report;
         this.profile = profile;
+        this.evals = evals;
     }
 }

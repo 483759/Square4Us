@@ -13,7 +13,7 @@ public interface ArticleService {
     ArticleDTO readArticle(Long articleId);
     ArticleDTO getArticle(Long articleId);
     void deleteByArticleId(Long articleId);
-    void evalArticle(Long articleId, String what);
+    ArticleDTO evalArticle(String email, Long articleId, String what) throws Exception;
 
     void updateArticle(Long articleId, ArticleDTO.WritePostReq req, MultipartFile[] files) throws IOException;
     void uploadFiles(Long articleId, MultipartFile[] files) throws IOException;
