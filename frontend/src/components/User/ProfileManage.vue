@@ -8,12 +8,6 @@
     </div>
       <button class="menuButton" v-show="!data.imgChange" @click="imgchangebutton">사진 수정</button>
       <div class="buttonsection" v-if="data.imgChange">
-          <!-- <input type="text" placeholder="{{data.profile_path}}" v-model="data.profile_path" class="profilePath" > -->
-          <!-- <div> -->
-            <!-- <button class="cancelButton" @click="imgchangebutton">취소</button> -->
-            <!-- 사진저장 버튼을 누를 때 따로 보내야할지 모르겠음 -->
-            <!-- <button class="cancelButton" @click="putimage">사진 저장</button> -->
-          <!-- </div> -->
           <form id="profileForm" role="form" method="post" enctype="multupart/form-data" action="/api/member/me/profile">
             <input type="file" name="profile">
             <button type="button" class="profile_menuButton" @click="updateProfilePhoto">사진 변경</button>
@@ -76,9 +70,7 @@ export default {
             contentType: false,
             processType: false,
           }).then(response => {
-            console.log(response.data.data.profile);
             credentials.profile_path = response.data.data.profile.filePath + '/' + response.data.data.profile.fileName;
-            console.log(credentials.profile_path);
           })
         }
 
@@ -150,4 +142,9 @@ export default {
     justify-content: center;
     flex-wrap: wrap;
     }
+
+#profileForm{
+    display: flex;
+    justify-content: center;
+}
 </style>

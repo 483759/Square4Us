@@ -100,7 +100,6 @@ export default createStore({
       return true
     },
     updateMemberInfo: async function (context, data) {
-      console.log(data);
       const response = await axios({
         method: 'POST',
         url: '/member/me',
@@ -114,7 +113,6 @@ export default createStore({
         return
       }
       await context.commit('SET_USER', response.data.data);
-      console.log(response.data.data);
     },
     // 미팅
     getMeetings: async function (context, studyId) {

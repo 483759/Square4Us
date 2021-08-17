@@ -9,7 +9,7 @@
       <h3>닉네임</h3>
       <input type="text" name="nickname" id="nickname" class="inputbox" :placeholder="user.nickname" v-model="credentials.nickname">
       <h3>이메일</h3>
-      <input type="text" name="email" class="inputbox" :placeholder="user.email" v-model="credentials.email" disabled>
+      <input type="text" name="email" id="email" class="inputbox" v-model="user.email" disabled>
 </div>
     <div class="infoItem">
       <h3>내 소개</h3>
@@ -39,41 +39,47 @@
 import axios from "axios";
 import { useStore } from "vuex";
 import { reactive } from "@vue/reactivity";
-import { computed } from "@vue/runtime-core";
+import { computed, onMounted } from "@vue/runtime-core";
 export default {
   name: "UserInfo",
   setup() {
     const store = useStore();
     const user = computed(() => store.state.user);
     const credentials = reactive({
-      nickname: user.nickname,
-      email: user.email,
-      introduction: user.introduction,
+      nickname: store.state.user.nickname,
+      email: store.state.user.email,
+      introduction: store.state.user.introduction,
       profile_path: "profile path",
     });
     const data = reactive({
       imgUrl: "http://img.marieclairekorea.com/2018/10/mck_5bd26c6899aa0-562x709.jpg",
       imgChange: false,
     });
+
+    onMounted({
+
+    })
+
     // 개인 프로필 불러오는 함수(computed 대용)
     const getUserInfo = () => {
-      const API_URL = "#";
+      // const API_URL = "#";
 
-      axios({
-        method: "GET",
-        url: API_URL,
-        data: {
-          credentials,
-        },
-      }).then((response) => {
-        this.credentials = response.data;
-      });
+      // axios({
+      //   method: "GET",
+      //   url: API_URL,
+      //   data: {
+      //     credentials,
+      //   },
+      // }).then((response) => {
+      //   this.credentials = response.data;
+      // });
     };
 
     // 버튼 변경 함수
     const imgchangebutton = () => {
       data.imgChange = !data.imgChange;
     };
+
     // 프로필 수정 함수
     const putUserInfo = () => {
       store.dispatch("updateMemberInfo", { nickname: credentials.nickname, introduction: credentials.introduction });
@@ -88,10 +94,10 @@ export default {
         contentType: false,
         processType: false,
       }).then((response) => {
-        console.log(response.data.data.profile);
         credentials.profile_path =
           response.data.data.profile.filePath + "/" + response.data.data.profile.fileName;
-        console.log(credentials.profile_path);
+      }).catch((err)=>{
+        console.log(err);
       });
     };
 
@@ -157,14 +163,19 @@ template {
 }
 
 
-/* #nickname{
-  border: none;
-  border-bottom: gray 1px solid;
+#nickname{
+  height: 100px;
+  font-weight: bold;
+  font-size: 24px;
+  /* border: none;
+  border-bottom: gray 1px solid; */
 }
-#user_email {
-  border: none;
-  border-bottom: gray 1px solid;
-} */
+
+#email {
+  height: 65px;
+  /* border: none;
+  border-bottom: gray 1px solid; */
+}
  
 .menuButton {
   /* margin-left: 100px; */
