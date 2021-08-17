@@ -1,9 +1,9 @@
 <template>
   <div >
     
-    <CommentListItem  v-for='comment in state.commentList' :key='comment.id' :comment='comment' :article='article'/>
+    <CommentListItem  v-for='comment in state.commentList' :key='comment.id' :comment='comment' :article='article' @getComments='getComments' />
   
-  <div  class="commentCreatBox">
+  <div  class="commentCreateBox">
     <input class="commentInput" type="text" name="content" v-model="state.writeContent">
     <button class='green-button' @click="writeComment">댓글 작성</button>
   </div>
@@ -41,27 +41,30 @@ export default {
       }).catch((err)=>{
         console.log(err.response)
       })
-      if(response.status===200){
-        console.log('')
+      if(response){
+        getComments()
       }
     }
 
-    onMounted(async ()=>{
+    onMounted(()=>{
+      getComments() 
+    })
+    const getComments = async() => {
       const response = await axios({
-        url: `/comment/${props.article.id}?page=0&size=30&sorted=true&unsorted=true&empty=true`,
+        url: `/comment/${props.article.id}?page=0&size=2&sorted=true&unsorted=true&empty=true`,
         method: 'GET'
       }).catch((err)=>{
         console.log(err.response)
       })
-      if(response.status===200){
+      if(response){
         state.commentList = response.data.data.commentList.content
       }
-    })
-
+    }
     return {
       props,
       state,
-      writeComment
+      writeComment,
+      getComments
     }
   }
 }
@@ -71,11 +74,11 @@ export default {
   border-radius: 5px;
   margin-right: 5px;
 }
-.commentCreatBox{
+.commentCreateBox{
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 10px;
 }
   
 </style>

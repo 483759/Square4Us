@@ -19,26 +19,33 @@
 </ul>
 <Modal :isShow='isShow' @switchModal='closeModal'>
   <template v-slot:header >
+    <div class="studyModalHead">
+      스터디 가입하기
+    </div>
+    
   </template>
 
   <!-- 모달바디 -->
   <template v-slot:default>
     <section>
+      
+      
       <img class='study-signin-img' v-if="state.currentStudy.profile==null" src="/main1.jpg" alt="스터디이미지">
       <img class='study-signin-img' v-else :src='getFilePath(state.currentStudy.profile.filePath, state.currentStudy.profile.fileName)' alt="스터디이미지">
       <div class="studyNameBox">
-        {{state.currentStudy.name}} 
+      {{state.currentStudy.name}} 
+      <div class="studyCategory">
+        study for {{state.currentStudy.category}}  
+      </div>
         <br>
-        <div class="studyCategory">
-          [{{state.currentStudy.category}}]
-        </div>
+        
       </div>
     </section>
   </template>
 
   <!-- 모달푸터 -->
   <template v-slot:footer>
-    <button @click='joinStudy'>가입하기</button>
+    <button class="green-button studySignButton" @click='joinStudy'>가입하기</button>
   </template>
 
 </Modal>
@@ -111,7 +118,7 @@ export default {
   width: 330px;
   margin: 25px 20px 25px 20px;
   transform: scale(1);
-  transition: all 0.2s ease-out;
+  transition: all 0.1s ease-out;
 
 }
 
@@ -124,12 +131,13 @@ export default {
   transform: scale(1);
 }
 .studyImage:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
   display: flex;
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  transition: all 0.2s ease-out;
+  transition: all 0.1s ease-out;
+  cursor: pointer;
 }
 .studyNameBox{
   height: 50px;
@@ -141,12 +149,7 @@ export default {
   font-weight: bold;
   color: #195C77;
 }
-.studySignInButton{
-  height: 30px;
-  width: 50px;
-  box-sizing: border-box;
-  
-}
+
 .studyCategory {
   font-size: 15px;
   font-weight: lighter;
@@ -155,5 +158,13 @@ export default {
 .study-signin-img {
   width: 350px;
 }
+.studyModalHead {
+  height: 20px;
+}
+.studySignButton {
+  width: 350px !important;
+  height: 50px !important;
+  margin:0 auto;
 
+}
 </style>
