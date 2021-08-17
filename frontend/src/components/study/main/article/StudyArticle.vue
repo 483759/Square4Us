@@ -31,7 +31,7 @@
       <input v-if="search.key == 'title' || search.key == 'content'" v-model="search.word" @keyup.enter="getArticlesWithSearch">
       <button type="button" v-if="search.key == 'title' || search.key == 'content' || (search.key == 'category' && search.word != '')" @click="getArticlesWithSearch">검색</button>
     </div>
-    <Pagination v-model="state.page" :records="20" :per-page="1" @paginate="paginate" :options='{texts: {count:""}}'/>
+    <Pagination v-model="state.page" :records="totalPageNum-1" :per-page="6" @paginate="paginate" :options='{texts: {count:""}}'/>
   </ul>
 </article>
 </template>
@@ -66,6 +66,9 @@ export default {
     const articles = computed(()=>{
       return store.state.studyArticles
     })
+    const totalPageNum = computed(()=>{
+      return Number(store.state.studyArticles.totalElements)
+    })
     const search = reactive({
       key: "",
       word: "",
@@ -81,6 +84,7 @@ export default {
     const paginate = (pageNum)=>{
       state.page = pageNum
       console.log(pageNum); // 클릭한 페이지가 넘어옴
+      getArticles()
     }
 
     // 게시글 작성 토글
@@ -100,7 +104,7 @@ export default {
         state.isReadMode = !state.isReadMode
       }
     }
-
+    // 게시글 갱신
     const refreshArticle = (article) => {
       state.article = article;
     }
@@ -120,11 +124,12 @@ export default {
         getArticles()
         return
       }
-
       console.log('게시물 생성 실패');
     }
     const getArticles = ()=>{
-      store.dispatch('getArticles', props.studyId)
+      //여기서 조건을 걸어서 가져와야 함
+      // page
+      store.dispatch('getArticles', {studyId: props.studyId, page: state.page })
     }
     const getArticlesWithSearch = () => {
       store.dispatch('getArticlesWithSearch',
@@ -148,6 +153,7 @@ export default {
       search,
       state,
       articles,
+      totalPageNum,
       paginate,
       readArticle,
       refreshArticle,
