@@ -148,6 +148,7 @@ export default {
   font-size: 18px;
   font-weight: bold;
   color: #195C77;
+  margin-top: 30px;
 }
 
 .studyCategory {

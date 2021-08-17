@@ -11,7 +11,14 @@
         <img class="logo_signup" src="/square4us.png" alt="">
       </div>
       <form id='signup-form' method="POST" @submit.prevent="signUp">
-        <p><input class="input_signup" type="email" id="signup_email" name="email" placeholder="이메일 입력" v-model="credentials.email" @change="isValid = false;"><button type="button" @click="checkEmail">중복 확인</button></p>
+        <div clas="emailBox">
+          <div>
+            <input class="input_email" type="email" id="signup_email" name="email" placeholder="이메일 입력" v-model="credentials.email" @change="isValid = false;">
+          </div>
+          <div>
+            <button type="button" class="checkEmail" @click="checkEmail">중복 확인</button>
+          </div>
+        </div>
         <p><input class="input_signup" type="nickname" id="signup_nickname" name="nickname" placeholder="닉네임" v-model="credentials.nickname"></p>
         <p><input class="input_signup" type="password"  id="signup_password" name="password" placeholder="비밀번호" v-model="credentials.password"></p>
         <p><input class="input_signup" type="password"  id="signup_password_confirmation" name="password_confirmation" placeholder="비밀번호확인" v-model="password_confirmation"></p>
@@ -119,15 +126,11 @@ export default {
   border:none;
   border-bottom: 2px #65BF9E solid;
 }
-#signup_button:hover {
-  background-color: #195C77;
-  color: white;
-  font-size: 20px;
   
-}
+
 
 #signup-form {
-    margin: 0px 0px auto;
+  margin: 0px 0px auto;
     margin-top: 0;
   }
   .header_signup{
@@ -143,7 +146,6 @@ export default {
     align-items: center;
     
   }
- 
   .logo_signup {
     height: 60px;
     width: 60px;
@@ -176,6 +178,19 @@ export default {
     border-radius: 3px;
     
   }
+  .input_email {
+    border:none;
+    border-bottom: 1px lightgray solid;  
+    margin-top: 1px;
+    height: 40px;
+    margin-bottom: 20px;
+    width: 300px;
+    flex-basis: 150px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    
+    
+  }
   p {
     margin: 0;
   }
@@ -188,8 +203,15 @@ export default {
     box-sizing: border-box;
     border-radius: 5px;
     border: transparent;
+    color: white;
+    font-size: 20px;
   }
-
+    #signup_button:hover {
+      background-color: white;
+      color: #509186;
+      border: 1px solid #509186;
+      font-size: 20px;
+  } 
   .button_close {
     display: block;
     /* block으로 해야 x가 쉽게 가운데로 옴 */
@@ -211,4 +233,37 @@ export default {
     height: 500px;
     border-radius: 3px;
   }
+
+  .checkEmail {
+  background-color: #509186;
+  border: 0;
+  padding: 0;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 5px;
+  width: 70px;
+  height: 35px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  cursor: pointer;
+  margin: auto;
+}
+
+
+.checkEmail:hover {
+  color: #509186;
+  box-shadow: 0 0 0 1px #509186 inset;
+  background-color: white;
+  border: 0px;
+  transition: 0.3s;
+} 
+.emailBox {
+  display: flex;
+  margin: 0;
+  flex-wrap: nowrap;
+  gap: 10px;
+  align-items: center;
+}
 </style>

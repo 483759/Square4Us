@@ -31,7 +31,7 @@
       <!-- 모달푸터 -->
       <template v-slot:footer>
         <!-- <footer>푸터도 들어감</footer> -->
-        <a class="login_p">아직 회원이 아니신가요? </a>
+        <a class="login_p" @click="goSignup">아직 회원이 아니신가요? </a>
       </template>
 
       <!-- 모달여닫는 버튼 (외부노츨) -->
@@ -46,6 +46,7 @@
 import Modal from '@/components/home/Modal.vue'
 import { reactive, ref } from '@vue/reactivity'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 export default {
   name: 'Login',
   components : {
@@ -67,11 +68,20 @@ export default {
     const login = ()=>{
       store.dispatch('login', credentials)
     }
+
+    const router = useRouter()
+
+    const goSignup = () => {
+      isShow.value = !isShow.value
+      router.push('SignUp')
+    }
     return {
       isShow,
       switchModal,
       credentials,
       login,
+      router,
+      goSignup
     }
   }
 }

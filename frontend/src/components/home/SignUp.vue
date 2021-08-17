@@ -192,20 +192,7 @@ export default {
     box-sizing: border-box;
     border-radius: 5px;
     border: transparent;
-  }
-
-  .button_close {
-    display: block;
-    /* block으로 해야 x가 쉽게 가운데로 옴 */
-    height: 30px;
-    width: 30px;
-    border: gray;
-    border-radius: 5px;
-    margin: 0 1px 10px 0;
-
-    box-shadow: 2px 1px 3px;
-    box-sizing: border-box;
-    
+    font-size: 30px !important;
   }
   .signup_p {
     font-size: 10px;
