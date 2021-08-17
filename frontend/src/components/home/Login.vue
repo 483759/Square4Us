@@ -5,7 +5,6 @@
       <template v-slot:header >
         <!-- <header> 헤더도 들어감 </header> -->
         <div class="header_login">
-          <button class="button_close" @click.stop="switchModal">X</button>
         </div>
       </template>
 
@@ -99,8 +98,7 @@ export default {
     position: absolute;
     top: 50%;
     left: 50%;
-    background-color: var(--background);
-    /* 박스 그림자 */
+    background-color: white !important;
     box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
     
     /* 임시 지정 */
