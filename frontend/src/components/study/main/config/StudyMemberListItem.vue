@@ -1,10 +1,10 @@
 <template>
   <li>
     <div class="member-profile" v-if="state.profile">
-      <img class="profileImgFrame" src="profile" alt="">
+      <img class="profileImgFrame" :src="state.profile" alt="">
     </div>
     <div class="member-profile" v-else>
-      <img class="profileImgFrame" src="profile" alt="">
+      <img class="profileImgFrame" src="/logo.png" alt="">
     </div>
     <div class='member-email' style="width=300px">{{ member.email }} </div> 
     <div class='member-nickname' style="width=200px">{{ member.nickname }} </div> 
@@ -25,7 +25,8 @@
 import axios from 'axios'
 import router from '../../../../router';
 import { useStore } from 'vuex';
-import { computed, reactive } from '@vue/runtime-core'
+import { onMounted, reactive } from '@vue/runtime-core'
+// import { computed } from '@vue/runtime-core'
 export default {
   name: 'StudyMemberConfigItem',
   props: {
@@ -70,27 +71,23 @@ export default {
         router.push({name: 'Main'})
       }
     }
-
-    // onMounted(() => {
-    //   console.log(props.member.profile.filePath)
-    //   console.log(props.member.profile.fileName)
-    //   if (props.member.profile !== null){
-    //     state.profile = props.member.profile.filePath + '/' + props.member.profile.fileName
-    //     console.log('state', state.profile)
-    //     }else {state.profile = '/logo.png'
-    //     }
-      
-    // })
-    const profile = computed(() => props.member.profile.filePath + '/' + props.member.profile.fileName)
-    console.log(profile)
+    // 프로필 사진 불러오는 함수
+    onMounted(() => {
+      getProfile()
+    })
+    const getProfile = () => {
+      if(props.member.profile !== null){
+        return state.profile = props.member.profile.filePath + '/' + props.member.profile.fileName
+      }else{ return state.profile = 0} 
+    }
     return {
       props,
       state,
       router,
       delegate,
       withdraw,
-      // getProfile
-      profile
+      getProfile
+      
     }
   }
 }
