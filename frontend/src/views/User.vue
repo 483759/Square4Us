@@ -8,16 +8,16 @@
       <p>{{user.nickname}}님!</p>
     </div>
     <div>
-    <button @click="infopage1" :class="{ 'clickedbutton': data.click1, 'unclickedbutton': !data.click1 }">UserInfo</button>
+    <button @click="infoPage(0)" :class="{ 'clickedbutton': data.click[0], 'unclickedbutton': !data.click[0] }">UserInfo</button>
     </div>
     <div>
-    <button  @click="infopage2" :class="{ 'clickedbutton': data.click2, 'unclickedbutton': !data.click2 }">profileManage</button>
+    <button  @click="infoPage(1)" :class="{ 'clickedbutton': data.click[1], 'unclickedbutton': !data.click[1] }">profileManage</button>
     </div>
     <div> 
-    <button @click="infopage3" :class="{ 'clickedbutton': data.click3, 'unclickedbutton': !data.click3 }">UserSetting</button>
+    <button @click="infoPage(2)" :class="{ 'clickedbutton': data.click[2], 'unclickedbutton': !data.click[2] }">UserSetting</button>
     </div>
     <div>
-    <button @click="infopage4" :class="{ 'clickedbutton': data.click4, 'unclickedbutton': !data.click4 }">UserNote</button>
+    <button @click="infoPage(3)" :class="{ 'clickedbutton': data.click[3], 'unclickedbutton': !data.click[3] }">UserNote</button>
     </div>
     <div>
     
@@ -28,19 +28,19 @@
   </div>
   
   <div name="page" class="page">
-    <div v-if="data.infopage === 1">
+    <div v-if="data.infopage === 0">
       <UserInfo/>
     </div>
-    <div v-if="data.infopage === 2">
+    <div v-if="data.infopage === 1">
       <ProfileManage/>
     </div>
-    <div v-if="data.infopage === 3">
+    <div v-if="data.infopage === 2">
       <UserSetting/>
     </div>
-    <div v-if="data.infopage === 4">
+    <div v-if="data.infopage === 3">
        <UserNote/>
     </div>
-    <div v-if="data.infopage === 5">
+    <div v-if="data.infopage === 4">
      
     </div>
     
@@ -70,70 +70,27 @@ export default {
   },
   setup () {
     
-    const data = reactive ({
-      infopage : 1, 
-      click1 : true,
-      click2 : false,
-      click3 : false,
-      click4 : false,
-      click5 : false,
-      user: {}
-
-
-       })
-    
-    const infopage1 = () => { 
-    data.infopage = 1,
-    data.click1 = true
-    data.click2 = false
-    data.click3 = false
-    data.click4 = false
-    data.click5 = false
-    }
-    const infopage2 = () => { 
-      data.infopage = 2, 
-      data.click1 = false
-      data.click2 = true
-      data.click3 = false
-      data.click4 = false
-      data.click5 = false
-    }
-    const infopage3 = () => { 
-      data.infopage = 3, 
-      data.click1 = false
-      data.click2 = false
-      data.click3 = true
-      data.click4 = false
-      data.click5 = false
-    }
-    const infopage4 = () => { 
-      data.infopage = 4, 
-      data.click1 = false
-      data.click2 = false
-      data.click3 = false
-      data.click4 = true
-      data.click5 = false
-    }
-    const infopage5 = () => { 
-      data.infopage = 5, 
-      data.click1 = false
-      data.click2 = false
-      data.click3 = false
-      data.click4 = false
-      data.click5 = true
-    }
     const store = useStore()
     const user = computed(()=>store.state.user)
+
+    const data = reactive ({
+      infopage : 0, 
+      click : new Array(5).fill(false),
+      user: {}
+    })
+    
+    const infoPage = (page) => {
+      data.infopage = page;
+      for (let i = 0; i< 5; i++) {
+        data.click[i]=(i==page)?true:false;
+      }
+    }
     // console.log(user)
     
     
     return {
       data,
-      infopage1,
-      infopage2,
-      infopage3,
-      infopage4,
-      infopage5,
+      infoPage,
       store,
       user
       

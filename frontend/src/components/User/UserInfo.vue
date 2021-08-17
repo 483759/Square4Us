@@ -5,20 +5,22 @@
 
 <section class="usersection myInfoBox" >
   <div class="usersection_left">
-    <!-- 왼쪽블럭 -->
-    <div>
+    <div class="infoItem">
+      <h3>닉네임</h3>
       <input type="text" name="nickname" id="nickname" class="inputbox" :placeholder="user.nickname" v-model="credentials.nickname">
-    </div>
-    <div>
+      <h3>이메일</h3>
+      <input type="text" name="email" id="email" class="inputbox" v-model="user.email" disabled>
+</div>
+    <div class="infoItem">
+      <h3>내 소개</h3>
       <textarea type="textarea" name="introduction" class="inputbox" style="height:250px" id="" cols="30" rows="10" :placeholder="user.introduction" v-model="credentials.introduction">
       </textarea>
     </div>
-    <div>
-      <input type="text" name="email" class="inputbox" :placeholder="user.email" v-model="credentials.email" disabled>
+    <div class="infoItem">
     </div>
-    <div>
+    <!-- <div class="infoItem">
       <div class="badgeBox"></div>
-    </div>
+    </div> -->
     
     
   </div>
@@ -37,41 +39,47 @@
 import axios from "axios";
 import { useStore } from "vuex";
 import { reactive } from "@vue/reactivity";
-import { computed } from "@vue/runtime-core";
+import { computed, onMounted } from "@vue/runtime-core";
 export default {
   name: "UserInfo",
   setup() {
     const store = useStore();
     const user = computed(() => store.state.user);
     const credentials = reactive({
-      nickname: user.nickname,
-      email: user.email,
-      introduction: user.introduction,
+      nickname: store.state.user.nickname,
+      email: store.state.user.email,
+      introduction: store.state.user.introduction,
       profile_path: "profile path",
     });
     const data = reactive({
       imgUrl: "http://img.marieclairekorea.com/2018/10/mck_5bd26c6899aa0-562x709.jpg",
       imgChange: false,
     });
+
+    onMounted({
+
+    })
+
     // 개인 프로필 불러오는 함수(computed 대용)
     const getUserInfo = () => {
-      const API_URL = "#";
+      // const API_URL = "#";
 
-      axios({
-        method: "GET",
-        url: API_URL,
-        data: {
-          credentials,
-        },
-      }).then((response) => {
-        this.credentials = response.data;
-      });
+      // axios({
+      //   method: "GET",
+      //   url: API_URL,
+      //   data: {
+      //     credentials,
+      //   },
+      // }).then((response) => {
+      //   this.credentials = response.data;
+      // });
     };
 
     // 버튼 변경 함수
     const imgchangebutton = () => {
       data.imgChange = !data.imgChange;
     };
+
     // 프로필 수정 함수
     const putUserInfo = () => {
       store.dispatch("updateMemberInfo", { nickname: credentials.nickname, introduction: credentials.introduction });
@@ -86,10 +94,10 @@ export default {
         contentType: false,
         processType: false,
       }).then((response) => {
-        console.log(response.data.data.profile);
         credentials.profile_path =
           response.data.data.profile.filePath + "/" + response.data.data.profile.fileName;
-        console.log(credentials.profile_path);
+      }).catch((err)=>{
+        console.log(err);
       });
     };
 
@@ -120,6 +128,17 @@ template {
   background-color: #f2f2f2;
 }
 
+.usersection_left{
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+  text-align: left;
+}
+
+.infoItem {
+  margin: 20px;
+}
+
 .myInfoBox {
     width: 40rem;
     display: flex;
@@ -134,16 +153,28 @@ template {
   border-radius: 3px;
   border: gray 1px solid;
   margin: 0 0 20px 0;
+  transition: .3s;
+  outline: none;
+}
+
+.inputbox:focus{
+  border-color: #509186;
+  box-shadow: 0 0 8px 0 #509186;
 }
 
 
 #nickname{
-  border: none;
-  border-bottom: gray 1px solid;
+  height: 100px;
+  font-weight: bold;
+  font-size: 24px;
+  /* border: none;
+  border-bottom: gray 1px solid; */
 }
-#user_email {
-  border: none;
-  border-bottom: gray 1px solid;
+
+#email {
+  height: 65px;
+  /* border: none;
+  border-bottom: gray 1px solid; */
 }
  
 .menuButton {
