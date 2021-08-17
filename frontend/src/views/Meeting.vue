@@ -1,8 +1,8 @@
 <template>
   <h1>Meeting</h1>
   <div v-if="!state.isReady">
-    <BeforeMeeting @enter="enter" @switchSession="switchSession" @exit="exit"/>
-    선택한 세부 세션 : {{state.sessionNum}}
+    <BeforeMeeting @enter="enter" @switchSession="switchSession" @exit="exit" />
+    선택한 세부 세션 : {{ state.sessionNum }}
   </div>
   <div v-else>
     <div id="session">
@@ -10,9 +10,7 @@
         <h1 id="session-title">{{ state.mySessionId }}</h1>
       </div>
       <div id="video-container" class="col-md-6">
-        <UserVideo
-          :stream-manager="state.publisher"
-        />
+        <UserVideo :stream-manager="state.publisher" />
         <UserVideo
           v-for="sub in state.subscribers"
           :key="sub.stream.connection.connectionId"
@@ -24,12 +22,11 @@
         <button type="button" class="green-button" @click="audioOnAndOff()">audio</button>
         <button class="green-button" @click="exit">나가기</button>
       </div>
-      <input type="text" v-model="state.message" @keyup.enter="sendChat()"/>
+      <input type="text" v-model="state.message" @keyup.enter="sendChat()" />
       <button type="button" @click="sendChat()">입력</button>
     </div>
 
     <div id="chatting-content"></div>
-    
   </div>
 </template>
 
@@ -44,7 +41,7 @@ import axios from "axios";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-const OPENVIDU_SERVER_URL = "https://54.180.140.242:4443";
+const OPENVIDU_SERVER_URL = "https://i5b308.p.ssafy.io:4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 export default {
@@ -79,7 +76,7 @@ export default {
       audioEnabled: true,
 
       message: "",
-      sessionNum: 1
+      sessionNum: 1,
     });
     onMounted(() => {
       console.log(`${props.studyId}번 스터디, ${props.meetingId}번 방 입장 완료`);
@@ -94,7 +91,7 @@ export default {
       console.log(store.state.user);
       console.log(store.state.user.nickname + `(${store.state.user.email})`);
       console.log(props.meetingId);
-      state.mySessionId = props.studyId + '-' + props.meetingId + '-' + state.sessionNum;
+      state.mySessionId = props.studyId + "-" + props.meetingId + "-" + state.sessionNum;
       state.myUserName = store.state.user.nickname + `(${store.state.user.email})`;
       joinSession();
     };
@@ -258,25 +255,22 @@ export default {
     };
     const sendChat = () => {
       let t = state;
-      if(t.message && t.message != '') {
-        t.session.signal({
-          data: t.myUserName + "/" + t.message,
-          to: [],
-          type: 'my-chat'
-        })
-        .then(
-          () => {
+      if (t.message && t.message != "") {
+        t.session
+          .signal({
+            data: t.myUserName + "/" + t.message,
+            to: [],
+            type: "my-chat",
+          })
+          .then(() => {
             console.log("Message successfully sent");
-          }
-        )
-        .catch(
-          error => {
+          })
+          .catch((error) => {
             console.error(error);
-          }
-        );
+          });
       }
       t.message = "";
-    }
+    };
     return {
       state,
       enter,
@@ -296,13 +290,11 @@ export default {
 </script>
 
 <style>
-
-.MeetingButtonBox{
+.MeetingButtonBox {
   display: flex;
   flex-direction: row;
   justify-content: center;
   gap: 10px;
   margin-bottom: 10px;
 }
-
 </style>
