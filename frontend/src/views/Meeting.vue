@@ -8,16 +8,6 @@
     <div id="session">
       <div id="session-header">
         <h1 id="session-title">{{ state.mySessionId }}</h1>
-        <input
-          class="btn btn-large btn-danger"
-          type="button"
-          id="buttonLeaveSession"
-          @click="leaveSession"
-          value="Leave session"
-        />
-      </div>
-      <div id="main-video" class="col-md-6">
-        <UserVideo :stream-manager="state.mainStreamManager" />
       </div>
       <div id="video-container" class="col-md-6">
         <UserVideo
@@ -31,17 +21,17 @@
           @click="updateMainVideoStreamManager(sub)"
         />
       </div>
-      <button type="button" @click="videoOnAndOff()">video</button>
-      <button type="button" @click="audioOnAndOff()">audio</button>
-      
+      <div class="MeetingButtonBox">
+        <button type="button" class="green-button" @click="videoOnAndOff()">video</button>
+        <button type="button" class="green-button" @click="audioOnAndOff()">audio</button>
+        <button class="green-button" @click="exit">나가기</button>
+      </div>
       <input type="text" v-model="state.message" @keyup.enter="sendChat()"/>
       <button type="button" @click="sendChat()">입력</button>
     </div>
 
-    <div id="chatting-content">
-      
-    </div>
-    <button @click="exit">나가기</button>
+    <div id="chatting-content"></div>
+    
   </div>
 </template>
 
@@ -56,7 +46,7 @@ import axios from "axios";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-const OPENVIDU_SERVER_URL = "https://54.180.140.242:4443";
+const OPENVIDU_SERVER_URL = "https://i5b308.p.ssafy.io:4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 export default {
@@ -310,4 +300,14 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+.MeetingButtonBox{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+</style>

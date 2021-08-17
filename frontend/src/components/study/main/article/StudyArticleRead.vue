@@ -20,11 +20,11 @@
   
   
   <div class="articleReadContent">
-    {{props.article.content}}
+    <p v-html="props.article.content"></p>
   </div>
   <div class="articleReadButtonBox">
-    <button class="green-button" @click="like">좋아요</button>
-    <button class="green-button" @click="like">싫어요</button>
+    <button class="green-button" @click="evalArticle('l')">좋아요</button>
+    <button class="green-button" @click="evalArticle('d')">싫어요</button>
   </div>
   
   <Comment :article="props.article" />
