@@ -192,6 +192,7 @@ public class MemberController {
             return ResponseFactory.unauthorized();
         }
 
+        System.out.println(profile);
         if(profile == null) {
             return ResponseFactory.forbidden();
         }
