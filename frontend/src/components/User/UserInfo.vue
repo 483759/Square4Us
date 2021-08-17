@@ -5,20 +5,22 @@
 
 <section class="usersection myInfoBox" >
   <div class="usersection_left">
-    <!-- 왼쪽블럭 -->
-    <div>
+    <div class="infoItem">
+      <h3>닉네임</h3>
       <input type="text" name="nickname" id="nickname" class="inputbox" :placeholder="user.nickname" v-model="credentials.nickname">
-    </div>
-    <div>
+      <h3>이메일</h3>
+      <input type="text" name="email" class="inputbox" :placeholder="user.email" v-model="credentials.email" disabled>
+</div>
+    <div class="infoItem">
+      <h3>내 소개</h3>
       <textarea type="textarea" name="introduction" class="inputbox" style="height:250px" id="" cols="30" rows="10" :placeholder="user.introduction" v-model="credentials.introduction">
       </textarea>
     </div>
-    <div>
-      <input type="text" name="email" class="inputbox" :placeholder="user.email" v-model="credentials.email" disabled>
+    <div class="infoItem">
     </div>
-    <div>
+    <!-- <div class="infoItem">
       <div class="badgeBox"></div>
-    </div>
+    </div> -->
     
     
   </div>
@@ -120,6 +122,17 @@ template {
   background-color: #f2f2f2;
 }
 
+.usersection_left{
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+  text-align: left;
+}
+
+.infoItem {
+  margin: 20px;
+}
+
 .myInfoBox {
     width: 40rem;
     display: flex;
@@ -134,17 +147,24 @@ template {
   border-radius: 3px;
   border: gray 1px solid;
   margin: 0 0 20px 0;
+  transition: .3s;
+  outline: none;
+}
+
+.inputbox:focus{
+  border-color: #509186;
+  box-shadow: 0 0 8px 0 #509186;
 }
 
 
-#nickname{
+/* #nickname{
   border: none;
   border-bottom: gray 1px solid;
 }
 #user_email {
   border: none;
   border-bottom: gray 1px solid;
-}
+} */
  
 .menuButton {
   /* margin-left: 100px; */
