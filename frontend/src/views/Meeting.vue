@@ -195,7 +195,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .post(
-            `${OPENVIDU_SERVER_URL}/openvidu/api/sessions`,
+            `/vidu/openvidu/api/sessions`,
             JSON.stringify({
               customSessionId: sessionId,
             }),
@@ -220,7 +220,7 @@ export default {
                   `No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`
                 )
               ) {
-                location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
+                location.assign(`/vidu/accept-certificate`);
               }
               reject(error.response);
             }
@@ -231,7 +231,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .post(
-            `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
+            `/vidu/openvidu/api/sessions/${sessionId}/connection`,
             {},
             {
               auth: {
