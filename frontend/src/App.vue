@@ -27,6 +27,12 @@ export default {
       }else{
         router.push({name: 'Main'})
       }
+
+      window.addEventListener('unload', function() {
+        localStorage.removeItem('JWT')
+        axios.defaults.headers.common['Authorization'] = ''
+        store.commit('LOGOUT')
+      });
     })
     // const changeTheme = (e)=>{
     //   const htmlTag = document.getElementsByTagName('html')[0]
