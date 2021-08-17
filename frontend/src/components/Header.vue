@@ -14,7 +14,6 @@
       <MyStudy v-if='myStudies.length' :myStudies='myStudies'/>
       <router-link :to="{ name: 'User' }">User</router-link> 
       <router-link :to="{ name: 'StudyReport' }">Report</router-link>
-      <router-link :to="{ name: 'Openvidu' }">Openvidu</router-link>
       <Logout/>
     </section>
     <section v-else id='nav-list'>
