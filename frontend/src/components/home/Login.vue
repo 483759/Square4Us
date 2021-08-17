@@ -15,7 +15,7 @@
           <img class="logo_login" src="/square4us.png" alt="">
           <span class="slogan_login">Square4us</span>
         </div>
-           <form id='login-form' method="POST" @submit.prevent="login">
+          <form id='login-form' method="POST" @submit.prevent="login">
           <!-- <p><label for="email">Email</label></p> -->
           <p><input class="input_login" type="email" id="login_email" name="email" placeholder="이메일 입력" v-model="credentials.email"></p>
           <!-- <p><label for="password">Password</label></p> -->
@@ -30,7 +30,7 @@
       <!-- 모달푸터 -->
       <template v-slot:footer>
         <!-- <footer>푸터도 들어감</footer> -->
-        <a class="login_p">아직 회원이 아니신가요? </a>
+        <a class="login_p" @click="goSignup">아직 회원이 아니신가요? </a>
       </template>
 
       <!-- 모달여닫는 버튼 (외부노츨) -->
@@ -45,6 +45,7 @@
 import Modal from '@/components/home/Modal.vue'
 import { reactive, ref } from '@vue/reactivity'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 export default {
   name: 'Login',
   components : {
@@ -66,11 +67,19 @@ export default {
     const login = ()=>{
       store.dispatch('login', credentials)
     }
+    const router = useRouter()
+
+    const goSignup = () => {
+      isShow.value = !isShow.value
+      router.push('SignUp')
+    }
     return {
       isShow,
       switchModal,
       credentials,
       login,
+      router,
+      goSignup
     }
   }
 }
