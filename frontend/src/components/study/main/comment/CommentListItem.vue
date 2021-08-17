@@ -7,17 +7,29 @@
       <div class="commentNickname">
         {{comment.member.nickname}}
       </div>
-    <template v-if="state.modifyMode">
-      <div>
-        <input type="text" v-model="state.content"  />
-        <button @click="modifyContent">수정</button>
-        <button @click="modifyCommentMode">취소</button>
+    <template  v-if="state.modifyMode">
+      <div class="commentInput">
+        <div>
+          <input type="text" v-model="state.content"  />
+        </div>
+        <div class="commentButtonBox">
+          <button class="green-button commentButton" style="margin-bottom:5px" @click="modifyContent">수정</button>
+          <button class="green-button commentButton" @click="modifyCommentMode">취소</button>
+        </div>
+        
       </div>
     </template>
-    <template v-else>
-      {{comment.content}}
-      <button @click="modifyCommentMode">수정</button>
-      <button @click="deleteComment">삭제</button>
+    <template  v-else>
+      <div class="commentInput">
+        <div>
+          {{comment.content}}
+        </div>
+        <div class="commentButtonBox">
+          <button class="green-button commentButton" style="margin-bottom:5px" @click="modifyCommentMode">수정</button>
+          <button class="green-button commentButton" @click="deleteComment">삭제</button>
+        </div>
+      </div>
+      
     </template>
     </div>
     
@@ -40,7 +52,7 @@ export default {
       required: true
     }
   },
-  setup(props) {
+  setup(props, {emit}) {
     const state = reactive({
       modifyMode : false,
       content : props.comment.content
@@ -50,24 +62,26 @@ export default {
       state.modifyMode = !state.modifyMode
     }
 
-    const modifyContent = async () => {
-      await axios({
+    const modifyContent = () => {
+      axios({
         url: `/comment/${props.article.id}/${props.comment.id}`,
         method: 'PATCH',
         data: {content: state.content}
       }).then(()=>{
         state.modifyMode = false
+        emit('getComments')
       }).catch((err)=>{
         console.log(err)
       })
     }
 
-    const deleteComment = async () =>{
-      await axios({
+    const deleteComment = () =>{
+      axios({
         url: `/comment/${props.article.id}/${props.comment.id}`,
         method: 'DELETE'
       }).then(()=>{
         console.log('삭제 성공')
+        emit('getComments')
       }).catch((err)=>{
         console.log(err)
       })
@@ -78,18 +92,8 @@ export default {
       imgUrl: ""
       
     })
-    const profile = computed(() => {
-      
-      return props.comment.member.profile.filePath + '/' + props.comment.member.profile.fileName
-      
-    })
-
-    console.log(props.comment)
-    console.log('filepath', props.comment.member.profile.filePath)
-    console.log('filename', props.comment.member.profile.fileName)
-   
+    const profile = computed(() => props.comment.member.profile.filePath + '/' + props.comment.member.profile.fileName)
     
-
     return {
       data,
     profile, 
@@ -104,28 +108,42 @@ export default {
 <style>
 .commentBox {
   display: flex;
-  flex-direction: row;
   border: 1px solid #195c77;
   
   border-left: 10px solid #195C77;
-  margin: 0 10px 10px 10px;
+  margin: 0 10px 5px 10px;
 }
 .commentProfile {
- margin: 10px 40px 10px 20px;
+  margin: 10px 40px 10px 20px;
 }
 .commentContent {
   display: flex-start;
   flex-direction: column;
   margin: 10px ;
-  flex-basis: 600px;
+  flex-basis: 1000px;
   min-width: 400px;
   justify-items: start;
   /* justify-content: start; */
   text-align: start;
 }
 .commentNickname {
+  display: block;
   font-size: 13px;
   font-weight: bold;
   margin-bottom: 3px;
+}
+.commentInput {
+  display: flex;
+  justify-content: space-between;
+}
+.commentButton {
+  height: 30px !important;
+  width: 70px !important;
+  gap: 5px;
+}
+.commentButtonBox{
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
 }
 </style>
