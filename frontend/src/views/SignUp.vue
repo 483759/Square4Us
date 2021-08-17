@@ -11,11 +11,11 @@
         <img class="logo_signup" src="/square4us.png" alt="">
       </div>
       <form id='signup-form' method="POST" @submit.prevent="signUp">
-        <p><input class="input_signup" type="email" id="signup_email" name="email" placeholder="이메일 입력" v-model="credentials.email" @change="isValid = false;"><button type="button" @click="checkEmail">중복 확인</button></p>
+        <p><input class="input_signup" type="email" id="signup_email" name="email" placeholder="이메일 입력" v-model="credentials.email" @change="isValid = false;"><button class='green-button button-email-check' type="button" @click="checkEmail">중복 확인</button></p>
         <p><input class="input_signup" type="nickname" id="signup_nickname" name="nickname" placeholder="닉네임" v-model="credentials.nickname"></p>
         <p><input class="input_signup" type="password"  id="signup_password" name="password" placeholder="비밀번호" v-model="credentials.password"></p>
         <p><input class="input_signup" type="password"  id="signup_password_confirmation" name="password_confirmation" placeholder="비밀번호확인" v-model="password_confirmation"></p>
-        <button class="button_signup" id="signup_button">Signup</button>
+        <button class="green-button button-signup">Signup</button>
       </form>
     </section>
     <section id="signupsection2" class="section2">
@@ -103,6 +103,25 @@ export default {
   margin: 50px 50px 0 50px;
   height: 600px;
 }
+#signup_email {
+  width: 210px;
+  margin-right: 20px;
+}
+.button-email-check {
+  display: inline !important;
+  width: 70px !important;
+  font-weight: 400 !important;
+}
+
+.button-signup {
+  margin: 15px auto;
+  background-color: #509186 !important;
+}
+
+.button-signup:hover {
+  background-color: white !important;
+}
+
 #signup_email:hover {
   border:none;
   border-bottom: 2px #65BF9E solid;  
@@ -119,14 +138,8 @@ export default {
   border:none;
   border-bottom: 2px #65BF9E solid;
 }
-#signup_button:hover {
-  background-color: #195C77;
-  color: white;
-  font-size: 20px;
-  
-}
 
-#signup-form {
+  #signup-form {
     margin: 0px 0px auto;
     margin-top: 0;
   }
@@ -143,7 +156,6 @@ export default {
     align-items: center;
     
   }
- 
   .logo_signup {
     height: 60px;
     width: 60px;
@@ -179,33 +191,7 @@ export default {
   p {
     margin: 0;
   }
-  .button_signup {
-    height: 50px;
-    width: 300px;
-    flex-basis: 150px;
-    background: #509186;
-    margin: 18px 0 30px;
-    box-sizing: border-box;
-    border-radius: 5px;
-    border: transparent;
-  }
 
-  .button_close {
-    display: block;
-    /* block으로 해야 x가 쉽게 가운데로 옴 */
-    height: 30px;
-    width: 30px;
-    border: gray;
-    border-radius: 5px;
-    margin: 0 1px 10px 0;
-
-    box-shadow: 2px 1px 3px;
-    box-sizing: border-box;
-    
-  }
-  .signup_p {
-    font-size: 18px;
-  }
   .signup_img{
     width: 350px;
     height: 500px;
