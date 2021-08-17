@@ -233,10 +233,11 @@ export default createStore({
     },
 
     // 아티클
-    getArticles: async function(context, studyId) {
+    getArticles: async function(context, data) {
+      const {studyId, page } = data
       const response = await axios({
         method: 'GET',
-        url: `/study/${studyId}/article?page=0&size=6&sorted=true&unsorted=true&empty=true`,
+        url: `/study/${studyId}/article?page=${page}&size=6&sorted=true&unsorted=true&empty=true`,
       }).catch((err)=>{
         console.log(err.response)
       })
@@ -245,6 +246,7 @@ export default createStore({
         console.log(response);
         return
       }
+      console.log(response.data);
       context.commit('SET_STUDY_ARTICLES', response.data.data.articleList)
     },
 
