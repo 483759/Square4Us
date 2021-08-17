@@ -5,7 +5,7 @@
       <template v-slot:header >
         <!-- <header> 헤더도 들어감 </header> -->
         <div class="header_login">
-          <button class="button_close" @click.stop="switchModal">X</button>
+          
         </div>
       </template>
 
@@ -16,7 +16,7 @@
           <img class="logo_login" src="/square4us.png" alt="">
           <span class="slogan_login">Square4us</span>
         </div>
-           <form id='login-form' method="POST" @submit.prevent="login">
+          <form id='login-form' method="POST" @submit.prevent="login">
           <!-- <p><label for="email">Email</label></p> -->
           <p><input class="input_login" type="email" id="login_email" name="email" placeholder="이메일 입력" v-model="credentials.email"></p>
           <!-- <p><label for="password">Password</label></p> -->
