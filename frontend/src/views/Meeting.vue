@@ -41,7 +41,7 @@ import axios from "axios";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-const OPENVIDU_SERVER_URL = "https://i5b308.p.ssafy.io:4443";
+const OPENVIDU_SERVER_URL = "https://54.180.140.242:4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 export default {
