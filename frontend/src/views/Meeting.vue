@@ -12,13 +12,11 @@
       <div id="video-container" class="col-md-6">
         <UserVideo
           :stream-manager="state.publisher"
-          @click="updateMainVideoStreamManager(state.publisher)"
         />
         <UserVideo
           v-for="sub in state.subscribers"
           :key="sub.stream.connection.connectionId"
           :stream-manager="sub"
-          @click="updateMainVideoStreamManager(sub)"
         />
       </div>
       <div class="MeetingButtonBox">
@@ -46,7 +44,7 @@ import axios from "axios";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-const OPENVIDU_SERVER_URL = "https://i5b308.p.ssafy.io:4443";
+const OPENVIDU_SERVER_URL = "https://i5b308.p.ssafy.io";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 export default {
@@ -193,10 +191,6 @@ export default {
 
       window.removeEventListener("beforeunload", leaveSession);
     };
-    const updateMainVideoStreamManager = (stream) => {
-      if (state.mainStreamManager === stream) return;
-      state.mainStreamManager = stream;
-    };
     const getToken = (mySessionId) => {
       return createSession(mySessionId).then((sessionId) => createToken(sessionId));
     };
@@ -264,21 +258,23 @@ export default {
     };
     const sendChat = () => {
       let t = state;
-      t.session.signal({
-        data: t.myUserName + "/" + t.message,
-        to: [],
-        type: 'my-chat'
-      })
-      .then(
-        () => {
-          console.log("Message successfully sent");
-        }
-      )
-      .catch(
-        error => {
-          console.error(error);
-        }
-      );
+      if(t.message && t.message != '') {
+        t.session.signal({
+          data: t.myUserName + "/" + t.message,
+          to: [],
+          type: 'my-chat'
+        })
+        .then(
+          () => {
+            console.log("Message successfully sent");
+          }
+        )
+        .catch(
+          error => {
+            console.error(error);
+          }
+        );
+      }
       t.message = "";
     }
     return {
@@ -288,7 +284,6 @@ export default {
       exit,
       joinSession,
       leaveSession,
-      updateMainVideoStreamManager,
       getToken,
       createSession,
       createToken,

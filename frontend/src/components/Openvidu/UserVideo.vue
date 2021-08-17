@@ -1,7 +1,7 @@
 <template>
-<div v-if="streamManager">
+<div id="UserVideo" v-if="streamManager">
 	<ov-video :stream-manager="streamManager"/>
-	<div><p>{{ clientData }}</p></div>
+	<div id="UserName"><p>{{ clientData }}</p></div>
 </div>
 </template>
 
@@ -34,3 +34,14 @@ export default {
 	},
 };
 </script>
+<style>
+	#UserVideo {
+		display: inline-block;
+		border: 1px black solid;
+	}
+
+	#UserName {
+		border: 1px black solid;
+		border-radius: 10%;
+	}
+</style>
