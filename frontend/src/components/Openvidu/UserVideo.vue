@@ -38,6 +38,7 @@ export default {
 	#UserVideo {
 		display: inline-block;
 		border: 1px black solid;
+		margin: 5px;
 	}
 
 	#UserName {
