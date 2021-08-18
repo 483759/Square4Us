@@ -10,6 +10,7 @@ import com.ssafy.square4us.api.mvc.model.repository.MemberRepository;
 import com.ssafy.square4us.api.mvc.model.repository.MemberRepositorySupport;
 import com.ssafy.square4us.api.mvc.model.repository.StudyMemberRepository;
 import com.ssafy.square4us.common.util.S3Util;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -131,7 +132,7 @@ public class MemberServiceImpl implements MemberService {
             return false;
         }
 
-        if(studyMemberRepo.existsStudyMemberByMember_Id(member.get().getId())){
+        if(studyMemberRepo.existsLeaderJoinStudy(member.get().getId())!=0){
             return false;
         }
 

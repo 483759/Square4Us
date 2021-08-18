@@ -76,6 +76,7 @@ export default {
   color: var(--textColor);
   padding: 0px;
   text-align: right;
+  z-index: inherit;
 }
 
 
@@ -86,6 +87,7 @@ export default {
   color: var(--textColor);
   padding: 20px;
   font-size: 16px;
+  z-index: inherit;
 }
 
 /* 현재 페이지 강조하는 style */
