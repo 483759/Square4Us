@@ -3,10 +3,8 @@
   <header id='section-title'>
     <div>미팅</div>
     <div>
-      <select name="" id="" v-model='data.maximum'>
-        <option v-for='option in options' :value="option" :key="option">{{ option }}</option>
-      </select>
-      <button @click='createMeeting'>미팅 생성</button>
+      <meeting-create-button :studyId="data.studyId" />
+      <!-- <button class="white-button" @click='createMeeting'>미팅 생성</button> -->
     </div>
   </header>
   <ul class='meeting-item'>
@@ -27,6 +25,7 @@ import StudyMainMeetingItem from '@/components/study/main/meeting/StudyMainMeeti
 import router from '@/router'
 import { useStore } from 'vuex'
 import { computed, onMounted, onUnmounted } from '@vue/runtime-core'
+import MeetingCreateButton from '@/components/meeting/MeetingCreateButton.vue'
 export default {
   name: 'StudyMainMeeting',
   props: {
@@ -36,11 +35,12 @@ export default {
     }
   },
   components : {
-    StudyMainMeetingItem
+    StudyMainMeetingItem,
+    MeetingCreateButton
   },
   setup(props) {
     const store = useStore()
-    const options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] // 미팅 인원 배열
+    // const options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] // 미팅 인원 배열
     const data = reactive({
       studyId: props.studyId,
       maximum : 5 
@@ -86,7 +86,7 @@ export default {
       data,
       // state,
       meetings,
-      options,
+      // options,
       onEnter,
       // selectMax,
       createMeeting
