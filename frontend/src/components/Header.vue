@@ -173,6 +173,7 @@ export default {
 .slogan{
   font-size: 1px;
   flex-direction: row;
-  margin: 0px
+  margin: 0px;
+  cursor: pointer;
 } 
 </style>
