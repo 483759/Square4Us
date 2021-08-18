@@ -1,10 +1,9 @@
 <template>
-  <h1>Meeting</h1>
-  <div v-if="!state.isReady">
+  <!-- <div v-if="!state.isReady">
     <BeforeMeeting @enter="enter" @switchSession="switchSession" @exit="exit" />
     선택한 세부 세션 : {{ state.sessionNum }}
-  </div>
-  <div v-else>
+  </div> -->
+  <div>
     <div id="session">
       <div id="session-header">
         <h1 id="session-title">{{ state.mySessionId }}</h1>
@@ -32,7 +31,7 @@
 </template>
 
 <script>
-import BeforeMeeting from "@/components/meeting/BeforeMeeting.vue";
+// import BeforeMeeting from "@/components/meeting/BeforeMeeting.vue";
 import { onMounted, reactive } from "@vue/runtime-core";
 import router from "@/router";
 import store from "@/store";
@@ -52,18 +51,18 @@ export default {
       type: String,
       required: true,
     },
-    meetingId: {
+    meetingName: {
       type: String,
       required: true,
     },
   },
   components: {
-    BeforeMeeting,
+    // BeforeMeeting,
     UserVideo,
   },
   setup(props) {
     const state = reactive({
-      isReady: false,
+      isReady: true,
       OV: undefined,
       session: undefined,
       mainStreamManager: undefined,
@@ -82,18 +81,14 @@ export default {
     });
     onMounted(() => {
       console.log(`${props.studyId}번 스터디, ${props.meetingId}번 방 입장 완료`);
+      enter();
       // 이제 여기서 연결 준비를 하고 세팅을 하고, 들어가면 신호를 주고받고 해서 화상을 시작하면 된다.
     });
 
     const enter = () => {
-      console.log("입장!");
-      state.isReady = !state.isReady;
-      console.log(props.studyId);
-      console.log(store.state.curStudy);
-      console.log(store.state.user);
-      console.log(store.state.user.nickname + `(${store.state.user.email})`);
-      console.log(props.meetingId);
-      state.mySessionId = props.studyId + "-" + props.meetingId + "-" + state.sessionNum;
+      console.dir("스토어 정보:");
+      console.dir(store.state);
+      state.mySessionId = props.meetingName;
       state.myUserName = store.state.user.nickname + `(${store.state.user.email})`;
       joinSession();
     };

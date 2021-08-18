@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StudyMemberRepository extends JpaRepository<StudyMember, Long> {
     StudyMember findByStudy_IdAndMember_Id(Long studyId, Long memberId);
-    @Query("select count(sm) from StudyMember sm where sm.leader='T' and sm.member.id=:memberId")
+    @Query("select count(sm) from StudyMember sm where sm.leader='T' and sm.member.id=:memberId and sm.study.dismantleFlag='F'")
     Long existsLeaderJoinStudy(Long memberId);
 }

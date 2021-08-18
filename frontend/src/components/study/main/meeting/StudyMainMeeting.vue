@@ -80,9 +80,9 @@ export default {
     // })
 
 
-    const onEnter = (meetingId)=>{ // 채팅방 입장
-      console.log(`${props.studyId}번 스터디, ${meetingId}번 방 입장!`);
-      router.push({path: `/study/${props.studyId}/meeting/${meetingId}`})
+    const onEnter = (meetingName)=>{ // 채팅방 입장
+      console.log(`${props.studyId}번 스터디, ${meetingName}번 방 입장!`);
+      router.push({path: `/study/${props.studyId}/meeting/${meetingName}`})
     }
 
     onMounted(()=>{
