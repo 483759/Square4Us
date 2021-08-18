@@ -364,4 +364,28 @@ public class StudyController {
 
         return ResponseFactory.ok();
     }
+
+    @GetMapping("isLeader/{studyId}")
+    public ResponseEntity<? extends BasicResponseBody> isLeaderOfThisStudy(@Parameter(hidden = true) Authentication authentication,
+                                                                       @PathVariable("studyId") Long studyId) {
+        if(authentication == null) {
+            return ResponseFactory.unauthorized();
+        }
+
+        MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
+
+        if(memberDetails == null) {
+            return ResponseFactory.unauthorized();
+        }
+
+        String email = memberDetails.getUsername();
+        StudyDTO study = studyService.findByStudyId(studyId);
+
+        if(study == null) {
+            return ResponseFactory.notFound();
+        }
+        Boolean flag = studyService.isLeaderOfThisStudy(studyId, memberService.getMemberByEmail(email).getId());
+
+        return ResponseEntity.ok(StudyDTO.LeaderFlagGetRes.of(200, "성공", flag));
+    }
 }
