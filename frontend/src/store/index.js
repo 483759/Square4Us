@@ -11,7 +11,6 @@ export default createStore({
     myStudies: [], // 내 스터디 목록
     myMeetings: [],
     studyArticles: [],
-
     activeStudyNav: 0
   },
   mutations: {
@@ -207,10 +206,10 @@ export default createStore({
       }
       context.commit('SET_CURRENT_STUDY', response.data.data);
     },
-    getStudies: async function (context) { // 전체 스터디 목록
+    getStudies: async function (context, page) { // 전체 스터디 목록
       const response = await axios({
         method: "GET",
-        url: `/study?page=0&size=20&sorted=true&unsorted=true&empty=true`,
+        url: `/study?page=${page}&size=8&sorted=true&unsorted=true&empty=true`,
       }).catch((err) => {
         console.log(err.response);
       })
@@ -218,7 +217,9 @@ export default createStore({
         alert("스터디 목록을 받아오지 못했습니다")
         return
       }
+      console.log(response.data.data.studyList);
       context.commit('SET_STUDIES', response.data.data.studyList.content)
+      return response.data.data.studyList.totalElements
     },
     getStudiesWithSearch: async function (context, param) {
       const response = await axios({
@@ -236,10 +237,10 @@ export default createStore({
 
     // 아티클
     getArticles: async function(context, data) {
-      const {studyId, page } = data
+      const { studyId, page } = data
       const response = await axios({
         method: 'GET',
-        url: `/study/${studyId}/article?page=${page}&size=6&sorted=true&unsorted=true&empty=true`,
+        url: `/study/${studyId}/article?page=${page-1}&size=6&sorted=true&unsorted=true&empty=true`,
       }).catch((err)=>{
         console.log(err.response)
       })

@@ -46,4 +46,11 @@ export default {
     border-radius: 5px;
     margin-top: 10px;
   }
+
+  #frame-section {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 </style>
