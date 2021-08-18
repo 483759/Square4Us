@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MeetingDTO {
     private Long id;
-    private int maximum = 4;
+    private String name;
     private char run_flag = 'T';
     private FileDTO thumbnail;
     @JsonIgnore
@@ -24,25 +24,13 @@ public class MeetingDTO {
     @Builder
     public MeetingDTO(Meeting meeting) {
         this.id = meeting.getId();
-        this.maximum = meeting.getMaximum();
+        this.name = meeting.getName();
         this.run_flag = meeting.getRun_flag();
         this.study = new StudyDTO(meeting.getStudy());
         if(meeting.getThumbnail() != null) {
             this.thumbnail = new FileDTO(meeting.getThumbnail());
         } else {
             this.thumbnail = null;
-        }
-    }
-
-    @Getter
-    @Schema(description = "Meeting Create Post Request")
-    public static class GeneratePostReq {
-        @Schema(name = "maximum", example = "15")
-        int maximum;
-
-        @Builder
-        public GeneratePostReq(int maximum) {
-            this.maximum = maximum;
         }
     }
 
@@ -66,19 +54,19 @@ public class MeetingDTO {
         private Long id;
 
         @Schema(description = "maximum", example = "15")
-        private int maximum = 4;
+        private String name;
 
         @Schema(description = "run_flag", example = "T")
         private char run_flag = 'T';
 
-        public EnterGetRes(Long id, int maximum, char run_flag) {
+        public EnterGetRes(Long id, String name, char run_flag) {
             this.id = id;
-            this.maximum = maximum;
+            this.name = name;
             this.run_flag = run_flag;
         }
 
         public static BasicResponseBody<EnterGetRes> of(Integer statusCode, String message, MeetingDTO meeting) {
-            return BasicResponseBody.of(statusCode, message, new EnterGetRes(meeting.getId(), meeting.getMaximum(), meeting.getRun_flag()));
+            return BasicResponseBody.of(statusCode, message, new EnterGetRes(meeting.getId(), meeting.getName(), meeting.getRun_flag()));
         }
     }
 

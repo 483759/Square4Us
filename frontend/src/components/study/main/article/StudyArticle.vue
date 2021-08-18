@@ -31,7 +31,7 @@
       <input v-if="search.key == 'title' || search.key == 'content'" v-model="search.word" @keyup.enter="getArticlesWithSearch">
       <button type="button" v-if="search.key == 'title' || search.key == 'content' || (search.key == 'category' && search.word != '')" @click="getArticlesWithSearch">검색</button>
     </div>
-    <Pagination v-model="state.page" :records="totalPageNum-1" :per-page="6" @paginate="paginate" :options='{texts: {count:""}}'/>
+    <Pagination v-model="state.page" :records="totalElements" :per-page="6" @paginate="paginate" :options='{texts: {count:""}}'/>
   </ul>
 </article>
 </template>
@@ -66,7 +66,7 @@ export default {
     const articles = computed(()=>{
       return store.state.studyArticles
     })
-    const totalPageNum = computed(()=>{
+    const totalElements = computed(()=>{
       return Number(store.state.studyArticles.totalElements)
     })
     const search = reactive({
@@ -153,7 +153,7 @@ export default {
       search,
       state,
       articles,
-      totalPageNum,
+      totalElements,
       paginate,
       readArticle,
       refreshArticle,
