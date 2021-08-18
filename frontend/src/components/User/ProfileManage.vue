@@ -63,7 +63,9 @@ export default {
         method: 'get',
         url: 'member/me',
       }).then(response => {
-        credentials.profile_path = response.data.data.profile.filePath + '/' + response.data.data.profile.fileName
+        if(response.data.data.profile!=null){
+          credentials.profile_path = response.data.data.profile.filePath + '/' + response.data.data.profile.fileName
+        }
       })
     })
    
@@ -87,7 +89,9 @@ export default {
         contentType: false,
         processType: false,
       }).then(response => {
-        credentials.profile_path = response.data.data.profile.filePath + '/' + response.data.data.profile.fileName;
+        if(response.status===200){
+          credentials.profile_path = response.data.data.profile.filePath + '/' + response.data.data.profile.fileName;
+        }
       })
     }
 

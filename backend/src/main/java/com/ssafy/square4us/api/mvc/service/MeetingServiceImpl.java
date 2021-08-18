@@ -49,7 +49,7 @@ public class MeetingServiceImpl implements MeetingService {
                         .build()
         );
 
-        if(thumbnail != null) {
+        if(thumbnail != null && !thumbnail.isEmpty()) {
             uploadThumbnail(meeting, thumbnail);
         }
         return new MeetingDTO(meeting);

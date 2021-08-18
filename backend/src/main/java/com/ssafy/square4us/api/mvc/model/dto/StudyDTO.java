@@ -110,4 +110,15 @@ public class StudyDTO {
             return BasicResponseBody.of(statusCode, message, new StudyDTO.ListGetRes(studyList));
         }
     }
+
+    @Getter
+    public static class LeaderFlagGetRes {
+        Boolean flag;
+
+        public LeaderFlagGetRes(Boolean flag) { this.flag = flag; }
+
+        public static BasicResponseBody<StudyDTO.LeaderFlagGetRes> of(Integer statusCode, String message, Boolean flag) {
+            return BasicResponseBody.of(statusCode, message, flag);
+        }
+    }
 }

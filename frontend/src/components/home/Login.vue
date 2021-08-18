@@ -94,7 +94,7 @@ export default {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.3);
-    z-index: 100;
+    
   }
 
   .window {
@@ -109,6 +109,7 @@ export default {
     left: 50%;
     background-color: white !important;
     box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+    
     
     /* 임시 지정 */
     width: 400px;

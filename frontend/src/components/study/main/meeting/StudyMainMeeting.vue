@@ -13,6 +13,8 @@
       v-for='meeting in meetings' 
       :key='meeting.id' 
       :meeting='meeting'
+      :studyId='data.studyId'
+      :isLeader='data.isLeader'
       @onEnter='onEnter'
       />
   </ul>
@@ -26,6 +28,7 @@ import router from '@/router'
 import { useStore } from 'vuex'
 import { computed, onMounted, onUnmounted } from '@vue/runtime-core'
 import MeetingCreateButton from '@/components/meeting/MeetingCreateButton.vue'
+import axios from 'axios'
 export default {
   name: 'StudyMainMeeting',
   props: {
@@ -43,7 +46,8 @@ export default {
     // const options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] // 미팅 인원 배열
     const data = reactive({
       studyId: props.studyId,
-      maximum : 5 
+      maximum : 5,
+      isLeader: false
     })
 
     const createMeeting = async()=>{ // 미팅 인원 정해서 생성
@@ -52,6 +56,14 @@ export default {
     }
 
     onMounted(()=>{
+      axios({
+        method: 'GET',
+        url: `study/isLeader/${props.studyId}`
+      }).then(response => {
+        data.isLeader = response.data.data;
+      }).catch(error => {
+        console.dir(error);
+      });
       store.dispatch('getMeetings',props.studyId)
     })
 
