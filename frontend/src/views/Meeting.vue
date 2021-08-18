@@ -21,6 +21,7 @@
         <button type="button" class="green-button" @click="videoOnAndOff()">video</button>
         <button type="button" class="green-button" @click="audioOnAndOff()">audio</button>
         <button class="green-button" @click="exit">나가기</button>
+        <button class="green-button" @click="state.isOpenedChat = !state.isOpenedChat">채팅</button>
       </div>
       <input type="text" v-model="state.message" @keyup.enter="sendChat()" />
       <button type="button" @click="sendChat()">입력</button>
@@ -77,6 +78,7 @@ export default {
 
       message: "",
       sessionNum: 1,
+      isOpenedChat: false
     });
     onMounted(() => {
       console.log(`${props.studyId}번 스터디, ${props.meetingId}번 방 입장 완료`);

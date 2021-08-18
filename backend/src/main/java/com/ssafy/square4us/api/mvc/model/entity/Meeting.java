@@ -15,8 +15,8 @@ public class Meeting extends BaseTimeEntity {
     @Column(name = "meeting_id")
     private Long id;
 
-    @Column(name = "maximum")
-    private int maximum = 4;
+    @Column(name = "meeting_name")
+    private String name;
 
     @Column(name = "run_flag")
     private char run_flag = 'T';
@@ -29,8 +29,8 @@ public class Meeting extends BaseTimeEntity {
     private FileEntity thumbnail;
 
     @Builder
-    public Meeting(int maximum, char run_flag, Study study, FileEntity thumbnail) {
-        this.maximum = maximum;
+    public Meeting(String name, char run_flag, Study study, FileEntity thumbnail) {
+        this.name = name;
         this.run_flag = run_flag;
         this.study = study;
         this.thumbnail = thumbnail;

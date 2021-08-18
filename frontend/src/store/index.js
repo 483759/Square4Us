@@ -131,7 +131,11 @@ export default createStore({
     createMeeting: async function (context, data) {
       const response = await axios({
         method: 'POST',
-        url: `/study/${data.studyId}/meeting/${data.maximum}`,
+        url: `/study/${data.studyId}/meeting/${data.name}`,
+        data: data.thumbnail,
+        cache: false,
+        contentType: false,
+        processType: false,
       }).catch((err)=>{
         console.log(err.response);
       })
