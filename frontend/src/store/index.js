@@ -144,7 +144,8 @@ export default createStore({
         console.log(response);
         return
       }
-      console.log(response);
+      console.dir(response.data);
+      context.commit('SET_MEETINGS', response.data.data.meetings);
     },
     // 스터디
     createStudy : async function(context, data) {

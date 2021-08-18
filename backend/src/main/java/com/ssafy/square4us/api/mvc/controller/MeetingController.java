@@ -45,7 +45,6 @@ public class MeetingController {
                                                               @PathVariable("studyId") Long studyId, @PathVariable("name") String name,
                                                               MultipartFile thumbnail) {
                                                               //@RequestBody @Parameter(name = "미팅 생성 정보", required = true) MeetingDTO.GeneratePostReq meetingInfo) {
-        System.out.println("썸네일 = " + thumbnail);
         if (authentication == null) {
             return ResponseFactory.forbidden();
         }
@@ -70,7 +69,7 @@ public class MeetingController {
             return ResponseFactory.forbidden();
         }
 
-        return ResponseEntity.ok(MeetingDTO.CreatePostRes.of(201, "미팅 생성", newMeeting.getId()));
+        return readMeetingByStudy(studyId);
     }
 
     @GetMapping("{meetingId}")

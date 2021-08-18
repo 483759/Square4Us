@@ -14,7 +14,7 @@
             <input class="meeting_create_input" type="text" name="" id="meeting_name" v-model="data.name">
           </div>
           <form id="thumbnailForm" enctype="multupart/form-data">
-            <input type="file" name="thumbnail">
+            <input type="file" name="thumbnail" id="thumbnail">
           </form>
           <div id="create_box">
             <button class="meeting_create_button" @click="createMeeting">생성</button>
@@ -63,7 +63,9 @@ export default {
       }
       console.dir(document.getElementById("thumbnailForm"));
       store.dispatch('createMeeting', {name: data.name, studyId: props.studyId, thumbnail: new FormData(document.getElementById("thumbnailForm"))})
-      store.dispatch('getMeetings',props.studyId)
+      data.name = "";
+      document.getElementById("thumbnail").value = "";
+      switchModal();
     }
 
     return {
