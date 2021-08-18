@@ -24,11 +24,14 @@
     </template>
     <template v-slot:section>
       <StudyListItem v-if='studies.length' :studies='studies'/>
+      <Pagination v-model="state.page" :records="state.totalElements" :per-page="8" @paginate="paginate" :options='{texts: {count:""}}'/>
     </template>
   </StudyListFrame>
 </template>
 
 <script>
+import Pagination from 'v-pagination-3';
+
 import StudyListFrame from '@/components/StudyListFrame.vue'
 import StudyListItem from '@/components/study/list/StudyListItem.vue'
 import StudyCreateButton from '@/components/study/list/StudyCreateButton.vue'
@@ -37,11 +40,23 @@ import { computed, onMounted, reactive } from '@vue/runtime-core'
 export default {
   name: 'StudyList',
   components: {
+    Pagination,
     StudyListFrame,
     StudyListItem,
     StudyCreateButton
   },
   setup(){
+    //페이지네이션
+    const state = reactive({
+      page : 1,
+      totalElements : 2
+    })
+    
+    const paginate = async(pageNum)=>{
+      state.page = pageNum
+      state.totalElements = await store.dispatch('getStudies', pageNum-1)
+    }
+
     const search = reactive({
       key: "",
       word: ""
@@ -49,24 +64,27 @@ export default {
     const store = useStore()
     const studies = computed(()=>store.state.studies)
 
-    onMounted( ()=>{
-      store.dispatch('getMyStudies')
-      store.dispatch('getStudies')
-      if (Object.keys(store.state.user).length == 0) {
-        store.dispatch('getUser')
-      }
-      // 여기서 스터디 목록을 가져온다
-    })
+
 
     const resetWord = () => search.word = "";
 
-    const getStudiesWithSearch = () => {
-      store.dispatch('getStudiesWithSearch', { key: search.key, word: search.word });
+    const getStudiesWithSearch = async() => {
+      state.totalElements = await store.dispatch('getStudiesWithSearch', { key: search.key, word: search.word });
     };
 
+    onMounted(async()=>{
+      if (Object.keys(store.state.user).length == 0) {
+        store.dispatch('getUser')
+      }
+      store.dispatch('getMyStudies')
+      state.totalElements = await store.dispatch('getStudies', 0)
+    })
+
     return {
+      state,
       search,
       studies,
+      paginate,
       resetWord,
       getStudiesWithSearch
     }
@@ -109,4 +127,8 @@ export default {
   padding-right: 20px;
 }
 
+
+.pagination {
+  display: flex !important;
+}
 </style>
