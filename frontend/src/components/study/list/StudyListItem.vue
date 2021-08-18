@@ -109,6 +109,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  z-index: 0;
 }
 .studyBox {
   display: flex;

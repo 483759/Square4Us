@@ -24,7 +24,9 @@
     </template>
     <template v-slot:section>
       <StudyListItem v-if='studies.length' :studies='studies'/>
-      <Pagination v-model="state.page" :records="state.totalElements" :per-page="8" @paginate="paginate" :options='{texts: {count:""}}'/>
+      <section class='pagination-wrapper'>
+      <Pagination  v-model="state.page" :records="state.totalElements" :per-page="8" @paginate="paginate" :options='{texts: {count:""}}'/>
+      </section>
     </template>
   </StudyListFrame>
 </template>
@@ -128,9 +130,17 @@ export default {
   flex-basis: 160px;
   padding-right: 20px;
 }
-
+.pagination-wrapper{
+  height: auto;
+  display: flex;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 30px;
+}
 .pagination {
   display: flex !important;
+
 }
 .searchButtonSize {
   width: 100px !important;
@@ -147,4 +157,5 @@ export default {
   width: 200px !important;
   /* height: 33px !important; */
 }
+
 </style>

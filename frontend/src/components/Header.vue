@@ -67,6 +67,7 @@ export default {
   box-sizing: border-box;
   /* vertical-align: middle; */
   user-select:none;
+  z-index: 1;
 }
 #nav a {
   display: block;
