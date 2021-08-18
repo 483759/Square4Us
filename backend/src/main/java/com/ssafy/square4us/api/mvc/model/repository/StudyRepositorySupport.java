@@ -89,6 +89,14 @@ public class StudyRepositorySupport extends QuerydslRepositorySupport {
                 .fetchOne();
     }
 
+    public Long existsLeaderJoinStudy(Long memberId) {
+        return jpaQueryFactory
+                .select(qStudyMember)
+                .from(qStudyMember)
+                .where(qStudyMember.member.id.eq(memberId), qStudyMember.leader.eq('T'))
+                .fetchCount();
+    }
+
     public StudyMemberDTO getStudyMemberByEmail(String email, Long studyId) {
         return jpaQueryFactory
                 .select(Projections.constructor(StudyMemberDTO.class, qStudyMember))
