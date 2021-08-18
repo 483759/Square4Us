@@ -177,4 +177,31 @@ public class MeetingController {
 
         return ResponseFactory.ok();
     }
+
+    @DeleteMapping("{meetingId}")
+    @Operation(summary = "미팅 삭제", description = "해당하는 미팅을 삭제한다.", responses = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "401", description = "인증 실패"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")})
+    public ResponseEntity<? extends BasicResponseBody> deleteMeeting(@Parameter(hidden = true) Authentication authentication,
+                                                                     @PathVariable("studyId") Long studyId,
+                                                                     @PathVariable("meetingId") Long meetingId) {
+        if (authentication == null) {
+            return ResponseFactory.forbidden();
+        }
+
+        MemberDetails memberDetails = (MemberDetails) authentication.getDetails();
+
+        if (memberDetails == null) {
+            return ResponseFactory.unauthorized();
+        }
+        System.out.println(studyId + " " + meetingId);
+        try {
+            meetingService.deleteByStudyIdAndMeetingIdAndEmail(studyId, meetingId, memberDetails.getUsername());
+        } catch (Exception e) {
+            System.out.println("뭔가 문제가 있는데?");
+            return ResponseFactory.serviceUnavailable();
+        }
+        return ResponseFactory.ok();
+    }
 }

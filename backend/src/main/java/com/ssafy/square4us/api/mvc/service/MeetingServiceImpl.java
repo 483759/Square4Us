@@ -2,13 +2,8 @@ package com.ssafy.square4us.api.mvc.service;
 
 import com.ssafy.square4us.api.mvc.model.dto.FileDTO;
 import com.ssafy.square4us.api.mvc.model.dto.MeetingDTO;
-import com.ssafy.square4us.api.mvc.model.entity.FileEntity;
-import com.ssafy.square4us.api.mvc.model.entity.Meeting;
-import com.ssafy.square4us.api.mvc.model.entity.Study;
-import com.ssafy.square4us.api.mvc.model.repository.FileRepository;
-import com.ssafy.square4us.api.mvc.model.repository.MeetingRepository;
-import com.ssafy.square4us.api.mvc.model.repository.MeetingRepositorySupport;
-import com.ssafy.square4us.api.mvc.model.repository.StudyRepository;
+import com.ssafy.square4us.api.mvc.model.entity.*;
+import com.ssafy.square4us.api.mvc.model.repository.*;
 import com.ssafy.square4us.common.util.S3Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.parameters.P;
@@ -31,6 +26,8 @@ public class MeetingServiceImpl implements MeetingService {
     private final MeetingRepositorySupport meetingRepositorySupport;
     private final StudyRepository studyRepo;
     private final FileRepository fileRepo;
+    private final MemberRepository memberRepo;
+    private final StudyMemberRepository studyMemberRepo;
     private final S3Util s3Util;
 
     @Override
@@ -98,6 +95,32 @@ public class MeetingServiceImpl implements MeetingService {
         }
         Meeting meeting = find.get();
         deletePrevThumbnail(meeting);
+    }
+
+    @Override
+    @Transactional
+    public void deleteByStudyIdAndMeetingIdAndEmail(Long studyId, Long meetingId, String email) throws Exception {
+        Optional<Member> findMember = memberRepo.findByEmail(email);
+        if(!findMember.isPresent()) {
+            throw new Exception("멤버가 없음!");
+        }
+        Long memberId = findMember.get().getId();
+        StudyMember StudyMember = studyMemberRepo.findByStudy_IdAndMember_Id(studyId, memberId);
+        if(StudyMember == null) {
+            throw new Exception("해당하는 스터디가 없음!");
+        }
+        if(StudyMember.getLeader() != 'T') {
+            throw new Exception("리더가 아님!");
+        }
+        Optional<Meeting> findMeeting = meetingRepo.findById(meetingId);
+        if(!findMeeting.isPresent()) {
+            throw new Exception("미팅이 없음!");
+        }
+        Meeting meeting = findMeeting.get();
+        if(meeting.getThumbnail() != null) {
+            s3Util.delete(meeting.getThumbnail());
+        }
+        meetingRepo.delete(meeting);
     }
 
     @Transactional(rollbackFor = IOException.class)

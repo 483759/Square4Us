@@ -18,4 +18,6 @@ public interface MeetingService {
     void updateThumbnail(Long meetingId, MultipartFile thumbnail) throws IOException;
 
     void deleteThumbnailById(Long meetingId);
+
+    void deleteByStudyIdAndMeetingIdAndEmail(Long studyId, Long meetingId, String email) throws Exception;
 }

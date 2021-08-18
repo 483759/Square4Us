@@ -29,7 +29,7 @@ const routes = [
       { path: '/openvidu', name: 'Openvidu', component: Openvidu }
     ]
   },
-  { path: '/study/:studyId/meeting/:meetingId', name: 'Meeting', component: Meeting, props : true },
+  { path: '/study/:studyId/meeting/:meetingName', name: 'Meeting', component: Meeting, props : true },
 ]
 
 const router = createRouter({
