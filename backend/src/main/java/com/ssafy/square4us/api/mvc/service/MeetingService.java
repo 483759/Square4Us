@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface MeetingService {
-    MeetingDTO createMeeting(Long studyId, int maximum, MultipartFile thumbnail) throws IOException;
+    MeetingDTO createMeeting(Long studyId, String name, MultipartFile thumbnail) throws IOException;
 
     MeetingDTO enterMeeting(Long meetingId);
 
