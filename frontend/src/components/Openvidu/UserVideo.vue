@@ -39,10 +39,6 @@ export default {
 		display: inline-block;
 		border: 1px black solid;
 		margin: 5px;
-	}
-
-	#UserName {
-		border: 1px black solid;
-		border-radius: 10%;
+		
 	}
 </style>

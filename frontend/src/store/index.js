@@ -147,6 +147,20 @@ export default createStore({
       console.dir(response.data);
       context.commit('SET_MEETINGS', response.data.data.meetings);
     },
+    deleteMeeting: async function (context, data) {
+      console.log(data.studyId, data.meetingId);
+      const response = await axios({
+        method: 'DELETE',
+        url: `study/${data.studyId}/meeting/${data.meetingId}`
+      }).catch((err) => {
+        console.log(err.response);
+      })
+      if (!response) {
+        alert("삭제 실패!")
+        console.log(response);
+        return
+      }
+    },
     // 스터디
     createStudy : async function(context, data) {
       console.log(data)

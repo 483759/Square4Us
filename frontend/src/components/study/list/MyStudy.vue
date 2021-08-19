@@ -35,5 +35,15 @@ export default {
 </script>
 
 <style>
-
+select {
+     /* width:300px; */
+     padding:5px;
+     border:2px solid #195c77;
+     font-family:'Nanumgothic';
+     /* background:url('https://i.ibb.co/98Vbb8L/gnb-bg.gif') no-repeat 95% 50%; */
+     border-radius:3px;
+     -webkit-appearance: none;
+     -moz-appearance: none;
+     appearance : none;
+}
 </style>

@@ -2,7 +2,7 @@
   <Modal :isShow='isShow' @switchModal='switchModal' width='350px' height='450px' top='400px' left='78vw'>
     <template v-slot:header>
       <div id='header'>
-        <p style="padding: 10px">스터디 생성하기</p>
+        <p style="padding: 10px">미팅 생성하기</p>
       </div>
       <!-- <header id='header'>스터디 생성</header> -->
     </template>
@@ -10,7 +10,7 @@
       <section id='section'>
         <div class="meeting_create_box">
             <div id="create_box">
-            <p>스터디 이름</p>
+            <p>미팅 이름</p>
             <input class="meeting_create_input" type="text" name="" id="meeting_name" v-model="data.name">
           </div>
           <form id="thumbnailForm" enctype="multupart/form-data">
@@ -25,7 +25,7 @@
     <template v-slot:footer id='footer'>
     </template>
     <template v-slot:button>
-      <button class='white-button' @click='switchModal'>스터디생성</button>
+      <button class='white-button' @click='switchModal'>미팅 생성</button>
     </template>
   </Modal>
 </template>
