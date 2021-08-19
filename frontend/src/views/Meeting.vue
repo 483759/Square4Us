@@ -3,10 +3,11 @@
     <BeforeMeeting @enter="enter" @switchSession="switchSession" @exit="exit" />
     선택한 세부 세션 : {{ state.sessionNum }}
   </div> -->
+  <h1 id="session-title" class="title">{{ state.mySessionId }}</h1>
   <div>
-    <div id="session">
+    <div id="session" class="meeting-window">
       <div id="session-header">
-        <h1 id="session-title">{{ state.mySessionId }}</h1>
+        
       </div>
       <div id="video-container" class="col-md-6">
         <UserVideo :stream-manager="state.publisher" />
@@ -16,17 +17,22 @@
           :stream-manager="sub"
         />
       </div>
-      <div class="MeetingButtonBox">
+      <div class="meeting-button-box">
         <button type="button" class="green-button" @click="videoOnAndOff()">video</button>
         <button type="button" class="green-button" @click="audioOnAndOff()">audio</button>
         <button class="green-button" @click="exit">나가기</button>
-        <button class="green-button" @click="state.isOpenedChat = !state.isOpenedChat">채팅</button>
+        <button class="green-button" @click="state.isOpenedChattingWindow = !state.isOpenedChattingWindow">채팅</button>
       </div>
-      <input type="text" v-model="state.message" @keyup.enter="sendChat()" />
-      <button type="button" @click="sendChat()">입력</button>
     </div>
 
-    <div id="chatting-content"></div>
+    <div v-show="state.isOpenedChattingWindow" class="chatting-window">
+      <ul id="chatting-content">
+      </ul>
+      <div class="">
+        <input type="text" v-model="state.message" @keyup.enter="sendChat()" />
+        <button type="button" @click="sendChat()">입력</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -77,7 +83,7 @@ export default {
 
       message: "",
       sessionNum: 1,
-      isOpenedChat: false
+      isOpenedChattingWindow: false
     });
     onMounted(() => {
       console.log(`${props.studyId}번 스터디, ${props.meetingId}번 방 입장 완료`);
@@ -128,15 +134,11 @@ export default {
       });
 
       state.session.on("signal:my-chat", (event) => {
-        console.log(event.data);
-        console.log(event.from);
-        console.log(event.type);
-        console.log("메시지 왔음~");
         let receive = event.data.split("/");
         let userName = receive[0];
         let message = receive[1];
-        document.getElementById("chatting-content").innerHTML += `<p>${userName}:</p>`;
-        document.getElementById("chatting-content").innerHTML += `<p>${message}</p>`;
+        document.getElementById("chatting-content").innerHTML += `<li>${userName}:</li>`;
+        document.getElementById("chatting-content").innerHTML += `${message}`;
       });
 
       // --- Connect to the session with a valid user token ---
@@ -154,7 +156,7 @@ export default {
               videoSource: undefined, // The source of video. If undefined default webcam
               publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
               publishVideo: true, // Whether you want to start publishing with your video enabled or not
-              resolution: "640x480", // The resolution of your video
+              resolution: "320x240", // The resolution of your video
               frameRate: 30, // The frame rate of your video
               insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
               mirror: false, // Whether to mirror your local video or not
@@ -251,11 +253,10 @@ export default {
       state.publisher.publishAudio(state.audioEnabled);
     };
     const sendChat = () => {
-      let t = state;
-      if (t.message && t.message != "") {
-        t.session
+      if (state.message && state.message != "") {
+        state.session
           .signal({
-            data: t.myUserName + "/" + t.message,
+            data: state.myUserName + "/" + state.message,
             to: [],
             type: "my-chat",
           })
@@ -266,7 +267,7 @@ export default {
             console.error(error);
           });
       }
-      t.message = "";
+      state.message = "";
     };
     return {
       state,
@@ -287,11 +288,34 @@ export default {
 </script>
 
 <style>
-.MeetingButtonBox {
+.meeting-button-box {
   display: flex;
   flex-direction: row;
   justify-content: center;
   gap: 10px;
   margin-bottom: 10px;
+  position: fixed;
+  right: 35%;
+  bottom: 0%;
+}
+
+#chatting-content {
+  overflow-y: scroll;
+  height: 300px;
+}
+
+.meeting-window {
+  display: inline-block;
+  width: 70%;
+}
+
+.chatting-window {
+  display: inline-block;
+  width: 30%;
+  background-color: white;
+}
+
+.title {
+  display: inline;
 }
 </style>
