@@ -367,13 +367,13 @@ server {
 
 
 
-## :tv: WebRTC
+## :tv: WebRTC - Openvidu-Server 구축 과정
 
-  
+<br>
 
-> Openvidu-Server 구축
+> WebRTC 사용에 있어 Openvidu-Server를 구축하여 사용했습니다!
 >
-> - AWS EC2 Ubuntu 환경에 Docker와 Docker Compose가 필요함!
+> - Openvidu-Server를 구축하는데는 AWS EC2 Linux 환경, Docker와 Docker Compose가 필요합니다.
 >
 >   <!-- 이진아 여기도 토글 만들어줘 -->
 >
@@ -407,14 +407,15 @@ server {
 >   ```
 >
 
-  
+<br>
 
 1. openvidu에서 사용하는 포트 확보하기
 
    - `22 TCP`, `80 TCP`, `443 TCP`, `3478 TCP+UDP`, `40000~57000 TCP+UDP`, `57001~65535 TCP+UDP` 가 필요!
+
    - [참고 링크](https://docs.openvidu.io/en/2.19.0/deployment/ce/on-premises/#close-ports-to-avoid-external-attacks)
 
-     
+     <br>
 
 2. openvidu 설치
 
@@ -424,7 +425,7 @@ server {
    $ sudo curl https://s3-eu-west-1.amazonaws.com/aws.openvidu.io/install_openvidu_latest.sh | sudo bash
    ```
 
-     
+     <br>
 
 3. 설정 파일 수정(.env)
 
@@ -444,7 +445,7 @@ server {
    # 키를 발급받고 난 후부터는 포트 변경해도 무방!
    ```
 
-     
+     <br>
 
 4. openvidu 서버 실행
 
@@ -452,7 +453,7 @@ server {
    $ sudo ./openvidu start
    ```
 
-     
+     <br>
 
 5. 잘 동작하는지 확인!
 
@@ -460,14 +461,21 @@ server {
 
      ```bash
      $ sudo docker ps
-     
-     # Docker Container에 openvidu-coturn, kurento-media-server, openvidu-server,
-     #		   		     openvidu-redis, openvidu-proxy, openvidu-call 가 올라와 있으면 정상!
      ```
+
+     ![image-20210819203842711](README.assets/image-20210819203842711.png)
+
+     - 위처럼 Docker Container에 `openvidu-coturn`, `kurento-media-server`, `openvidu-server`,
+
+        												`openvidu-redis`, `openvidu-proxy`, `openvidu-call` 가 올라와 있으면 정상!
+
+       <br>
 
    - https://<DOMAIN_OR_PUBLIC_IP>:<HTTPS_PORT> 접속 시 정상 동작하면 성공!
 
-  
+     ![image-20210819204008754](README.assets/image-20210819204008754.png)
+
+  <br>
 
 
 ### ✅ 핵심 라이브러리
