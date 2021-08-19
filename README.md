@@ -41,7 +41,6 @@ https://www.figma.com/file/Cq8wRgZiDYmEuX8snuic1S/Untitled?node-id=0%3A1
 
 <details>
 <summary>Swagger API Document</summary>
-
 ![image](https://user-images.githubusercontent.com/30489264/130029531-57ea9aed-d65e-4f7c-bd2b-3f228f3c13dc.png)
 </details>
 
@@ -368,11 +367,107 @@ server {
 
 
 
-#### Openvidu
+## :tv: WebRTC
 
+  
 
+> Openvidu-Server 구축
+>
+> - AWS EC2 Ubuntu 환경에 Docker와 Docker Compose가 필요함!
+>
+>   <!-- 이진아 여기도 토글 만들어줘 -->
+>
+>   ```bash
+>   # 도커 설치 방법
+>   
+>   $ sudo apt-get update
+>   
+>   $ sudo apt-get install \
+>   	apt-transport-https \
+>   	ca-certificates \
+>   	curl \
+>   	gnupg \
+>   	lsb-release
+>   	
+>   $ sudo -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o
+>   /usr/share/keyrings/docker-archive-keyring.gpg
+>   
+>   $ echo \
+>   	"deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg]
+>   	https://download.docker.com/linux/ubuntu \
+>   	$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+>   	
+>   $ sudo apt-get update
+>   
+>   $ sudo apt-get install docker-ce docker-ce-cli containerd.io
+>   
+>   $ sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+>   
+>   $ sudo chmod +x /usr/local/bin/docker-compose
+>   ```
+>
 
+  
 
+1. openvidu에서 사용하는 포트 확보하기
+
+   - `22 TCP`, `80 TCP`, `443 TCP`, `3478 TCP+UDP`, `40000~57000 TCP+UDP`, `57001~65535 TCP+UDP` 가 필요!
+   - [참고 링크](https://docs.openvidu.io/en/2.19.0/deployment/ce/on-premises/#close-ports-to-avoid-external-attacks)
+
+     
+
+2. openvidu 설치
+
+   ```bash
+   $ cd /opt   # openvidu는 /opt 디렉토리에 설치되는게 권장됨!
+   
+   $ sudo curl https://s3-eu-west-1.amazonaws.com/aws.openvidu.io/install_openvidu_latest.sh | sudo bash
+   ```
+
+     
+
+3. 설정 파일 수정(.env)
+
+   ```bash
+   $ sudo vi .env
+   ```
+
+   ```bash
+   DOMAIN_OR_PUBLIC_IP=<Linux 서버의 public ip 주소 또는 도메인 입력!)
+   OPENVIDU_SECRET=<사용할 비밀번호 입력>
+   CERTIFICATE_TYPE=letsencrypt # default 값은 selfsigned지만 selfsigned 방식 사용시 보안 문제 야기!
+   							 # SSL 키가 있다면 owncert 방식으로 하되, /owncert 디렉토리 안에 키가 있어야함!
+   LETSENCRYPT_EMAIL=<이메일>
+   HTTP_PORT=80
+   HTTPS_PORT=443
+   # HTTP_PORT와 HTTPS_PORT는 letsencrypt 방식의 키를 발급 받기 전까진 기본 포트인 80, 443을 사용해야 한다!
+   # 키를 발급받고 난 후부터는 포트 변경해도 무방!
+   ```
+
+     
+
+4. openvidu 서버 실행
+
+   ```bash
+   $ sudo ./openvidu start
+   ```
+
+     
+
+5. 잘 동작하는지 확인!
+
+   - Docker Container 확인
+
+     ```bash
+     $ sudo docker ps
+     
+     # Docker Container에 openvidu-coturn, kurento-media-server, openvidu-server,
+     #		   		     openvidu-redis, openvidu-proxy, openvidu-call 가 올라와 있으면 정상!
+     ```
+
+   - https://<DOMAIN_OR_PUBLIC_IP>:<HTTPS_PORT> 접속 시 정상 동작하면 성공!
+
+  
 
 
 ### ✅ 핵심 라이브러리
@@ -382,3 +477,4 @@ server {
     - __소개__ : WebRTC 스택의 기능적 구현을 제공하는 미디어 서버
     - __사용 기능__ : 그룹 화상 통화 기능
     - __담당자__ : 최경운
+
