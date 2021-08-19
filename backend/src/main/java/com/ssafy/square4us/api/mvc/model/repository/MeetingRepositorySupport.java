@@ -21,4 +21,12 @@ public class MeetingRepositorySupport {
                 .from(qMeeting)
                 .fetch();
     }
+
+    public List<MeetingDTO> findMeetingByStudy(Long studyId) {
+        return jpaQueryFactory
+                .select(Projections.constructor(MeetingDTO.class, qMeeting))
+                .from(qMeeting)
+                .where(qMeeting.study.id.eq(studyId))
+                .fetch();
+    }
 }

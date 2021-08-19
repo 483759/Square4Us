@@ -144,8 +144,10 @@ public class CommentController {
             return ResponseFactory.conflict();
         }
 
-        commentService.updateComment(commentId, req);
-
+        boolean result = commentService.updateComment(commentId, req);
+        if(!result) {
+            return ResponseFactory.conflict();
+        }
         return ResponseFactory.ok();
     }
 }

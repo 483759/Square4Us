@@ -1,12 +1,10 @@
 package com.ssafy.square4us.api.mvc.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.square4us.api.mvc.model.entity.Article;
 import com.ssafy.square4us.api.mvc.model.entity.FileEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
@@ -20,14 +18,15 @@ public class ArticleDTO {
     private String category;
     private String title;
     private String content;
-    private StudyDTO study;
-    private MemberDTO member;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private Integer hit;
     private Integer good;
     private Integer dislike;
     private List<FileDTO> files;
+    @JsonIgnore
+    private StudyDTO study;
+    private MemberDTO member;
 
     @Builder
     public ArticleDTO(Article article) {
@@ -53,8 +52,9 @@ public class ArticleDTO {
     }
 
     @Getter
+    @ToString
     @Schema(description = "Article Create Post Request")
-    public static class CreatePostReq {
+    public static class WritePostReq {
         @Schema(name = "category", example = "15")
         String category;
 
@@ -65,7 +65,7 @@ public class ArticleDTO {
         String content;
 
         @Builder
-        public CreatePostReq(String category, String title, String content) {
+        public WritePostReq(String category, String title, String content) {
             this.category = category;
             this.title = title;
             this.content = content;
@@ -132,7 +132,10 @@ public class ArticleDTO {
         @Schema(description = "첨부파일")
         private List<FileDTO> files;
 
-        public ArticleGetRes(Long id, String email, String category, String title, String content, LocalDateTime createdDate, LocalDateTime modifiedDate, Integer hit, Integer good, Integer dislike, List<FileDTO> files) {
+        @Schema(description = "작성자")
+        private MemberDTO member;
+
+        public ArticleGetRes(Long id, String email, String category, String title, String content, LocalDateTime createdDate, LocalDateTime modifiedDate, Integer hit, Integer good, Integer dislike, List<FileDTO> files, MemberDTO member) {
             this.id = id;
             this.email = email;
             this.category = category;
@@ -144,12 +147,13 @@ public class ArticleDTO {
             this.good = good;
             this.dislike = dislike;
             this.files = files;
+            this.member = member;
         }
 
         public static BasicResponseBody<ArticleDTO.ArticleGetRes> of(Integer statusCode, String message, ArticleDTO article) {
             ArticleDTO.ArticleGetRes result = new ArticleDTO.ArticleGetRes(article.getId(), article.getMember().getEmail(), article.getCategory(),
                                                                            article.getTitle(), article.getContent(), article.getCreatedDate(),
-                                                                           article.getModifiedDate(), article.getHit(), article.getGood(), article.getDislike(), article.getFiles());
+                                                                           article.getModifiedDate(), article.getHit(), article.getGood(), article.getDislike(), article.getFiles(), article.getMember());
             return BasicResponseBody.of(statusCode, message, result);
         }
     }

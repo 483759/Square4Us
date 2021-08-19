@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @Table(name = "file")
 public class FileEntity extends BaseTimeEntity{
 
@@ -22,16 +21,16 @@ public class FileEntity extends BaseTimeEntity{
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "study_id")
-    private Study study;
-
-    @ManyToOne
     @JoinColumn(name = "article_id")
     private Article article;
 
     @OneToOne
     @JoinColumn(name = "meeting_id")
     private Meeting meeting;
+
+    @OneToOne
+    @JoinColumn(name = "study_id")
+    private Study study;
 
     @Column(name = "file_name")
     private String fileName;
@@ -46,11 +45,11 @@ public class FileEntity extends BaseTimeEntity{
     private String contentType;
 
     @Builder
-    public FileEntity(Member member, Study study, Article article, Meeting meeting, String fileName, String filePath, String fileOriginName, String contentType) {
+    public FileEntity(Member member, Article article, Meeting meeting, Study study, String fileName, String filePath, String fileOriginName, String contentType) {
         this.member = member;
-        this.study = study;
         this.article = article;
         this.meeting = meeting;
+        this.study = study;
         this.fileName = fileName;
         this.filePath = filePath;
         this.fileOriginName = fileOriginName;

@@ -1,34 +1,42 @@
 <template>
   <AsideFrame>
-
     <template v-slot:aside-header>
         <img id='aside-header-thumbnail' src="/meeting-thumbnail.jpg" alt="썸네일">
     </template>
 
     <template v-slot:aside-body>
-      <StudyMainAside :menus='menus' :activeIndex='activeIndex' @onClickMenu='(idx)=>{activeIndex = idx}'/>
+      <StudyMainAside :menus='menus' :activeIndex='activeStudyNav' :studyId="studyId" @onClickMenu='(idx)=>{$store.commit("SET_STUDY_ACTIVE", idx)}'/>
     </template>
 
     <template v-slot:section>
       <!-- <header id='section-title'>{{menus[activeIndex]}}</header> -->
       <!-- 컴포넌트 파서 알맞은 위치의 div를 컴포넌트로 대체하면 됨 -->
-      <div class='study-main' v-if="activeIndex === 0"> <!-- 스터디 메인 --> </div>
-      <StudyMainMeeting v-else-if="activeIndex === 1" :studyId='studyId' />
-      <div v-else-if="activeIndex === 2"> 게시글 </div>
-      <div v-else-if="activeIndex === 3"> 스터디 학습 자료 </div>
-      <div v-else-if="activeIndex === 4"> 통계 </div>
-      <div v-else-if="activeIndex === 5"> 스터디 설정 </div>
+      <StudyMainPage v-if="activeStudyNav === 0"/>
+      <StudyMainMeeting v-else-if="activeStudyNav === 1" :studyId='studyId' />
+      <StudyArticle v-else-if="activeStudyNav === 2" :studyId="studyId" /> 
+
+      <StudyDataPage v-else-if="activeStudyNav === 3"/>
+      <StudyStatistic v-else-if="activeStudyNav === 4"/> 
+      <!-- 회원 관리 목록 만들기 -->
+      <StudyMemberConfig v-else-if="activeStudyNav === 5" :studyId='studyId'/>
+      <StudyConfig v-else-if="activeStudyNav === 6" :studyId="studyId" />
       <div v-else> 아무것에도 포함 안됨 </div>
     </template>
-    
   </AsideFrame>
 </template>
 
 <script>
 import AsideFrame from '@/components/AsideFrame.vue'
 import StudyMainAside from '@/components/study/main/StudyMainAside.vue'
-import StudyMainMeeting from '@/components/study/main/StudyMainMeeting.vue'
-import { ref } from '@vue/reactivity'
+import StudyMainPage from '@/components/study/main/StudyMainPage.vue'
+import StudyMainMeeting from '@/components/study/main/meeting/StudyMainMeeting.vue'
+import StudyArticle from '@/components/study/main/article/StudyArticle.vue'
+import StudyDataPage from '@/components/study/main/data/StudyDataPage.vue'
+import StudyStatistic from '@/components/study/main/statistic/StudyStatistic.vue'
+import StudyConfig from '@/components/study/main/config/StudyConfig.vue'
+import StudyMemberConfig from '@/components/study/main/config/StudyMemberConfig.vue'
+import { useStore } from 'vuex'
+import { computed } from '@vue/runtime-core'
 export default {
   name: 'StudyMain',
   props: {
@@ -38,23 +46,21 @@ export default {
     }
   },
   components :{
-    AsideFrame,
-    StudyMainAside,
-    StudyMainMeeting
+    AsideFrame, StudyMainAside, StudyMainPage, StudyMainMeeting, StudyArticle,
+    StudyDataPage, StudyStatistic, StudyConfig, StudyMemberConfig
   },
   setup() {
-    const menus = [
-      '스터디 메인', 
-      '미팅', 
-      '게시글', 
-      '스터디 학습 자료', 
-      '통계', 
-      '스터디 설정'
-    ]
-    const activeIndex = ref(0)
+    const store = useStore()
+    const activeStudyNav = computed(()=>store.state.activeStudyNav)
+    const menus = computed(()=>{
+      return store.getters.isLeader 
+        ? ['스터디 메인', '미팅', '게시글', '스터디 학습 자료', '통계', '멤버', '스터디 설정']
+        : ['스터디 메인', '미팅', '게시글', '스터디 학습 자료', '통계', '멤버']
+    })
+
     return {
       menus,
-      activeIndex,
+      activeStudyNav
     }
   }
 }

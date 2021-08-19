@@ -1,11 +1,10 @@
 package com.ssafy.square4us.api.mvc.service;
 
 import com.ssafy.square4us.api.mvc.model.dto.ArticleDTO;
-import com.ssafy.square4us.api.mvc.model.entity.Article;
-import com.ssafy.square4us.api.mvc.model.entity.FileEntity;
-import com.ssafy.square4us.api.mvc.model.entity.Member;
-import com.ssafy.square4us.api.mvc.model.entity.Study;
+import com.ssafy.square4us.api.mvc.model.dto.FileDTO;
+import com.ssafy.square4us.api.mvc.model.entity.*;
 import com.ssafy.square4us.api.mvc.model.repository.*;
+import com.ssafy.square4us.common.util.S3Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -13,28 +12,29 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+
 public class ArticleServiceImpl implements ArticleService {
 
-    private final static String BASE_PATH = System.getProperty("user.dir") + "\\article";
     private final ArticleRepository articleRepo;
     private final ArticleRepositorySupport articleRepositorySupport;
     private final MemberRepository memberRepo;
     private final StudyRepository studyRepo;
     private final FileRepository fileRepo;
+    private final ArticleEvaluationRepository articleEvaluationRepo;
+    private final S3Util s3Util;
 
     @Override
     @Transactional
-    public ArticleDTO createArticle(Long studyId, Long memberId, ArticleDTO.CreatePostReq req, MultipartFile[] files) {
+    public ArticleDTO createArticle(Long studyId, Long memberId, ArticleDTO.WritePostReq req) {
         Optional<Study> study = studyRepo.findById(studyId);
         Optional<Member> member = memberRepo.findById(memberId);
 
@@ -54,50 +54,35 @@ public class ArticleServiceImpl implements ArticleService {
 
         article = articleRepo.save(article);
 
-        if(files != null && files.length > 0) {
-            int code = saveFiles(article, files);
-            if(code == 1) {
-                return null;
-            }
-        }
-
         return new ArticleDTO(article);
     }
 
-    @Transactional
-    public int saveFiles(Article article, MultipartFile[] files) {
+    @Transactional(rollbackFor = IOException.class)
+    public void saveFiles(Article article, MultipartFile[] files) throws IOException {
         LocalDate today = LocalDate.now();
-        String realPath = BASE_PATH + File.separator + today.getYear() + File.separator + today.getMonth() + File.separator + today.getDayOfMonth();
-        File path = new File(realPath);
-        if(!path.exists()) {
-            path.mkdir();
-        }
+        String path = "article/" + today.getYear() + "/" + today.getMonth() + "/" + today.getDayOfMonth();
+        List<FileEntity> list = new ArrayList<>();
         for(MultipartFile file: files) {
-            String originName = file.getOriginalFilename();
-            String contentType = file.getContentType();
-            String uuid = UUID.randomUUID().toString();
-            String saveName = uuid + originName.substring(originName.lastIndexOf('.'));
-
-            FileEntity fe = FileEntity.builder()
-                    .member(null)
-                    .study(null)
-                    .article(article)
-                    .meeting(null)
-                    .filePath(realPath)
-                    .fileName(saveName)
-                    .fileOriginName(originName)
-                    .contentType(contentType)
-                    .build();
-
-            fe = fileRepo.save(fe);
-
+            FileDTO fd = null;
             try {
-                file.transferTo(new File(realPath, saveName));
-            } catch(IOException e) {
-                return 1;
+                fd = s3Util.upload(file, path);
+                FileEntity fe = FileEntity.builder()
+                        .member(null)
+                        .article(article)
+                        .meeting(null)
+                        .filePath(fd.getFilePath())
+                        .fileName(fd.getFileName())
+                        .fileOriginName(fd.getFileOriginName())
+                        .contentType(fd.getContentType())
+                        .build();
+
+                fe = fileRepo.save(fe);
+                list.add(fe);
+            } catch (IOException e) {
+                throw new IOException("파일 저장 실패!");
             }
         }
-        return 2;
+        article.setFiles(list);
     }
 
     @Override
@@ -140,22 +125,55 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public void evalArticle(Long articleId, String what) {
-        Optional<Article> article = articleRepo.findById(articleId);
-        if(!article.isPresent()) {
-            return;
-        }
-        Article art = article.get();
-        if(what.equals("like")) {
-            art.setGood(art.getGood() + 1);
+    public ArticleDTO evalArticle(String email, Long articleId, String what) throws Exception {
+        Optional<Article> findArticle = articleRepo.findById(articleId);
+        Optional<Member> findMember = memberRepo.findByEmail(email);
+        findArticle.orElseThrow(() -> new Exception("해당하는 게시글이 없음!"));
+        findMember.orElseThrow(() -> new Exception("해당하는 회원이 없음!"));
+        Article article = findArticle.get();
+        Member member = findMember.get();
+        ArticleEvaluation findArticleEval = articleEvaluationRepo.findByMemberAndArticle(member, article);
+
+        if(findArticleEval == null) {
+            ArticleEvaluation newEval = ArticleEvaluation.builder()
+                                            .article(article)
+                                            .member(member)
+                                            .evaluation(what.charAt(0))
+                                            .build();
+            if(newEval.getEvaluation() == 'l') {
+                article.setGood(article.getGood() + 1);
+            } else {
+                article.setDislike(article.getDislike() + 1);
+            }
+            articleEvaluationRepo.save(newEval);
         } else {
-            art.setDislike(art.getDislike() + 1);
+            Character prev = findArticleEval.getEvaluation();
+            Character newC = what.charAt(0);
+            if(prev == newC) {
+                articleEvaluationRepo.delete(findArticleEval);
+                if(prev == 'l') {
+                    article.setGood(article.getGood() - 1);
+                } else {
+                    article.setDislike(article.getDislike() - 1);
+                }
+            } else {
+                if(prev == 'l') {
+                    findArticleEval.setEvaluation('d');
+                    article.setGood(article.getGood() - 1);
+                    article.setDislike(article.getDislike() + 1);
+                } else {
+                    findArticleEval.setEvaluation('l');
+                    article.setGood(article.getGood() + 1);
+                    article.setDislike(article.getDislike() - 1);
+                }
+            }
         }
+        return new ArticleDTO(article);
     }
 
     @Override
     @Transactional
-    public void updateArticle(Long articleId, ArticleDTO.CreatePostReq req, MultipartFile[] files) {
+    public void updateArticle(Long articleId, ArticleDTO.WritePostReq req, MultipartFile[] files) throws IOException {
         Optional<Article> article = articleRepo.findById(articleId);
         if(!article.isPresent()) {
             return;
@@ -168,13 +186,28 @@ public class ArticleServiceImpl implements ArticleService {
         saveFiles(art, files);
     }
 
+    @Override
+    @Transactional
+    public void uploadFiles(Long articleId, MultipartFile[] files) throws IOException {
+        Optional<Article> find = articleRepo.findById(articleId);
+        if(!find.isPresent()) {
+            return;
+        }
+        saveFiles(find.get(), files);
+    }
+
+    @Override
+    @Transactional
+    public PageImpl<ArticleDTO> getArticleListWithSearchingAndPaging(Pageable pageable, Long studyId, String key, String word) {
+        return articleRepositorySupport.getArticleListWithSearchingAndPaging(pageable, studyId, key, word);
+    }
+
     @Transactional
     public void deletePrevFiles(Article article) {
         List<FileEntity> prevFiles = article.getFiles();
         if(prevFiles != null && prevFiles.size() > 0) {
             for(FileEntity fe: prevFiles) {
-                File cur = new File(fe.getFilePath(), fe.getFileName());
-                cur.delete();
+                s3Util.delete(fe);
                 fileRepo.delete(fe);
             }
         }

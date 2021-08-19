@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,13 +39,11 @@ public class MemberController {
             @Parameter(name = "로그인 정보", required = true) @RequestBody MemberDTO.LoginPostReq loginInfo) {
         String email = loginInfo.getEmail();
         String password = loginInfo.getPassword();
-        System.out.println(email);
-        System.out.println(password);
+        
         try {
             Member member = memberService.getMemberByEmail(email);
 
             if (member == null) {
-                System.out.println("없는데?");
                 return ResponseFactory.notFound();
             }
             if (new BCryptPasswordEncoder().matches(password, member.getPassword()) == false) {
@@ -58,6 +57,18 @@ public class MemberController {
         }
     }
 
+    @GetMapping("/checkEmail")
+    @Operation(summary = "이메일 중복 확인", description = "입력받은 아이디가 존재하지 않는 아이디인지 확인한다.", responses = {
+            @ApiResponse(responseCode = "200", description = "존재하지 않음"),
+            @ApiResponse(responseCode = "409", description = "이미 존재함")})
+    public ResponseEntity<? extends BasicResponseBody> checkEmail(@Parameter(name = "가입하고자 하는 이메일") String email) {
+        MemberDTO confirmMember = memberService.getMemberDTOByEmail(email);
+        if(confirmMember == null) {
+            return ResponseFactory.ok();
+        }
+        return ResponseFactory.conflict();
+    }
+
     @PostMapping("/join")
     @Operation(summary = "회원 가입", description = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.", responses = {
             @ApiResponse(responseCode = "201", description = "성공"),
@@ -66,10 +77,15 @@ public class MemberController {
             @ApiResponse(responseCode = "500", description = "서버 오류")})
     public ResponseEntity<? extends BasicResponseBody> register(@RequestBody @Parameter(name = "회원가입 정보", required = true) MemberDTO.JoinPostReq req){
 
-        MemberDTO confirmMember = memberService.getMemberDTOByEmail(req.getEmail());
-        if (confirmMember != null) {
+        ResponseEntity<? extends BasicResponseBody> checkEmail = checkEmail(req.getEmail());
+        if(!checkEmail.getStatusCode().equals(HttpStatus.OK)) {
             return ResponseFactory.conflict();
         }
+
+//        MemberDTO confirmMember = memberService.getMemberDTOByEmail(req.getEmail());
+//        if (confirmMember != null) {
+//            return ResponseFactory.conflict();
+//        }
 
         MemberDTO member = memberService.createMember(req);
 
@@ -126,10 +142,10 @@ public class MemberController {
         String email = memberDetails.getUsername();
         MemberDTO member = memberService.getMemberDTOByEmail(email);
 
-        return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "회원 정보 조회 성공", member.getEmail(), member.getRole(), member.getNickname(), member.getProfile(), member.getReport()));
+        return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "회원 정보 조회 성공", member.getId(), member.getEmail(), member.getRole(), member.getNickname(), member.getIntroduction() , member.getProfile(), member.getReport()));
     }
 
-    @PatchMapping("/me")
+    @PostMapping("/me")
     @Operation(summary = "회원 정보 수정", description = "회원 정보를 수정한다.", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "401", description = "인증 실패"),
@@ -148,19 +164,23 @@ public class MemberController {
         }
 
         String email = memberDetails.getUsername();
-        memberService.updateMemberByEmail(email, updateInfo);
+        MemberDTO member = memberService.getMemberDTOByEmail(email);
+        Long result = memberService.updateMemberByEmail(member.getId(), updateInfo);
+        if(result == 0){
+            return ResponseFactory.conflict();
+        }
 
-        MemberDTO modified = memberService.getMemberDTOByEmail(email);
-        return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "수정 성공", modified.getEmail(), modified.getRole(), modified.getNickname(), modified.getProfile(), modified.getReport()));
+        return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "수정 성공", member.getId(), member.getEmail(), member.getRole(), updateInfo.getNickname(), updateInfo.getIntroduction() , member.getProfile(), member.getReport()));
     }
 
-    @PatchMapping("/me/profile")
+    @PostMapping("/me/profile")
     @Operation(summary = "프로필 사진 변경", description = "회원의 프로필 사진을 변경한다.", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "401", description = "인증 실패"),
             @ApiResponse(responseCode = "500", description = "서버 오류")})
     public ResponseEntity<? extends BasicResponseBody> modifyProfile(@Parameter(hidden = true) Authentication authentication,
                                                                      @Parameter(name = "프로필 사진", required = true) MultipartFile profile) {
+
 
         if (authentication == null) {
             return ResponseFactory.forbidden();
@@ -172,18 +192,24 @@ public class MemberController {
             return ResponseFactory.unauthorized();
         }
 
+        System.out.println(profile);
         if(profile == null) {
             return ResponseFactory.forbidden();
         }
 
         String email = memberDetails.getUsername();
-        MemberDTO member = memberService.updateProfileByEmail(email, profile);
+        MemberDTO member = null;
+        try {
+            member = memberService.updateProfileByEmail(email, profile);
+        } catch (IOException e) {
+            return ResponseFactory.internalServerError();
+        }
 
         if(member == null) {
             return ResponseFactory.serviceUnavailable();
         }
 
-        return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "프로필 수정 성공", member.getEmail(), member.getRole(), member.getNickname(), member.getProfile(), member.getReport()));
+        return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "프로필 수정 성공", member.getId(), member.getEmail(), member.getRole(), member.getNickname(), member.getIntroduction(), member.getProfile(), member.getReport()));
     }
 
     @DeleteMapping("/me/profile")
@@ -209,7 +235,7 @@ public class MemberController {
             return ResponseFactory.serviceUnavailable();
         }
 
-        return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "프로필 삭제 성공", member.getEmail(), member.getRole(), member.getNickname(), member.getProfile(), member.getReport()));
+        return ResponseEntity.ok(MemberDTO.InfoGetRes.of(200, "프로필 삭제 성공", member.getId(), member.getEmail(), member.getRole(), member.getNickname(), member.getIntroduction(), member.getProfile(), member.getReport()));
     }
 
     @DeleteMapping("me")
@@ -229,7 +255,10 @@ public class MemberController {
             return ResponseFactory.unauthorized();
         }
 
-        memberService.deleteMemberByEmail(memberDetails.getUsername());
+        boolean flag = memberService.deleteMemberByEmail(memberDetails.getUsername());
+        if(!flag) {
+            return ResponseFactory.conflict();
+        }
 
         return ResponseFactory.ok();
     }

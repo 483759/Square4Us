@@ -5,8 +5,7 @@ services:
     build: 
       context: ./frontend
     ports: 
-      - 80:80
-      - 443:443
+      - 3000:80
     networks:
       - square4us
     restart: unless-stopped

@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class StudyRepositorySupport extends QuerydslRepositorySupport {
                 .from(qStudyMember)
                 .innerJoin(qStudyMember.member, qMember)
                 .leftJoin(qStudyMember.study, qStudy)
-                .where(qMember.id.eq(memberId), qStudy.dismantleFlag.ne('T'))
+                .where(qMember.id.eq(memberId), qStudy.dismantleFlag.ne('T'), qStudyMember.accepted.eq('T'))
                 .fetch();
     }
 
@@ -58,12 +59,42 @@ public class StudyRepositorySupport extends QuerydslRepositorySupport {
         return new PageImpl<>(results, pageable, totalCount);
     }
 
+    public PageImpl<StudyDTO> findStudiesWithPagingByCategory(String word, Pageable pageable) {
+        JPAQuery query = jpaQueryFactory
+                .select(Projections.constructor(StudyDTO.class, qStudy))
+                .from(qStudy)
+                .where(qStudy.dismantleFlag.ne('T'), qStudy.category.eq(word));
+
+        Long totalCount = query.fetchCount();
+        List<StudyDTO> results = getQuerydsl().applyPagination(pageable, query).fetch();
+        return new PageImpl<>(results, pageable, totalCount);
+    }
+
+    public PageImpl<StudyDTO> findStudiesWithPagingByStudyName(String word, Pageable pageable) {
+        JPAQuery query = jpaQueryFactory
+                .select(Projections.constructor(StudyDTO.class, qStudy))
+                .from(qStudy)
+                .where(qStudy.dismantleFlag.ne('T'), qStudy.name.like("%" + word + "%"));
+
+        Long totalCount = query.fetchCount();
+        List<StudyDTO> results = getQuerydsl().applyPagination(pageable, query).fetch();
+        return new PageImpl<>(results, pageable, totalCount);
+    }
+
     public StudyDTO findByStudyId(Long studyId) {
         return jpaQueryFactory
                 .select(Projections.constructor(StudyDTO.class, qStudy))
                 .from(qStudy)
                 .where(qStudy.id.eq(studyId), qStudy.dismantleFlag.ne('T'))
                 .fetchOne();
+    }
+
+    public Long existsLeaderJoinStudy(Long memberId) {
+        return jpaQueryFactory
+                .select(qStudyMember)
+                .from(qStudyMember)
+                .where(qStudyMember.member.id.eq(memberId), qStudyMember.leader.eq('T'))
+                .fetchCount();
     }
 
     public StudyMemberDTO getStudyMemberByEmail(String email, Long studyId) {
@@ -77,6 +108,20 @@ public class StudyRepositorySupport extends QuerydslRepositorySupport {
                 ;
     }
 
+    public Long findStudyLeader(Long studyId) {
+        return jpaQueryFactory.select(qStudyMember.member.id)
+                .from(qStudyMember)
+                .where(qStudyMember.study.id.eq(studyId), qStudyMember.leader.eq('T'))
+                .fetchOne();
+    }
+
+    public Long updateLeaderMember(Long studyId, Long memberId, char leader) {
+        return jpaQueryFactory.update(qStudyMember)
+                .where(qStudyMember.study.id.eq(studyId), qStudyMember.member.id.eq(memberId), qStudyMember.leader.ne(leader))
+                .set(qStudyMember.leader, leader)
+                .execute();
+    }
+
     public Boolean existStudyMember(Long studyId, Long memberId) {
         Integer result = jpaQueryFactory
                 .selectOne()
@@ -85,11 +130,21 @@ public class StudyRepositorySupport extends QuerydslRepositorySupport {
         return result != null;
     }
 
+    @Transactional
     public Long deleteStudyById(Long studyId) {
         return jpaQueryFactory.update(qStudy)
                 .where(qStudy.id.eq(studyId))
                 .set(qStudy.dismantleFlag, 'T')
                 .set(qStudy.dismantleDate, new Date(System.currentTimeMillis()))
+                .execute();
+    }
+
+    @Transactional
+    public Long withdrawStudy(Long memberId, Long studyId) {
+        return jpaQueryFactory.delete(qStudyMember)
+                .where(qStudyMember.study.id.eq(studyId),
+                        qStudyMember.member.id.eq(memberId),
+                        qStudyMember.leader.ne('T'))
                 .execute();
     }
 }

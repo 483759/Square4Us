@@ -33,7 +33,7 @@
 import Login from '@/components/home/Login'
 import Logout from '@/components/home/Logout'
 import MyStudy from '@/components/study/list/MyStudy'
-import { computed, onMounted } from '@vue/runtime-core'
+import { computed } from '@vue/runtime-core'
 import store from '@/store'
 export default {
   name : 'Header',
@@ -45,9 +45,6 @@ export default {
   setup() {
     const isLogin = computed(()=> store.state.isLogin)
     const myStudies = computed(()=> store.state.myStudies)
-    onMounted(()=>{
-      store.dispatch('getMyStudies')
-    })
     return {
       isLogin,
       myStudies
@@ -70,6 +67,7 @@ export default {
   box-sizing: border-box;
   /* vertical-align: middle; */
   user-select:none;
+  z-index: 1;
 }
 #nav a {
   display: block;
@@ -78,6 +76,7 @@ export default {
   color: var(--textColor);
   padding: 0px;
   text-align: right;
+  z-index: inherit;
 }
 
 
@@ -88,6 +87,7 @@ export default {
   color: var(--textColor);
   padding: 20px;
   font-size: 16px;
+  z-index: inherit;
 }
 
 /* 현재 페이지 강조하는 style */
@@ -118,10 +118,22 @@ export default {
 }
 
 #logo-icon{
-  width: 70px;
-  height: 70px;
+  width: 50px;
+  height: 50px;
   cursor: pointer;
   margin-right: 20px;
+}
+#logo-icon:hover{
+  position: relative;
+  animation:ass .3s infinite;
+}
+@keyframes ass {
+  0% {left: 2px;top:2px}
+  20% {left: -4px;top:-4px}
+  40% {left: 0px;top: 4px}
+  60% {left: 4px; top: -4px;}
+  80% {left: 0px; top: 4px}
+  100% {left: -2px;top:-2px}
 }
 
 #logo-text{
@@ -161,6 +173,7 @@ export default {
 .slogan{
   font-size: 1px;
   flex-direction: row;
-  margin: 0px
+  margin: 0px;
+  cursor: pointer;
 } 
 </style>

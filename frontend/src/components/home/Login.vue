@@ -2,9 +2,10 @@
   <section class="modal_z_index">
     <Modal  :isShow='isShow' @switchModal='switchModal'>
       <!-- 모달헤더 -->
-      <template v-slot:header class="header_login">
+      <template v-slot:header >
         <!-- <header> 헤더도 들어감 </header> -->
-        <button class="button_close" @click.stop="switchModal">X</button>
+        <div class="header_login">
+        </div>
       </template>
 
       <!-- 모달바디 -->
@@ -14,7 +15,7 @@
           <img class="logo_login" src="/square4us.png" alt="">
           <span class="slogan_login">Square4us</span>
         </div>
-           <form id='login-form' method="POST" @submit.prevent="login">
+          <form id='login-form' method="POST" @submit.prevent="login">
           <!-- <p><label for="email">Email</label></p> -->
           <p><input class="input_login" type="email" id="login_email" name="email" placeholder="이메일 입력" v-model="credentials.email"></p>
           <!-- <p><label for="password">Password</label></p> -->
@@ -29,7 +30,7 @@
       <!-- 모달푸터 -->
       <template v-slot:footer>
         <!-- <footer>푸터도 들어감</footer> -->
-        <a class="login_p">아직 회원이 아니신가요? </a>
+        <a class="login_p" @click="goSignup">아직 회원이 아니신가요? </a>
       </template>
 
       <!-- 모달여닫는 버튼 (외부노츨) -->
@@ -44,6 +45,7 @@
 import Modal from '@/components/home/Modal.vue'
 import { reactive, ref } from '@vue/reactivity'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 export default {
   name: 'Login',
   components : {
@@ -65,11 +67,19 @@ export default {
     const login = ()=>{
       store.dispatch('login', credentials)
     }
+    const router = useRouter()
+
+    const goSignup = () => {
+      isShow.value = !isShow.value
+      router.push('SignUp')
+    }
     return {
       isShow,
       switchModal,
       credentials,
       login,
+      router,
+      goSignup
     }
   }
 }
@@ -84,7 +94,7 @@ export default {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.3);
-    z-index: 100;
+    
   }
 
   .window {
@@ -97,9 +107,9 @@ export default {
     position: absolute;
     top: 50%;
     left: 50%;
-    background-color: var(--background);
-    /* 박스 그림자 */
+    background-color: white !important;
     box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+    
     
     /* 임시 지정 */
     width: 400px;
@@ -138,8 +148,8 @@ export default {
   }
   .header_login{
     display: flex;
-    flex-direction: row-reverse;  
-    justify-content: flex-start;
+    flex-direction: row;  
+    justify-content: flex-end;
     height: 35px;
   }
   .footer_login{
@@ -192,12 +202,12 @@ export default {
     /* block으로 해야 x가 쉽게 가운데로 옴 */
     height: 30px;
     width: 30px;
-    border: gray;
+    border: black 1px solid;
     border-radius: 5px;
     margin: 0;
     padding: auto;
-
-    box-shadow: 2px 1px 3px;
+    background-color: lightgray;
+    box-shadow: -2px 1px 3px;
     box-sizing: border-box;
     
   }

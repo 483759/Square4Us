@@ -6,12 +6,13 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,20 +30,27 @@ public class Member {
 
     private String nickname;
 
+    private String introduction;
+
     @ColumnDefault("0")
     private int report;
 
     @OneToOne(mappedBy = "member")
     private FileEntity profile;
 
+    @OneToMany(mappedBy = "member")
+    private List<ArticleEvaluation> evals = new ArrayList<>();
+
     @Builder
-    public Member(Long id, String email, String password, MemberRole role, String nickname, int report, FileEntity profile) {
+    public Member(Long id, String email, String password, MemberRole role, String nickname, String introduction, int report, FileEntity profile, List<ArticleEvaluation> evals) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.role = role;
         this.nickname = nickname;
+        this.introduction = introduction;
         this.report = report;
         this.profile = profile;
+        this.evals = evals;
     }
 }

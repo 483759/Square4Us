@@ -41,9 +41,16 @@ export default {
   #frame-section {
     background-color: white;
     flex-basis: 1030px;
-    flex-grow: 1;
+    flex: 1 1 100%;
     box-sizing: border-box;
     border-radius: 5px;
     margin-top: 10px;
+  }
+
+  #frame-section {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 </style>

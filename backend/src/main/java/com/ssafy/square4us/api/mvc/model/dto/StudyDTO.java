@@ -1,7 +1,6 @@
 package com.ssafy.square4us.api.mvc.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ssafy.square4us.api.mvc.model.entity.FileEntity;
 import com.ssafy.square4us.api.mvc.model.entity.Study;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
@@ -10,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,16 +22,16 @@ public class StudyDTO {
     private char dismantleFlag = 'F';
     @JsonIgnore
     private Date dismantleDate;
-    private List<FileDTO> files;
+    private FileDTO profile;
 
     @Builder
-    public StudyDTO(Long id, String category, String name, char dismantleFlag, Date dismantleDate, List<FileDTO> files) {
+    public StudyDTO(Long id, String category, String name, char dismantleFlag, Date dismantleDate, FileDTO profile) {
         this.id = id;
         this.category = category;
         this.name = name;
         this.dismantleFlag = dismantleFlag;
         this.dismantleDate = dismantleDate;
-        this.files = files;
+        this.profile = profile;
     }
 
     public StudyDTO(Study study) {
@@ -42,13 +40,10 @@ public class StudyDTO {
         this.name = study.getName();
         this.dismantleFlag = study.getDismantleFlag();
         this.dismantleDate = study.getDismantleDate();
-        if(study.getFiles() != null) {
-            this.files = new ArrayList<>();
-            for(FileEntity fe: study.getFiles()) {
-                this.files.add(new FileDTO(fe));
-            }
+        if(study.getProfile() != null) {
+            this.profile = new FileDTO(study.getProfile());
         } else {
-            this.files = null;
+            this.profile = null;
         }
     }
 
@@ -74,30 +69,32 @@ public class StudyDTO {
         private Long id;
         private String category;
         private String name;
-        private List<FileDTO> files;
+        private Long leaderId;
+        private FileDTO profile;
 
-        public InfoGetRes(Long id, String category, String name, List<FileDTO> files) {
+        public InfoGetRes(Long id, String category, String name, Long leaderId, FileDTO profile) {
             this.id = id;
             this.category = category;
             this.name = name;
-            this.files = files;
+            this.leaderId = leaderId;
+            this.profile = profile;
         }
 
-        public static BasicResponseBody<StudyDTO.InfoGetRes> of(Integer statusCode, String message, Long id, String category, String name, List<FileDTO> files) {
-            return BasicResponseBody.of(statusCode, message, new StudyDTO.InfoGetRes(id, category, name, files));
+        public static BasicResponseBody<StudyDTO.InfoGetRes> of(Integer statusCode, String message, Long id, String category, String name, Long leaderId, FileDTO profile) {
+            return BasicResponseBody.of(statusCode, message, new StudyDTO.InfoGetRes(id, category, name, leaderId, profile));
         }
     }
 
     @Getter
-    public static class PabeableListGetRes {
+    public static class PageableListGetRes {
         Page<StudyDTO> studyList;
 
-        public PabeableListGetRes(Page<StudyDTO> studyList) {
+        public PageableListGetRes(Page<StudyDTO> studyList) {
             this.studyList = studyList;
         }
 
-        public static BasicResponseBody<StudyDTO.PabeableListGetRes> of(Integer statusCode, String message, Page<StudyDTO> studyList) {
-            return BasicResponseBody.of(statusCode, message, new StudyDTO.PabeableListGetRes(studyList));
+        public static BasicResponseBody<PageableListGetRes> of(Integer statusCode, String message, Page<StudyDTO> studyList) {
+            return BasicResponseBody.of(statusCode, message, new PageableListGetRes(studyList));
         }
     }
 
@@ -111,6 +108,17 @@ public class StudyDTO {
 
         public static BasicResponseBody<StudyDTO.ListGetRes> of(Integer statusCode, String message, List<StudyDTO> studyList) {
             return BasicResponseBody.of(statusCode, message, new StudyDTO.ListGetRes(studyList));
+        }
+    }
+
+    @Getter
+    public static class LeaderFlagGetRes {
+        Boolean flag;
+
+        public LeaderFlagGetRes(Boolean flag) { this.flag = flag; }
+
+        public static BasicResponseBody<StudyDTO.LeaderFlagGetRes> of(Integer statusCode, String message, Boolean flag) {
+            return BasicResponseBody.of(statusCode, message, flag);
         }
     }
 }

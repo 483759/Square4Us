@@ -9,6 +9,7 @@ import Meeting from '@/views/Meeting.vue'
 import StudyReport from '@/views/StudyReport.vue'
 import Main from '@/views/Main.vue'
 import SignUp from '@/views/SignUp.vue'
+import Openvidu from '@/views/Openvidu.vue'
 
 const routes = [
   {
@@ -24,10 +25,11 @@ const routes = [
       { path: '/study/list', name: 'StudyList', component: StudyList },
       { path: '/study/:studyId', name: 'StudyMain', component: StudyMain, props : true },
       { path: '/study/report', name: 'StudyReport', component: StudyReport },
-      { path: '/signup', name: 'SignUp', component: SignUp }
+      { path: '/signup', name: 'SignUp', component: SignUp },
+      { path: '/openvidu', name: 'Openvidu', component: Openvidu }
     ]
   },
-  { path: '/study/:studyId/meeting/:meetingId', name: 'Meeting', component: Meeting, props : true },
+  { path: '/study/:studyId/meeting/:meetingName', name: 'Meeting', component: Meeting, props : true },
 ]
 
 const router = createRouter({

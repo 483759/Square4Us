@@ -30,17 +30,17 @@ public class Study extends BaseTimeEntity {
     @Column(name = "dismantle_date")
     private Date dismantleDate;
 
-    @OneToMany(mappedBy = "study")
-    private List<FileEntity> files = new ArrayList<>();
+    @OneToOne(mappedBy = "study")
+    private FileEntity profile;
 
     @Builder
-    public Study(Long id, String category, String name, char dismantleFlag, Date dismantleDate, List<FileEntity> files) {
+    public Study(Long id, String category, String name, char dismantleFlag, Date dismantleDate, FileEntity profile) {
         this.id = id;
         this.category = category;
         this.name = name;
         this.dismantleFlag = dismantleFlag;
         this.dismantleDate = dismantleDate;
-        this.files = files;
+        this.profile = profile;
     }
 
 }

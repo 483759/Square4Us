@@ -8,7 +8,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,20 +18,11 @@ public class MemberDTO {
     private String email;
     private MemberRole role;
     private String nickname;
+    private String introduction;
     private FileDTO profile;
     private int report;
     @JsonIgnore
     private String password;
-
-    public MemberDTO(Long id, String email, String password, MemberRole role, String nickname, FileDTO profile, int report) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.nickname = nickname;
-        this.profile = profile;
-        this.report = report;
-    }
 
     public MemberDTO(Member member) {
         this.id = member.getId();
@@ -40,7 +30,8 @@ public class MemberDTO {
         this.password = member.getPassword();
         this.role = member.getRole();
         this.nickname = member.getNickname();
-        if(member.getProfile() == null) {
+        this.introduction = member.getIntroduction();
+        if (member.getProfile() == null) {
             this.profile = null;
         } else {
             this.profile = new FileDTO(member.getProfile());
@@ -91,10 +82,17 @@ public class MemberDTO {
 
     @Getter
     public static class UpdatePatchReq {
+        @Schema(example = "김싸피")
         private String nickname;
+        @Schema(example = "소개입니다")
+        private String introduction;
 
-        public UpdatePatchReq(String nickname) {
+        public UpdatePatchReq() {
+        }
+
+        public UpdatePatchReq(String nickname, String introduction) {
             this.nickname = nickname;
+            this.introduction = introduction;
         }
     }
 
@@ -114,27 +112,33 @@ public class MemberDTO {
 
     @Getter
     public static class InfoGetRes {
+        @Schema(name = "회원 아이디")
+        Long id;
         @Schema(name = "회원 이메일")
         String email;
         @Schema(name = "회원 권한(Auth)")
         MemberRole role;
         @Schema(name = "회원 닉네임")
         String nickname;
+        @Schema(name = "회원 소개")
+        private String introduction;
         @Schema(name = "회원의 프로필 사진")
         FileDTO profile;
         @Schema(name = "신고 누적 회수")
         int report;
 
-        public InfoGetRes(String email, MemberRole role, String nickname, FileDTO profile, int report) {
+        public InfoGetRes(Long id, String email, MemberRole role, String nickname, String introduction, FileDTO profile, int report) {
+            this.id = id;
             this.email = email;
             this.role = role;
             this.nickname = nickname;
+            this.introduction = introduction;
             this.profile = profile;
             this.report = report;
         }
 
-        public static BasicResponseBody<InfoGetRes> of(Integer statusCode, String message, String email, MemberRole role, String nickname, FileDTO profile, int report) {
-            return BasicResponseBody.of(statusCode, message, new InfoGetRes(email, role, nickname, profile, report));
+        public static BasicResponseBody<InfoGetRes> of(Integer statusCode, String message, Long id, String email, MemberRole role, String nickname, String introduction, FileDTO profile, int report) {
+            return BasicResponseBody.of(statusCode, message, new InfoGetRes(id, email, role, nickname, introduction, profile, report));
         }
     }
 

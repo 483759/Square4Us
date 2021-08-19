@@ -2,6 +2,7 @@ package com.ssafy.square4us.api.mvc.model.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 import com.ssafy.square4us.api.mvc.model.dto.MemberDTO;
 import com.ssafy.square4us.api.mvc.model.entity.Member;
 import com.ssafy.square4us.api.mvc.model.entity.QMember;
@@ -10,6 +11,7 @@ import com.ssafy.square4us.api.mvc.model.entity.QStudyMember;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -26,11 +28,12 @@ public class MemberRepositorySupport extends QuerydslRepositorySupport {
     }
 
     @Transactional
-    public Long updateByMemberEmail(Member member) {
+    public Long updateByMemberEmail(Long memberId, MemberDTO.UpdatePatchReq updateInfo) {
+        //JPAUpdateClause jpaUpdateClause = new JPAUpdateClause(entityManager, qMember);
         Long affectedRow = jpaQueryFactory.update(qMember)
-                .where(qMember.email.eq(member.getEmail()))
-                .set(qMember.nickname, member.getNickname())
-                .set(qMember.profile, member.getProfile())
+                .where(qMember.id.eq(memberId))
+                .set(qMember.nickname, updateInfo.getNickname())
+                .set(qMember.introduction, updateInfo.getIntroduction())
                 .execute();
         return affectedRow;
     }
