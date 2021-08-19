@@ -367,7 +367,7 @@ server {
 
 
 
-## :tv: WebRTC - Openvidu-Server 구축 과정
+## :tv: WebRTC: Openvidu-Server 구축 과정
 
 <br>
 
@@ -411,7 +411,7 @@ server {
 
 1. openvidu에서 사용하는 포트 확보하기
 
-   - `22 TCP`, `80 TCP`, `443 TCP`, `3478 TCP+UDP`, `40000~57000 TCP+UDP`, `57001~65535 TCP+UDP` 가 필요!
+   - `22 TCP`, `80 TCP`, `443 TCP`, `3478 TCP+UDP`, `40000~57000 TCP+UDP`, `57001~65535 TCP+UDP` 가 필요합니다
 
    - [참고 링크](https://docs.openvidu.io/en/2.19.0/deployment/ce/on-premises/#close-ports-to-avoid-external-attacks)
 
@@ -420,7 +420,7 @@ server {
 2. openvidu 설치
 
    ```bash
-   $ cd /opt   # openvidu는 /opt 디렉토리에 설치되는게 권장됨!
+   $ cd /opt   # openvidu는 /opt 디렉토리에 설치되는게 권장됩니다!
    
    $ sudo curl https://s3-eu-west-1.amazonaws.com/aws.openvidu.io/install_openvidu_latest.sh | sudo bash
    ```
@@ -434,15 +434,15 @@ server {
    ```
 
    ```bash
-   DOMAIN_OR_PUBLIC_IP=<Linux 서버의 public ip 주소 또는 도메인 입력!)
+   DOMAIN_OR_PUBLIC_IP=<Linux 서버의 public ip 주소 또는 도메인>
    OPENVIDU_SECRET=<사용할 비밀번호 입력>
-   CERTIFICATE_TYPE=letsencrypt # default 값은 selfsigned지만 selfsigned 방식 사용시 보안 문제 야기!
+   CERTIFICATE_TYPE=letsencrypt # default 값은 selfsigned지만 selfsigned 방식 사용시 보안 문제를 야기합니다.
    							 # SSL 키가 있다면 owncert 방식으로 하되, /owncert 디렉토리 안에 키가 있어야함!
    LETSENCRYPT_EMAIL=<이메일>
    HTTP_PORT=80
    HTTPS_PORT=443
-   # HTTP_PORT와 HTTPS_PORT는 letsencrypt 방식의 키를 발급 받기 전까진 기본 포트인 80, 443을 사용해야 한다!
-   # 키를 발급받고 난 후부터는 포트 변경해도 무방!
+   # HTTP_PORT와 HTTPS_PORT는 letsencrypt 방식의 키를 발급 받기 전까진 기본 포트인 80, 443을 사용해야 합니다!
+   # 키를 발급받고 난 후부터는 포트 변경해도 무방합니다!
    ```
 
      <br>
@@ -465,9 +465,7 @@ server {
 
      ![image-20210819203842711](README.assets/image-20210819203842711.png)
 
-     - 위처럼 Docker Container에 `openvidu-coturn`, `kurento-media-server`, `openvidu-server`,
-
-        												`openvidu-redis`, `openvidu-proxy`, `openvidu-call` 가 올라와 있으면 정상!
+     - 위처럼 Docker Container에 `openvidu-coturn`, `kurento-media-server`, `openvidu-server`, `openvidu-redis`, `openvidu-proxy`, `openvidu-call` 가 올라와 있으면 정상!
 
        <br>
 
