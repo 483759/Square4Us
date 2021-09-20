@@ -32,6 +32,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final StudyMemberRepository studyMemberRepo;
     private final MemberRepositorySupport memberRepositorySupport;
+    private final BCryptPasswordEncoder passwordEncoder;
     private final FileRepository fileRepository;
     private final S3Util s3Util;
 
@@ -41,6 +42,7 @@ public class MemberServiceImpl implements MemberService {
         this.memberRepositorySupport = memberRepositorySupport;
         this.fileRepository = fileRepository;
         this.s3Util = s3Util;
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     @Override
@@ -79,7 +81,7 @@ public class MemberServiceImpl implements MemberService {
                 .email(joinInfo.getEmail())
                 .nickname(joinInfo.getNickname())
                 .role(MemberRole.USER)
-                .password(new BCryptPasswordEncoder().encode(joinInfo.getPassword()))
+                .password(passwordEncoder.encode(joinInfo.getPassword()))
                 .build();
         member = memberRepository.save(member);
 
